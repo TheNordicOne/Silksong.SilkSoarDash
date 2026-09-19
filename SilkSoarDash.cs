@@ -1,24 +1,25 @@
-using System;
 using BepInEx;
 using HarmonyLib;
 
 namespace SilkSoarDash
 {
     [BepInPlugin("com.thenoridcone.silksoardash", "Silk Soar Dash", "1.0.0 ")]
-    public class SilkSoardDash : BaseUnityPlugin
+    public class SilkSoarDash : BaseUnityPlugin
     {
-        private static readonly BepInEx.Logging.ManualLogSource SSDLog = BepInEx.Logging.Logger.CreateLogSource("SilkSoarDash");
+        private static readonly BepInEx.Logging.ManualLogSource SsdLog = BepInEx.Logging.Logger.CreateLogSource("SilkSoarDash");
+        private static HeroActions InputActions => GameManager.instance?.inputHandler?.inputActions;
 
         private void Awake()
         {
-            SSDLog.LogInfo("Plugin loaded and initialized.");
+            SsdLog.LogInfo("Plugin loaded and initialized.");
 
-            Harmony.CreateAndPatchAll(typeof(SilkSoardDash), null);
+            Harmony.CreateAndPatchAll(typeof(SilkSoarDash));
         }
 
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(HeroController), nameof(HeroController.CanHarpoonDash))]
+        // ReSharper disable once InconsistentNaming - Harmony Prefix Matching
         private static bool CanHarpoonDashPrefix(ref bool __result)
         {
             if (!SilkSoarDashDirectionPressed())
@@ -26,40 +27,38 @@ namespace SilkSoarDash
                 return true;
             }
 
-            SSDLog.LogInfo("SilkSoarDash Direction Pressed - Skipping Harpoon Dash");
             __result = false;
             return false;
-
         }
 
         private void Update()
         {
-            if (PressedSilkSoarDash())
+            if (!PressedSilkSoarDash())
             {
-                SSDLog.LogInfo("Dashing!");
+                return;
             }
+
+            SsdLog.LogInfo("Dashing!");
         }
 
-        private bool PressedSilkSoarDash()
+        private static bool PressedSilkSoarDash()
         {
-            var ia = GameManager.instance?.inputHandler?.inputActions;
-            if (ia == null)
+            if (InputActions == null)
             {
                 return false;
             }
 
-            return ia.SuperDash.WasPressed && SilkSoarDashDirectionPressed();
+            return InputActions.SuperDash.WasPressed && SilkSoarDashDirectionPressed();
         }
 
         private static bool SilkSoarDashDirectionPressed()
         {
-            var ia = GameManager.instance?.inputHandler?.inputActions;
-            if (ia == null)
+            if (InputActions == null)
             {
                 return false;
             }
 
-            return ia.Up;
+            return InputActions.Up;
         }
     }
 }

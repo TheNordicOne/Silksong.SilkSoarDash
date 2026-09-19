@@ -90,6 +90,7 @@
         <Compile Include="SilkSoarDash.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="SilkSoarDashFSM.cs" />
+        <Compile Include="States\FsmBuilder.cs" />
         <Compile Include="States\SsdCharge.cs" />
     </ItemGroup>
     <ItemGroup>

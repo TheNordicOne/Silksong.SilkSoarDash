@@ -1,38 +1,65 @@
 using HutongGames.PlayMaker;
+using SilkSoarDash.States;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace SilkSoarDash
 {
     public static class SilkSoarDashFsm
     {
-        private static PlayMakerFSM _probe;
+        private static PlayMakerFSM _host;
 
-        public static void Start()
+        // ReSharper disable Unity.PerformanceAnalysis
+        public static void Build()
         {
-            if (_probe != null)
+            if (_host != null)
             {
                 return;
             }
 
-            var go = new GameObject("SSD_FsmProbe");
+            var go = new GameObject("SSD_Fsm");
             Object.DontDestroyOnLoad(go);
-            _probe = go.AddComponent<PlayMakerFSM>();
+            _host = go.AddComponent<PlayMakerFSM>();
 
             var fsm = new Fsm
             {
                 Name = "SilkSoarDash"
             };
 
-            var tick = new FsmEvent("TICK");
 
-            // states
-            // fsm.States = new[] { };
+            var inactive = FsmBuilder.State(fsm, "Inactive", new[] { FsmBuilder.Transition("START", "SsdCharge") });
 
-            fsm.StartState = "SsdCharge";
 
-            _probe.Fsm = fsm;
-            fsm.Init(_probe);
+            var charge = FsmBuilder.State(fsm, "SsdCharge", new FsmStateAction[] { new SsdCharge() },
+                new[]
+                {
+                    FsmBuilder.Transition("CHARGED", "Charged"),
+                    FsmBuilder.Transition("CANCELLED", "Cancelled")
+                });
+
+            charge.SaveActions();
+            
+            var chargedState = FsmBuilder.State(fsm, "Charged", new[] { FsmBuilder.TransitionToInactive() });
+            var cancelledState = FsmBuilder.State(fsm, "Cancelled", new[] { FsmBuilder.TransitionToInactive() });
+            
+            fsm.States = new[] { inactive, charge, chargedState, cancelledState };
+            fsm.StartState = "Inactive";
+
+            _host.Fsm = fsm;
+            fsm.Init(_host);
+
+
             fsm.Start();
+        }
+
+        public static void Trigger()
+        {
+            if (!_host)
+            {
+                return;
+            }
+
+            _host.Fsm.Event("START");
         }
     }
 }

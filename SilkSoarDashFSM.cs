@@ -43,10 +43,10 @@ namespace SilkSoarDash
                 {
                     FsmBuilder.Transition(SsdEvents.GetDistance, SsdStates.GetDistance)
                 });
-            
+
             var cancelledState = FsmBuilder.State(fsm, SsdStates.Cancelled, new[] { FsmBuilder.TransitionToInactive() });
 
-            var gettingDistance = FsmBuilder.State(fsm, SsdStates.GetDistance, new[] { FsmBuilder.TransitionToInactive() });
+            var gettingDistance = FsmBuilder.State(fsm, SsdStates.GetDistance, new FsmStateAction[] { new SsdGetDistance() }, new[] { FsmBuilder.TransitionToInactive() });
 
             fsm.States = new[] { inactive, charge, chargedState, cancelledState, gettingDistance };
             fsm.StartState = SsdStates.Inactive;

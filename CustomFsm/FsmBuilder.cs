@@ -18,12 +18,15 @@ namespace SilkSoarDash.CustomFsm
         }
         public static FsmState State(Fsm fsm, string name, FsmStateAction[] actions,  [CanBeNull] FsmTransition[] transitions)
         {
-            return new FsmState(fsm)
+            var state = new FsmState(fsm)
             {
                 Name = name,
                 Actions = actions,
                 Transitions = transitions ?? Array.Empty<FsmTransition>(),
             };
+
+            state.SaveActions();
+            return state;
         }
 
         public static FsmTransition Transition(string eventName, string toState)

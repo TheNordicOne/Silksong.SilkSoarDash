@@ -38,12 +38,17 @@ namespace SilkSoarDash
                     FsmBuilder.Transition("CANCELLED", "Cancelled")
                 });
 
-            charge.SaveActions();
+            var chargedState = FsmBuilder.State(fsm, "Charged", new FsmStateAction[] { new SsdCharged() },
+                new[]
+                {
+                    FsmBuilder.Transition("GET_DISTANCE", "GetDistance")
+                });
             
-            var chargedState = FsmBuilder.State(fsm, "Charged", new[] { FsmBuilder.TransitionToInactive() });
             var cancelledState = FsmBuilder.State(fsm, "Cancelled", new[] { FsmBuilder.TransitionToInactive() });
-            
-            fsm.States = new[] { inactive, charge, chargedState, cancelledState };
+
+            var gettingDistance = FsmBuilder.State(fsm, "GetDistance", new[] { FsmBuilder.TransitionToInactive() });
+
+            fsm.States = new[] { inactive, charge, chargedState, cancelledState, gettingDistance };
             fsm.StartState = "Inactive";
 
             _host.Fsm = fsm;

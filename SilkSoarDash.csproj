@@ -87,6 +87,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="CustomFsm\Actions\SsdCharged.cs" />
         <Compile Include="SilkSoarDash.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="SilkSoarDashFSM.cs" />

@@ -94,7 +94,7 @@
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all"/>
     </ItemGroup>
     <ItemGroup>
-      <Content Include="notes\silksoar-phases.md" />
+      <Content Include="notes\game-dump.md" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <Target Name="DeployToGame" AfterTargets="Build">

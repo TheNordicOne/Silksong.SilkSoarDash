@@ -8,8 +8,6 @@ namespace SilkSoarDash.CustomFsm.Actions
         private static readonly BepInEx.Logging.ManualLogSource SsdChargeLog = BepInEx.Logging.Logger.CreateLogSource("SsdCharge");
 
         private const float ChargeTime = 0.8f;
-        private const string ChargedEvent = "CHARGED";
-        private const string CancelledEvent = "CANCELLED";
 
         private float _elapsed;
 
@@ -34,8 +32,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             if (!ia.SuperDash.IsPressed)
             {
-                SsdChargeLog.LogInfo("released early at " + _elapsed.ToString("F2") + "s -> " + CancelledEvent);
-                Fsm.Event(CancelledEvent);
+                SsdChargeLog.LogInfo("released early at " + _elapsed.ToString("F2") + "s -> " + SsdEvents.Cancelled);
+                Fsm.Event(SsdEvents.Cancelled);
                 Finish();
                 return;
             }
@@ -47,8 +45,8 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
 
-            SsdChargeLog.LogInfo("charged at " + _elapsed.ToString("F2") + "s -> " + ChargedEvent);
-            Fsm.Event(ChargedEvent);
+            SsdChargeLog.LogInfo("charged at " + _elapsed.ToString("F2") + "s -> " + SsdEvents.Charged);
+            Fsm.Event(SsdEvents.Charged);
             Finish();
         }
 

@@ -28,28 +28,28 @@ namespace SilkSoarDash
             };
 
 
-            var inactive = FsmBuilder.State(fsm, "Inactive", new[] { FsmBuilder.Transition("START", "SsdCharge") });
+            var inactive = FsmBuilder.State(fsm, SsdStates.Inactive, new[] { FsmBuilder.Transition(SsdEvents.Start, SsdStates.Charge) });
 
 
-            var charge = FsmBuilder.State(fsm, "SsdCharge", new FsmStateAction[] { new SsdCharge() },
+            var charge = FsmBuilder.State(fsm, SsdStates.Charge, new FsmStateAction[] { new SsdCharge() },
                 new[]
                 {
-                    FsmBuilder.Transition("CHARGED", "Charged"),
-                    FsmBuilder.Transition("CANCELLED", "Cancelled")
+                    FsmBuilder.Transition(SsdEvents.Charged, SsdStates.Charged),
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.Cancelled)
                 });
 
-            var chargedState = FsmBuilder.State(fsm, "Charged", new FsmStateAction[] { new SsdCharged() },
+            var chargedState = FsmBuilder.State(fsm, SsdStates.Charged, new FsmStateAction[] { new SsdCharged() },
                 new[]
                 {
-                    FsmBuilder.Transition("GET_DISTANCE", "GetDistance")
+                    FsmBuilder.Transition(SsdEvents.GetDistance, SsdStates.GetDistance)
                 });
             
-            var cancelledState = FsmBuilder.State(fsm, "Cancelled", new[] { FsmBuilder.TransitionToInactive() });
+            var cancelledState = FsmBuilder.State(fsm, SsdStates.Cancelled, new[] { FsmBuilder.TransitionToInactive() });
 
-            var gettingDistance = FsmBuilder.State(fsm, "GetDistance", new[] { FsmBuilder.TransitionToInactive() });
+            var gettingDistance = FsmBuilder.State(fsm, SsdStates.GetDistance, new[] { FsmBuilder.TransitionToInactive() });
 
             fsm.States = new[] { inactive, charge, chargedState, cancelledState, gettingDistance };
-            fsm.StartState = "Inactive";
+            fsm.StartState = SsdStates.Inactive;
 
             _host.Fsm = fsm;
             fsm.Init(_host);
@@ -65,7 +65,7 @@ namespace SilkSoarDash
                 return;
             }
 
-            _host.Fsm.Event("START");
+            _host.Fsm.Event(SsdEvents.Start);
         }
     }
 }

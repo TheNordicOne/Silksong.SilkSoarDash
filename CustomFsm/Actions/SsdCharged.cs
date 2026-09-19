@@ -4,9 +4,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdCharged : FsmStateAction
     {
-        
-        private const string ReleaseEvent = "GET_DISTANCE";
-        
+
         public override void OnUpdate()
         {
             var ia = GameManager.instance?.inputHandler?.inputActions;
@@ -20,7 +18,7 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
 
-            Fsm.Event(ReleaseEvent);
+            Fsm.Event(SsdEvents.GetDistance);
             Finish();
         }
     }

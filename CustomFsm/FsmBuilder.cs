@@ -36,7 +36,7 @@ namespace SilkSoarDash.CustomFsm
         
         public static FsmTransition TransitionToInactive()
         {
-            return new FsmTransition { FsmEvent = FsmEvent.Finished, ToState = "Inactive" };
+            return new FsmTransition { FsmEvent = FsmEvent.Finished, ToState = SsdStates.Inactive };
         }
     }
 }

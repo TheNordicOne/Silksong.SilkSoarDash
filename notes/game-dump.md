@@ -1,210 +1,438 @@
-# Silk Soar (SuperJump)
+# superJumpFSM dump
 
-Internal name: `SuperJump`. No type, field or string in `Assembly-CSharp.dll` contains "Soar".
+Runtime dump of `HeroController.superJumpFSM`.
+GameObject `Hero_Hornet(Clone)`, FsmName `Superjump`.
 
-Source: runtime dump of `HeroController.superJumpFSM`.
-GameObject `Hero_Hornet(Clone)`, FSM name `Superjump`.
-
-## Locations
-
-`Assembly-CSharp.dll`, global namespace unless stated.
-
-| Member                                           | Type             | Access                          |
-|--------------------------------------------------|------------------|---------------------------------|
-| `HeroController.superJumpFSM`                    | `PlayMakerFSM`   | public field                    |
-| `HeroController.CanSuperJump()`                  | `bool`           | public instance                 |
-| `HeroController.CanHarpoonDash()`                | `bool`           | public instance                 |
-| `HeroController.inputHandler`                    | `InputHandler`   | **private** field               |
-| `GameManager.instance`                           | `GameManager`    | public static property          |
-| `GameManager.inputHandler`                       | `InputHandler`   | public instance property        |
-| `InputHandler.inputActions`                      | `HeroActions`    | public field                    |
-| `PlayerData.hasSuperJump`                        | `bool`           | public field                    |
-| `PlayerData.HasSeenSuperJump`                    | `bool`           | public field                    |
-| `PlayerData.completedSuperJumpSequence`          | `bool`           | public field                    |
-| `PlayerData.SilkSkillCost`                       | `int`            | public property                 |
-| `HeroAnimationController.SetPlaySuperJumpFall()` | `void`           | public instance                 |
-| `NoSuperJumpCollider.IsInside(Vector2)`          | `bool`           | public static                   |
-| `SuperJumpRaycast`                               | `FsmStateAction` | `HutongGames.PlayMaker.Actions` |
-| `CurrencyManager.AddGeo(int)`                    | `void`           | public static                   |
-
-`PlayMaker.dll` holds `Fsm`, `FsmState`, `FsmTransition`, `FsmStateAction`, `NamedVariable`.
-It does not hold the graph. The graph is serialized in the Hero prefab.
-
-## C# trigger
-
-`HeroController.LookForInput()` reads these actions:
-`Attack`, `Dash`, `Down`, `Jump`, `Left`, `MoveVector`, `QuickCast`, `Right`, `SuperDash`.
-`Up` is not among them.
+## PlayerData at dump time
 
 ```
-SuperDash.WasPressed && IsPressingOnlyDown() && CanSuperJump()
-  -> if controlReqlinquished: EventRegister.SendEvent(FsmCancel), RegainControl(), StartAnimationControlToIdle()
-  -> superJumpFSM.SendEventSafe("DO MOVE")
+silk           = 3
+silkMax        = 18
+SilkSkillCost  = 4
+hasSuperJump   = True
+hasHarpoonDash = True
 ```
 
-`SuperDash.WasPressed && (!IsPressingOnlyDown() || !CanSuperJump())` falls through to
-`CanHarpoonDash()`. `CanHarpoonDash()` has one call site.
+## Full state listing
 
-`IsPressingOnlyDown()` is `Down.IsPressed && !Right.IsPressed && !Left.IsPressed`.
+States marked `[no values]` have action names only.
 
-`CanSuperJump()` requires: `!gm.isPaused`, `hero_state != hard_landing`,
-`hero_state != dash_landing`, `cState.onGround`, `!cState.dashing`, `!cState.hazardDeath`,
-`!cState.hazardRespawning`, `!cState.backDashing`,
-`!cState.attacking || attack_time >= Config.AttackRecoveryTime`, `CanDoFSMCancelMove()`,
-`!cState.recoilFrozen`, `!cState.recoiling`, `!cState.transitioning`, `playerData.hasSuperJump`.
-
-Scene entry sends `"PRE ENTER SUPERJUMPING"` and `"ENTER SUPERJUMPING"` when
-`exitedSuperDashing` is set.
-
-## FSM path
-
+### Inactive
 ```
-Inactive
---DO MOVE-->        Enough Silk?        GetPlayerDataVariable, IntCompare
---FINISHED-->       Relinquish Control
---FINISHED-->       Start Delay         DecelerateXY, ListenForSuperdash, Wait 0.15
---FINISHED-->       Ground Charge       DecelerateXY, AddUsingSilk, Tk2dPlayAnimation, Wait 0.8
---WAIT-->           Ground Charged      RemoveUsingSilk, TakeSilkV2, RayCast2d, ListenForSuperdash
---BUTTON UP-->      Throw Needle Start
---FINISHED-->       Get Distance        RayCast2dV2, SuperJumpRaycast
---FINISHED-->       Throw Needle        SetVelocity2d (0,150), CheckCollisionSideV2, Wait 0.8
---FINISHED-->       Position Stick Needle Pre
---FINISHED-->       Position Stick Needle
---FINISHED-->       Throw Wait
---FINISHED-->       Jump Antic
---FINISHED-->       Dash Start          SetVelocity2d y=33 once
---FINISHED-->       Dashing             SetVelocity2d y=33 everyFrame, SetGravity2dScale 0, Wait 0.2
---WAIT-->           Cancelable          ListenForJump, ListenForAttackV2, SetVelocity2d y=33 everyFrame
---HIT ROOF-->       Hit Roof Hard
---FINISHED-->       Hit Roof
---FINISHED-->       Regain Control To Idle
---FINISHED-->       Reset Effects
---FINISHED-->       Inactive
+transition DO MOVE -> Enough Silk?
 ```
 
-Other transitions:
-
-| From                          | Event                 | To                            |
-|-------------------------------|-----------------------|-------------------------------|
-| `Enough Silk?`                | CANCEL                | `Inactive`                    |
-| `Start Delay`                 | BUTTON UP             | `Regain Control`              |
-| `Ground Charge`               | BUTTON UP             | `Charge Cancel Ground`        |
-| `Throw Needle`                | DAMAGER HIT SPIKES    | `Hit Spikes`                  |
-| `Position Stick Needle Pre`   | TRANSITION GATE       | `Hit Transition Gate`         |
-| `Position Stick Needle Pre`   | CANCEL                | `Catch Wait`                  |
-| `Position Stick Needle`       | CANCEL                | `Catch Wait`                  |
-| `Cancelable`                  | NORM CANCEL           | `Fall Needle Cancel`          |
-| `Fall Needle Cancel`          | FINISHED              | `Air Cancel`                  |
-| `Leaving Scene`               | CANCEL / LEVEL LOADED | `Cancel`                      |
-| `Pre Entered Jumping`         | ENTER SUPERJUMPING    | `Entered Jumping`             |
-| `Entered Jumping`             | FINISHED              | `Begin Jumping`               |
-| `Begin Jumping`               | FINISHED              | `Position Stick Needle Pre 2` |
-| `Position Stick Needle Pre 2` | FINISHED              | `Dash Start Quick`            |
-| `Position Stick Needle Pre 2` | CANCEL                | `Queue Cancel`                |
-| `Dash Start Quick`            | FINISHED              | `Dashing`                     |
-| `Hit Roof Soft`               | FINISHED              | `Hit Roof`                    |
-
-`Begin Jumping` and `Get Distance` are the only states calling `SuperJumpRaycast`.
-
-## Silk
-
-|                                      |                                                                |
-|--------------------------------------|----------------------------------------------------------------|
-| `Enough Silk?`                       | reads `silk`, `IntCompare integer2 = 1`, lessThan fires CANCEL |
-| `Silk Cost` (FSM var)                | 1                                                              |
-| `AddUsingSilk` (`Ground Charge`)     | Amount 1, UsingType Normal                                     |
-| `RemoveUsingSilk` (`Ground Charged`) | Amount 1, UsingType Normal                                     |
-| `TakeSilkV2` (`Ground Charged`)      | Amount 1, TakeSource Normal                                    |
-
-`PlayerData.SilkSkillCost` returns 4, or 3 when `GlobalSettings.Gameplay.FleaCharmTool.IsEquippedHud`
-and `health >= CurrentMaxHealth`. It is not read by this FSM.
-
-## Timing
-
-| State           | Action | Value |
-|-----------------|--------|-------|
-| `Start Delay`   | Wait   | 0.15  |
-| `Ground Charge` | Wait   | 0.8   |
-| `Throw Needle`  | Wait   | 0.8   |
-| `Dashing`       | Wait   | 0.2   |
-
-FSM vars: `Charge Time` 0.8, `Cancelable Time` 0.2.
-
-## Motion
-
-| State           | Action            | Value                         |
-|-----------------|-------------------|-------------------------------|
-| `Dash Start`    | SetVelocity2d     | y 33, everyFrame False        |
-| `Dashing`       | SetVelocity2d     | y 33, everyFrame True         |
-| `Cancelable`    | SetVelocity2d     | y 33, everyFrame True         |
-| `Dashing`       | SetGravity2dScale | 0                             |
-| `Throw Needle`  | SetVelocity2d     | vector (0, 150)               |
-| `Start Delay`   | DecelerateXY      | X 0.9, Y 0, brakeOnExit False |
-| `Ground Charge` | DecelerateXY      | X 0.9, Y 0, brakeOnExit True  |
-
-FSM vars: `Jump Speed` 33, `Initial Throw Needle Y` 5.37.
-
-## Raycasts
-
-| State            | Action             | Direction | Distance | Space |
-|------------------|--------------------|-----------|----------|-------|
-| `Get Distance`   | `SuperJumpRaycast` | (0, 1)    | 350      | World |
-| `Get Distance`   | `RayCast2dV2`      | (0, 1)    | 350      | World |
-| `Dashing`        | `RayCast2dV2`      | (0, 1)    | 10       | Self  |
-| `Cancelable`     | `RayCast2dV2`      | (0, 1)    | 10       | Self  |
-| `Ground Charged` | `RayCast2d`        | (0, -1)   | 2        | Self  |
-
-`SuperJumpRaycast`: `contactFilter.layerMask = 8448`, `useTriggers = true`. Trigger hits are
-skipped unless the collider has a `TransitionPoint` with `GetGatePosition() == 0`, which sets
-`StoreIsTransitionGate`. A second cast adds `0x420000` to the mask and sets `StoreHitSpikes`
-when a `DamageHero` with `hazardType == HazardType.SPIKES` is hit.
-Outputs: `StoreDidHit`, `StoreHitObject`, `StoreHitPoint`, `StoreDistance`,
-`StoreIsTransitionGate`, `StoreHitSpikes`.
-
-## GameObjects (FSM variables)
-
+### Init
 ```
-Super Jump Needle Throw          Super Jump Needle Throw Fall
-Super Jump Needle Stick          Super Jump Thread
-Super Jump Thread Loop           Super Jump Damager
-Super Jump Charging Fader        Super Jump Charged
-Super Jump Antic Effect L / R    Super Jump Catch Effect
-Super Jump Extra Throw Effect    Super Jump Extra Ground Effect
-Superjump Loop                   Nail Art Ready
-Camera Target                    Special Attacks
-Effects                          Move To
+GetOwner
+FindChild x7, GetPosition, FindChild x6, FindGameObject, FindChild x3,
+FindGameObject, FindChild x2, ActivateGameObject x2, FindChild,
+ActivateGameObject, FindChild, ActivateGameObject
+transition FINISHED -> Inactive
 ```
 
-`Ground Charged` spawns `Hornet_Super_Jump_Ready_Burst` at offset (0, -1.5, 0).
-
-## Input actions
-
-`HeroActions` fields:
-
+### Enough Silk?
 ```
-Left Right Up Down MoveVector
-RsUp RsDown RsLeft RsRight RightStick
-Jump Evade Dash SuperDash DreamNail Attack Cast
-QuickMap QuickCast Taunt Pause
-MenuSubmit MenuCancel MenuExtra MenuSuper
-PaneLeft PaneRight
-OpenInventory OpenInventoryMap OpenInventoryJournal OpenInventoryTools OpenInventoryQuests
-SwipeInventoryMap SwipeInventoryJournal SwipeInventoryTools SwipeInventoryQuests
+GetPlayerDataVariable   VariableName = silk, StoreValue = 0
+IntCompare              integer1 = 0, integer2 = 1, lessThan = <event>, everyFrame = False
+transition CANCEL -> Inactive
+transition FINISHED -> Relinquish Control
 ```
 
-Each is `InControl.PlayerAction` except `MoveVector` and `RightStick`, which are
-`InControl.PlayerTwoAxisAction` (`.Vector`, `.X`, `.Y`).
+### Relinquish Control
+```
+SendMessage x2
+transition FINISHED -> Start Delay
+```
 
-`InControl.OneAxisInputControl` exposes `WasPressed`, `IsPressed`, `WasReleased`,
-`HasChanged`, and an `implicit operator bool` returning `IsPressed`.
+### Start Delay
+```
+DecelerateXY        decelerationX = 0.9, decelerationY = 0, brakeOnExit = False
+ListenForSuperdash
+Wait                time = 0.15
+transition BUTTON UP -> Regain Control
+transition FINISHED -> Ground Charge
+```
 
-Gameplay readers per action:
+### Ground Charge
+```
+SendMessage
+DecelerateXY        decelerationX = 0.9, decelerationY = 0, brakeOnExit = True
+AddUsingSilk        Amount = 1, UsingType = Normal, DidAddTracker = False
+ActivateGameObject
+Tk2dPlayAnimation
+PlayAudioEvent x2
+ActivateGameObject
+Tk2dPlayAnimation
+ActivateGameObject
+Tk2dPlayAnimation
+CallMethodProper
+SetBoolValue
+SetFsmBool
+SendEventByName
+ListenForSuperdash
+ActivateGameObject
+FadeNestedFadeGroup
+FadeNestedFadeGroupV2
+Wait                time = 0.8
+GetVelocity2d
+FloatCompare
+transition BUTTON UP -> Charge Cancel Ground
+transition WAIT -> Ground Charged
+```
 
-| Action              | Read by                                                                                             |
-|---------------------|-----------------------------------------------------------------------------------------------------|
-| `RsLeft`, `RsRight` | `HeroActions`, `InputHandler`, `InventoryPaneInput` only                                            |
-| `RightStick`        | `HeroActions`, `InputHandler` only                                                                  |
-| `RsUp`, `RsDown`    | `HeroController.Update()`, `ListenForRsUp`, `ListenForRsDown`, `InventoryPaneInput`, `MenuScroller` |
-| `Evade`             | `ListenForBackdash`                                                                                 |
-| `Taunt`             | `ListenForTaunt`, `ListenForTauntV2`                                                                |
-| `DreamNail`         | `ListenForDreamNail`, `Platform`                                                                    |
+### Ground Charged
+```
+RemoveUsingSilk     Amount = 1, UsingType = Normal, DidAddTracker = False
+TakeSilkV2          Amount = 1, TakeSource = Normal
+SpawnObjectFromGlobalPoolV2   gameObject = Hornet_Super_Jump_Ready_Burst,
+                              spawnPoint = Hero_Hornet(Clone),
+                              position = (0, -1.5, 0), rotation = (0, 0, 0)
+AudioStopV2, PlayAudioEvent, AudioPlayInState, SetAudioClip
+ActivateGameObject, DoSpriteFlashNamed
+SetBoolValue, SetFsmBool, SetBoolValue, SetBoolValue, SetFsmBool
+SendEventByName
+ListenForSuperdash
+SetBoolValue
+RayCast2d           direction = (0, -1), space = Self, distance = 2,
+                    minDepth = 0, maxDepth = 0, hitEvent = null
+BoolTest
+transition BUTTON UP -> Throw Needle Start
+```
+
+### Charge Cancel Ground  `[no values]`
+```
+RemoveUsingSilk, ActivateGameObject, AudioStopV2, ActivateGameObject x2,
+FadeNestedFadeGroup, CallMethodProper, Tk2dPlayAnimationWithEvents,
+Tk2dPlayAnimation x2, SetFsmBool x2, SetVelocity2d
+transition FINISHED -> Regain Control To Idle
+```
+
+### Throw Needle Start  `[no values]`
+```
+ActivateGameObject, FadeNestedFadeGroup, Tk2dPlayAnimation x2, CancelFlashByID,
+SetBoolValue, SetFsmBool x2, SetBoolValue, SendMessageV2,
+Tk2dPlayAnimationWithEvents, SendEventToRegister
+transition FINISHED -> Get Distance
+```
+
+### Get Distance
+```
+GetPosition x2
+FloatOperator
+RayCast2dV2         direction = (0, 1), space = World, distance = 350,
+                    minDepth = 0, maxDepth = 0
+SuperJumpRaycast    Direction = (0, 1), Space = World, Distance = 350,
+                    FromPosition = (0, 0), HitEvent = null, NoHitEvent = null
+SetVector3XYZ
+FloatCompare
+ActivateGameObject
+transition FINISHED -> Throw Needle
+```
+
+### Throw Needle
+```
+tk2dPlayAnimAfterPreviousComplete
+PlayRandomAudioClipTable, PlayAudioEvent, PlayVibrationV2
+ActivateGameObject, SetPosition, ActivateGameObject
+SetVelocity2d       vector = (0, 150), x = 0, y = 0, everyFrame = False
+CheckCollisionSideV2
+Wait                time = 0.8
+GetPosition x3, FloatAdd, FloatTestToBool, BoolFlipEveryFrame,
+ActivateGameObject, FloatCompare
+transition FINISHED -> Position Stick Needle Pre
+transition DAMAGER HIT SPIKES -> Hit Spikes
+```
+
+### Position Stick Needle Pre  `[no values]`
+```
+ActivateGameObject x2, BoolTest, CallStaticMethod, BoolTest, HasComponent,
+GetParent, SetTransformParent, GetPosition2D, SetPosition2D, GetPosition2D,
+FloatOperator, Translate, BoolTest, CheckOutOfCamera, SpawnObjectFromGlobalPool
+transition CANCEL -> Catch Wait
+transition TRANSITION GATE -> Hit Transition Gate
+transition FINISHED -> Position Stick Needle
+```
+
+### Position Stick Needle  `[no values]`
+```
+GetPosition, FloatAdd, FloatTestToBool, BoolTestToObject, PlayAudioEvent,
+BoolTest, Tk2dWatchAnimationEvents
+transition CANCEL -> Catch Wait
+transition FINISHED -> Throw Wait
+```
+
+### Throw Wait  `[no values]`
+```
+Tk2dPlayAnimationWithEvents, GameObjectIsVisible, ConvertBoolToFloat, Wait
+transition FINISHED -> Jump Antic
+```
+
+### Jump Antic  `[no values]`
+```
+AudioStopV2, PlayAudioEvent, Tk2dPlayAnimationWithEvents
+transition FINISHED -> Dash Start
+```
+
+### Dash Start
+```
+SetBoolValue, SetFloatValue, CallMethodProper, PlayAudioEvent, PlayVibrationV2,
+ActivateGameObject, Tk2dPlayAnimation, CallMethodProper x2, SendEventByName,
+CallMethodProper
+SetVelocity2d       x = 0, y = 33, everyFrame = False
+CallMethodProper, SendEventToRegister, SendEvent
+transition FINISHED -> Dashing
+```
+
+### Dashing
+```
+SetAudioClip, AudioPlayInState, VibrationPlayerPlayV2
+Wait                time = 0.2
+SetVelocity2d       x = 0, y = 33, everyFrame = True
+CallMethodProper
+SetGravity2dScale   gravityScale = 0
+CheckCollisionSide
+GetVelocity2d, FloatCompare, ActivateGameObjectDelay, DoCameraShakeV4
+RayCast2dV2         direction = (0, 1), space = Self, distance = 10
+BoolFlipEveryFrame, SetMeshRendererEveryFrame
+transition WAIT -> Cancelable
+transition HIT ROOF -> Hit Roof Hard
+```
+
+### Cancelable
+```
+ActivateGameObject, AudioPlayInState, VibrationPlayerPlayV2, BoolTest,
+ListenForJump, ListenForAttackV2
+SetVelocity2d       x = 0, y = 33, everyFrame = True
+ListenForSuperdash, CheckCollisionSide, GetVelocity2d, FloatCompare, DoCameraShakeV4
+RayCast2dV2         direction = (0, 1), space = Self, distance = 10
+BoolFlipEveryFrame, SetMeshRendererEveryFrame
+transition HIT ROOF -> Hit Roof Hard
+transition NORM CANCEL -> Fall Needle Cancel
+```
+
+### Hit Roof Hard  `[no values]`
+```
+CallStaticMethod, CreateNoiseV2, ActivateGameObject x2, SpawnObjectFromGlobalPool,
+PlayRandomAudioClipTable, DoCameraShakeV2, Tk2dPlayAnimationWithEvents,
+CallMethodProper, SendEventToRegister, PlayAudioEvent, PlayVibrationV2, SetVelocity2d
+transition FINISHED -> Hit Roof
+```
+
+### Hit Roof Soft  `[no values]`
+```
+SendMessage x2, DoCameraShakeV2, Tk2dPlayAnimationWithEvents, CallMethodProper,
+SendEventToRegister
+transition FINISHED -> Hit Roof
+```
+
+### Hit Roof  `[no values]`
+```
+ActivateGameObject x2, CallMethodProper x4, Tk2dWatchAnimationEvents,
+SendMessageV2, SetVelocity2d
+transition FINISHED -> Regain Control To Idle
+```
+
+### Fall Needle Cancel  `[no values]`
+```
+SetBoolValue, PlayAudioEvent, GetPosition x2, FloatOperator,
+ActivateGameObject x2, SetVector3XYZ, ActivateGameObject, iTweenMoveBy,
+DecelerateV2, CallMethodProper, SendEventToRegister
+transition FINISHED -> Air Cancel
+```
+
+### Air Cancel  `[no values]`
+```
+ActivateGameObject, PlayRandomAudioClipTable, ActivateGameObject, SetPosition,
+CallMethodProper x2, SendEventByName, DecelerateV2, SendMessageV2,
+Tk2dPlayAnimationWithEvents
+transition FINISHED -> Regain Control To Idle
+```
+
+### Catch Wait  `[no values]`
+```
+ActivateGameObject, Tk2dPlayAnimationWithEvents, Wait
+transition FINISHED -> Fall Needle
+```
+
+### Fall Needle  `[no values]`
+```
+GetPosition x2, FloatOperator, ActivateGameObject, SetVector3XYZ, iTweenMoveBy
+transition FINISHED -> Fall Catch Needle
+```
+
+### Fall Catch Needle  `[no values]`
+```
+AudioStopV2, ActivateGameObject, SetPosition, CallMethodProper,
+ActivateGameObject, PlayAudioEvent, Tk2dPlayAnimationWithEvents, DebugLogConsole
+transition FINISHED -> Regain Control To Idle
+```
+
+### Hit Spikes  `[no values]`
+```
+SetBoolValue, DoCameraShakeV4, GetPosition2D x2, FloatAdd, FloatCompare,
+PlayRandomAudioClipTableV3, SetPosition2D
+transition FINISHED -> Position Stick Needle Pre
+```
+
+### Hit Transition Gate  `[no values]`
+```
+ActivateGameObject, PlayAudioEvent, BoolTest, Tk2dWatchAnimationEvents
+transition FINISHED -> Throw Wait
+```
+
+### Regain Control  `[no values]`
+```
+SendMessage x3
+transition FINISHED -> Inactive
+```
+
+### Regain Control To Idle  `[no values]`
+```
+CallMethodProper x2, SendMessage x3
+transition FINISHED -> Reset Effects
+```
+
+### Reset Effects  `[no values]`
+```
+CallMethodProper, SetBoolValue, ActivateGameObject x7, GameObjectCompare,
+SetTransformParent, SendEventToRegister
+transition FINISHED -> Inactive
+```
+
+### Cancel  `[no values]`
+```
+RemoveUsingSilk, ActivateGameObject x3, AudioStopV2 x2, CallMethodProper x3,
+ActivateGameObject, BoolTest, CancelFlashByID
+transition FINISHED -> Cancel Rumbling Focus
+```
+
+### Cancel Rumbling Focus / Cancel Rumbling Focus 2  `[no values]`
+```
+BoolTest, SetBoolValue, SetFsmBool
+transition FINISHED -> Cancel Rumbling Focus 2  /  -> Reset Effects
+```
+
+### Leaving Scene  `[no values]`
+```
+BoolTest
+transition CANCEL -> Cancel
+transition LEVEL LOADED -> Cancel
+```
+
+### Pre Entered Jumping  `[no values]`
+```
+SetBoolValue, CallMethodProper
+transition ENTER SUPERJUMPING -> Entered Jumping
+```
+
+### Entered Jumping  `[no values]`
+```
+WaitForFinishedEnteringScene
+transition FINISHED -> Begin Jumping
+```
+
+### Begin Jumping  `[no values]`
+```
+SendMessage x2, SuperJumpRaycast
+transition FINISHED -> Position Stick Needle Pre 2
+```
+
+### Position Stick Needle Pre 2  `[no values]`
+```
+ActivateGameObject x2, BoolTest x2, CallStaticMethod, BoolTest, HasComponent,
+GetParent, SetTransformParent, GetPosition2D, SetPosition2D, GetPosition2D,
+FloatOperator, Translate, BoolTest
+transition CANCEL -> Queue Cancel
+transition TRANSITION GATE -> Hit Transition Gate 2
+transition FINISHED -> Dash Start Quick
+```
+
+### Hit Transition Gate 2  `[no values]`
+```
+ActivateGameObject
+transition FINISHED -> Dash Start Quick
+```
+
+### Dash Start Quick  `[no values]`
+```
+ActivateGameObject, Tk2dPlayAnimation, CallMethodProper x3, SetVelocity2d,
+CallMethodProper
+transition FINISHED -> Dashing
+```
+
+### Queue Cancel  `[no values]`
+```
+SetFloatValue, SetBoolValue
+transition FINISHED -> Dash Start Quick
+```
+
+## FSM variables (initial values at dump time)
+
+```
+FsmFloat  Cancelable Time              0.2
+FsmFloat  Charge Time                  0.8
+FsmFloat  Check Y                      0
+FsmFloat  Current Throw Needle Y       0
+FsmFloat  Initial Throw Needle Y       5.37
+FsmFloat  Jump Speed                   33
+FsmFloat  Main Cam Pos Y               0
+FsmFloat  Speed                        0
+FsmFloat  Stick Needle Offset X        0
+FsmFloat  Stick Needle X               0
+FsmFloat  Stick Needle Y               0
+FsmFloat  Throw Needle Distance        0
+FsmFloat  Throw Needle Pos Y           0
+FsmFloat  Throw Needle Target Y        0
+FsmFloat  Throw Needle X               0
+FsmFloat  Throw Wait Time              0
+FsmFloat  Y Speed                      0
+FsmFloat  Throw Needle Pos Y Start     0
+FsmInt    Current Silk                 0
+FsmInt    Silk Cost                    1
+FsmInt    Sprite Flash ID              0
+FsmBool   Did Find Roof                False
+FsmBool   Is Distant                   False
+FsmBool   Needle Visible               False
+FsmBool   On Ground                    False
+FsmBool   Played Throw Wait            False
+FsmBool   Show Thread                  False
+FsmBool   Terrain Above                False
+FsmBool   Did Add Using Silk           False
+FsmBool   Test                         False
+FsmBool   Did Start Flash              False
+FsmBool   Started Rumbling Focus       False
+FsmBool   Started Rumbling Focus 2     False
+FsmBool   Is Transition Gate           False
+FsmBool   Queued Cancel                False
+FsmBool   Did Hit Spikes               False
+FsmVector2 Ray Hit Point               (0, 0)
+FsmVector3 Throw Needle Move By        (0, 0, 0)
+FsmGameObject Antic Effect L           Super Jump Antic Effect L
+FsmGameObject Antic Effect R           Super Jump Antic Effect R
+FsmGameObject Attacks Folder           Special Attacks
+FsmGameObject Camera Target            Camera Target
+FsmGameObject Charged Effect           Super Jump Charged
+FsmGameObject Charging Fader           Super Jump Charging Fader
+FsmGameObject Damager                  Super Jump Damager
+FsmGameObject Effects Folder           Effects
+FsmGameObject Grab Effect              Super Jump Catch Effect
+FsmGameObject Self                     Hero_Hornet(Clone)
+FsmGameObject Stick Needle             Super Jump Needle Stick
+FsmGameObject Stick Needle Parent      null
+FsmGameObject Throw Needle             Super Jump Needle Throw
+FsmGameObject Throw Needle Fall        Super Jump Needle Throw Fall
+FsmGameObject Throw Needle Fall Target Move To
+FsmGameObject Throw Needle Target      Move To
+FsmGameObject Superjump Audio Loop     Superjump Loop
+FsmGameObject Roof                     null
+FsmGameObject Charge Audio             null
+FsmGameObject Thread                   Super Jump Thread
+FsmGameObject Spawned Audio Player     null
+FsmGameObject Extra Throw Effect       Super Jump Extra Throw Effect
+FsmGameObject Extra Ground Effect      Super Jump Extra Ground Effect
+FsmGameObject Nail Art Ready           Nail Art Ready
+FsmGameObject Throw Needle Damager     Damager
+FsmGameObject Thread Loop              Super Jump Thread Loop
+FsmObject     Clip                     null
+```

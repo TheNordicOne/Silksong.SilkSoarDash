@@ -1,6 +1,5 @@
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm;
-using SilkSoarDash.CustomFsm.Actions;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -8,6 +7,9 @@ namespace SilkSoarDash
 {
     public static class SilkSoarDashFsm
     {
+        private const string HostObjectName = "SSD_Fsm";
+        private const string FsmName = "SilkSoarDash";
+
         private static PlayMakerFSM _host;
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -18,43 +20,23 @@ namespace SilkSoarDash
                 return;
             }
 
-            var go = new GameObject("SSD_Fsm");
-            Object.DontDestroyOnLoad(go);
-            _host = go.AddComponent<PlayMakerFSM>();
+            _host = CreateHost();
 
-            var fsm = new Fsm
+            var fsm = new Fsm { Name = FsmName };
+
+            fsm.States = new[]
             {
-                Name = "SilkSoarDash"
+                SsdStateFactory.Inactive(fsm),
+                SsdStateFactory.Charge(fsm),
+                SsdStateFactory.Charged(fsm),
+                SsdStateFactory.Cancelled(fsm),
+                SsdStateFactory.GetDistance(fsm)
             };
-
-
-            var inactive = FsmBuilder.State(fsm, SsdStates.Inactive, new[] { FsmBuilder.Transition(SsdEvents.Start, SsdStates.Charge) });
-
-
-            var charge = FsmBuilder.State(fsm, SsdStates.Charge, new FsmStateAction[] { new SsdCharge() },
-                new[]
-                {
-                    FsmBuilder.Transition(SsdEvents.Charged, SsdStates.Charged),
-                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.Cancelled)
-                });
-
-            var chargedState = FsmBuilder.State(fsm, SsdStates.Charged, new FsmStateAction[] { new SsdCharged() },
-                new[]
-                {
-                    FsmBuilder.Transition(SsdEvents.GetDistance, SsdStates.GetDistance)
-                });
-
-            var cancelledState = FsmBuilder.State(fsm, SsdStates.Cancelled, new[] { FsmBuilder.TransitionToInactive() });
-
-            var gettingDistance = FsmBuilder.State(fsm, SsdStates.GetDistance, new FsmStateAction[] { new SsdGetDistance() }, new[] { FsmBuilder.TransitionToInactive() });
-
-            fsm.States = new[] { inactive, charge, chargedState, cancelledState, gettingDistance };
+            
             fsm.StartState = SsdStates.Inactive;
 
             _host.Fsm = fsm;
             fsm.Init(_host);
-
-
             fsm.Start();
         }
 
@@ -66,6 +48,13 @@ namespace SilkSoarDash
             }
 
             _host.Fsm.Event(SsdEvents.Start);
+        }
+
+        private static PlayMakerFSM CreateHost()
+        {
+            var go = new GameObject(HostObjectName);
+            Object.DontDestroyOnLoad(go);
+            return go.AddComponent<PlayMakerFSM>();
         }
     }
 }

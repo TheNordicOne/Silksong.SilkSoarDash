@@ -94,6 +94,7 @@
         <Compile Include="SilkSoarDashFSM.cs" />
         <Compile Include="CustomFsm\Actions\SsdCharge.cs" />
         <Compile Include="CustomFsm\FsmBuilder.cs" />
+        <Compile Include="CustomFsm\SsdStateFactory.cs" />
         <Compile Include="CustomFsm\SsdEvents.cs" />
         <Compile Include="CustomFsm\SsdStates.cs" />
     </ItemGroup>

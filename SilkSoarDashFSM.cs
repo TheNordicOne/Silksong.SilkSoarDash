@@ -1,5 +1,6 @@
 using HutongGames.PlayMaker;
-using SilkSoarDash.States;
+using SilkSoarDash.CustomFsm;
+using SilkSoarDash.CustomFsm.Actions;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

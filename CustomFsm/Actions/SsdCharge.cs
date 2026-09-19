@@ -1,7 +1,7 @@
 using HutongGames.PlayMaker;
 using UnityEngine;
 
-namespace SilkSoarDash.States
+namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdCharge : FsmStateAction
     {

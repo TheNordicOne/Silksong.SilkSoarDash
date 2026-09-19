@@ -2,7 +2,7 @@ using System;
 using HutongGames.PlayMaker;
 using JetBrains.Annotations;
 
-namespace SilkSoarDash.States
+namespace SilkSoarDash.CustomFsm
 {
 
     public static class FsmBuilder

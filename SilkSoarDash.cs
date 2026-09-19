@@ -1,5 +1,6 @@
 using BepInEx;
 using HarmonyLib;
+using UnityEngine;
 
 namespace SilkSoarDash
 {
@@ -8,6 +9,7 @@ namespace SilkSoarDash
     {
         private static readonly BepInEx.Logging.ManualLogSource SsdLog = BepInEx.Logging.Logger.CreateLogSource("SilkSoarDash");
         private static HeroActions InputActions => GameManager.instance?.inputHandler?.inputActions;
+        private static HeroController Hero => HeroController.instance;
 
         private void Awake()
         {
@@ -38,7 +40,13 @@ namespace SilkSoarDash
                 return;
             }
 
-            SsdLog.LogInfo("Dashing!");
+            if (Hero.controlReqlinquished)
+            {
+                SsdLog.LogInfo("Dashing!");
+                EventRegister.SendEvent(EventRegisterEvents.FsmCancel);
+                Hero.RegainControl();
+                Hero.StartAnimationControlToIdle();
+            }
         }
 
         private static bool PressedSilkSoarDash()

@@ -11,27 +11,23 @@ namespace SilkSoarDash.CustomFsm.Actions
         private float _startX;
         private float _elapsed;
 
+        private static HeroController Hero => HeroController.instance;
+
 
         public override void OnEnter()
         {
-            var hero = HeroController.instance;
-
-            if (hero == null)
+            if (Hero == null)
             {
                 Fsm.Event(SsdEvents.Cancelled);
                 Finish();
                 return;
             }
-            
-            var threadEffect = hero.transform.Find("Effects/Super Jump Thread");
-            if (threadEffect != null && Fsm.GetFsmFloat(SsdVars.Distance).Value > SsdVars.ShortThrowThreshold)
-            {
-                threadEffect.gameObject.SetActive(true);
-            }
-   
-            PreThrowEffects(hero);
 
-            var needleThrown = TryThrowNeedle(hero);
+            SetThreadEffect();
+
+            PreThrowEffects();
+
+            var needleThrown = TryThrowNeedle();
             if (needleThrown)
             {
                 return;
@@ -52,16 +48,25 @@ namespace SilkSoarDash.CustomFsm.Actions
                 Finish();
             }
         }
-        
 
-        private static void PreThrowEffects(HeroController hero)
+
+        private void SetThreadEffect()
         {
-            var chargedEffect = hero.transform.Find("Effects/Super Jump Charged");
+            var threadEffect = Hero.transform.Find("Effects/Super Jump Thread");
+            if (threadEffect != null && Fsm.GetFsmFloat(SsdVars.Distance).Value > SsdVars.ShortThrowThreshold)
+            {
+                threadEffect.gameObject.SetActive(true);
+            }
+        }
+
+        private static void PreThrowEffects()
+        {
+            var chargedEffect = Hero.transform.Find("Effects/Super Jump Charged");
             if (chargedEffect != null)
             {
                 chargedEffect.gameObject.SetActive(false);
             }
-            
+
             // Presentation - Skipping all animations and sounds
             // - Plays Super Jump Throw Wait animation
             // - Voice clip from Attack Heavy Hornet Voice table
@@ -69,11 +74,11 @@ namespace SilkSoarDash.CustomFsm.Actions
             // - Vibration hornet_need_throw_superjump
         }
 
-        private bool TryThrowNeedle(HeroController hero)
+        private bool TryThrowNeedle()
         {
             _dir = Fsm.GetFsmFloat(SsdVars.Direction).Value;
 
-            _needle = hero.transform.Find("Special Attacks/Super Jump Needle Throw");
+            _needle = Hero.transform.Find("Special Attacks/Super Jump Needle Throw");
 
             if (_needle == null)
             {
@@ -85,7 +90,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             _needle.gameObject.SetActive(true);
             _needle.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(150f * _dir, 0f);
             _startX = _needle.position.x;
-            
+
             _elapsed = 0f;
             return true;
         }
@@ -93,23 +98,21 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         private void SetDamager()
         {
-            var hero = HeroController.instance;
-            var needleDistanceFromHornet = Mathf.Abs(_needle.position.x - hero.transform.position.x);
-            
+            var needleDistanceFromHornet = Mathf.Abs(_needle.position.x - Hero.transform.position.x);
+
             if (_damager != null)
             {
                 _damager.gameObject.SetActive(needleDistanceFromHornet <= 30f);
             }
         }
-        
+
         private bool ShouldFinish()
         {
-            
             var travelled = (_needle.position.x - _startX) * _dir;
             var needleLanded = travelled >= Fsm.GetFsmFloat(SsdVars.Distance).Value;
             var backToBeginning = travelled < -0.1f;
             var timeout = _elapsed > 0.8f;
-            
+
             return timeout || needleLanded || backToBeginning;
         }
     }

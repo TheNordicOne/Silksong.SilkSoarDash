@@ -10,5 +10,6 @@ namespace SilkSoarDash.CustomFsm
         public const string GetDistance = "GetDistance";
         public const string ResetEffects = "ResetEffects";
         public const string ThrowNeedle = "ThrowNeedle";
+        public const string HitSpikes = "HitSpikes";
     }
 }

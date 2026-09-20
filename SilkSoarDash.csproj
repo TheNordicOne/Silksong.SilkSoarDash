@@ -92,6 +92,7 @@
     <ItemGroup>
         <Compile Include="CustomFsm\Actions\SsdCharged.cs" />
         <Compile Include="CustomFsm\Actions\SsdGetDistance.cs" />
+        <Compile Include="CustomFsm\Actions\SsdHitSpikes.cs" />
         <Compile Include="CustomFsm\Actions\SsdThrowNeedle.cs" />
         <Compile Include="SilkSoarDash.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>

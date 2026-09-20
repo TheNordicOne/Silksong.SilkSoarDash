@@ -8,5 +8,6 @@ namespace SilkSoarDash.CustomFsm
         public const string Cancelled = "CANCELLED";
         public const string GetDistance = "GET_DISTANCE";
         public const string ThrowNeedle = "THROW_NEEDLE";
+        public const string DamagerHitSpikes = "DAMAGER HIT SPIKES";
     }
 }

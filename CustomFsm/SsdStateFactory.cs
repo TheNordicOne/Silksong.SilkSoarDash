@@ -80,8 +80,19 @@ namespace SilkSoarDash.CustomFsm
                 new FsmStateAction[] { new SsdThrowNeedle() },
                 new[]
                 {
+                    FsmBuilder.Transition(SsdEvents.DamagerHitSpikes, SsdStates.HitSpikes),
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
-                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ResetEffects)
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ResetEffects),
+                });
+        }
+        
+        public static FsmState HitSpikes(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.HitSpikes,
+                new FsmStateAction[] { new SsdHitSpikes() },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
                 });
         }
     }

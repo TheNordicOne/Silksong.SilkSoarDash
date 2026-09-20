@@ -99,6 +99,463 @@ Active from any state.
 | `LEAVING SCENE`          | `Leaving Scene`       |
 | `PRE ENTER SUPERJUMPING` | `Pre Entered Jumping` |
 
+## Runtime capture
+
+Values observed during real Silk Soars (short, long, and cancelled), captured by a
+logging action injected into every state of the live `superJumpFSM`.
+
+### Default throw distance = 9
+
+`Move To` is a child of `Super Jump Needle Throw` at local `(0, 9, 0)`. Constant across
+all runs. `Get Distance` subtracts the needle's world Y from the marker's world Y, which
+always yields 9, then both raycasts overwrite it when they hit something.
+
+One captured `Get Distance`:
+
+```
+Current Throw Needle Y = 33.83658          needle world Y
+Throw Needle Target Y  = 42.83658          marker world Y
+                                           difference = 9      (the default)
+Throw Needle Distance  = 129.7609          what the raycast wrote instead
+Ray Hit Point          = (21.60, 158.33)
+Did Find Roof          = True
+Throw Needle Move By   = (0, 129.76, 0)
+
+[Throw Needle]          world=(21.15, 33.84, 0)  local=(-0.45, 5.27, 0)
+[Throw Needle/Move To]  world=(21.15, 42.84, 0)  local=(0, 9, 0)  deltaWorld=(0, 9, 0)
+```
+
+### Observed distances
+
+```
+Throw Needle Distance    -11.7  |  0  |  3.945116  |  129.7609
+Throw Needle Move By     (0, -11.70, 0) | (0, 0, 0) | (0, 3.95, 0) | (0, 129.76, 0)
+```
+
+`Throw Needle Distance` is shared by two different phases.
+
+`Get Distance` writes it for the throw. Observed positive: 3.945116, 129.7609.
+
+`Fall Needle Cancel` writes it again for the needle's return trip to Hornet, which is
+where -11.7 comes from. It then lingers unchanged through `Air Cancel`,
+`Cancel Rumbling Focus`, `Regain Control To Idle`, `Reset Effects` and `Inactive`, and
+into the next soar's `Start Delay`, `Enough Silk?` and `Ground Charge`, until
+`Get Distance` overwrites it.
+
+So a negative value in those states is stale data from the previous cancel, not a
+downward throw. The thrown needle always travels up.
+
+### Observed state sequences
+
+Captured from real soars. These are what the FSM actually walked, which is not always
+what the static transition table implies.
+
+**Cross-room soar, two room transitions in one soar, ending in a hit:**
+
+```
+Get Distance
+Throw Needle
+Throw Wait
+Jump Antic
+Dashing
+Cancelable
+Leaving Scene            <- room 1 exit
+Reset Effects
+Inactive
+Reset Effects
+Inactive
+Pre Entered Jumping
+Entered Jumping
+Begin Jumping
+Hit Transition Gate 2    <- gate ahead, see branch table below
+Dash Start Quick
+Dashing
+Cancelable
+Leaving Scene            <- room 2 exit, same chain repeats
+Reset Effects
+Inactive
+Reset Effects
+Inactive
+Pre Entered Jumping
+Entered Jumping
+Begin Jumping
+Hit Transition Gate 2
+Dash Start Quick
+Dashing
+Cancelable
+Reset Effects            <- hero damaged
+Inactive
+```
+
+**Cross-room soar, two transitions, finished on the ceiling:**
+
+```
+Throw Needle Start
+Get Distance
+Throw Needle
+Throw Wait
+Jump Antic
+Dashing
+Cancelable
+Leaving Scene                 <- room 1 exit
+Reset Effects
+Inactive
+Reset Effects
+Inactive
+Pre Entered Jumping
+Entered Jumping
+Begin Jumping
+Hit Transition Gate 2         <- another gate ahead, soar continues
+Dash Start Quick
+Dashing
+Cancelable
+Leaving Scene                 <- room 2 exit
+Reset Effects
+Inactive
+Reset Effects
+Inactive
+Pre Entered Jumping
+Entered Jumping
+Begin Jumping
+Position Stick Needle Pre 2   <- real terrain, final room
+Dash Start Quick
+Dashing
+Cancelable
+Hit Roof Hard
+Hit Roof
+Regain Control To Idle
+Reset Effects
+Inactive
+```
+
+`Begin Jumping` always goes to `Position Stick Needle Pre 2`. The branch is inside that
+state, not in `Begin Jumping`:
+
+| `Position Stick Needle Pre 2` | Goes to | Meaning |
+|---|---|---|
+| exits early, TRANSITION GATE | `Hit Transition Gate 2` | soar continues into the next room |
+| runs to completion | `Dash Start Quick` | needle sticks, this is the last room |
+
+Both occurred in the same soar. The earlier reading, that `Begin Jumping` itself branched,
+was an artifact of a tail-only spy missing the early-exiting `Position Stick Needle Pre 2`.
+
+**A normal soar:**
+
+```
+Enough Silk?
+Relinquish Control
+Start Delay
+Ground Charge
+Ground Charged
+Throw Needle Start
+Get Distance
+Throw Needle
+Position Stick Needle Pre
+Position Stick Needle
+Throw Wait
+Jump Antic
+Dashing
+Cancelable
+Hit Roof Hard
+Hit Roof
+Regain Control To Idle
+Reset Effects
+Inactive
+```
+
+**A cancelled charge:**
+
+```
+Enough Silk?
+Relinquish Control
+Start Delay
+Ground Charge
+Charge Cancel Ground
+Regain Control To Idle
+Reset Effects
+Inactive
+```
+
+### States exiting early
+
+PlayMaker stops calling `OnEnter` on the remaining actions in a state as soon as one of
+them fires an event. Anything later in the array never runs.
+
+This was first seen as states appearing to be skipped. They were not. A logging action
+appended to the end of a state's array is invisible whenever that state exits early.
+
+Capturing it properly needs two logging actions per state, one at index 0 and one at the
+end. The first always runs. The second runs only when the state reaches the end of its
+array, so its absence is the signal that an early exit happened.
+
+**Short soar, distance 7.48:**
+
+```
+HEAD Enough Silk?          TAIL Enough Silk?
+HEAD Relinquish Control    TAIL Relinquish Control
+HEAD Start Delay           TAIL Start Delay
+HEAD Ground Charge         TAIL Ground Charge
+HEAD Ground Charged        TAIL Ground Charged
+HEAD Throw Needle Start    TAIL Throw Needle Start
+HEAD Get Distance          (no TAIL)     <- exited early
+HEAD Throw Needle          TAIL Throw Needle
+HEAD Position Stick Needle Pre / Position Stick Needle   both TAIL
+HEAD Throw Wait            (no TAIL)     <- exited early
+HEAD Jump Antic            TAIL Jump Antic
+HEAD Dash Start            (no TAIL)     <- exited early
+HEAD Dashing               TAIL Dashing
+HEAD Cancelable            TAIL Cancelable
+HEAD Hit Roof Hard / Hit Roof / Regain Control To Idle / Reset Effects / Inactive
+```
+
+### FloatCompare in Get Distance
+
+`Get Distance` action order:
+
+```
+1 GetPosition
+2 GetPosition
+3 FloatOperator
+4 RayCast2dV2
+5 SuperJumpRaycast
+6 SetVector3XYZ
+7 FloatCompare        equal and lessThan both fire FINISHED, float2 = 12
+8 ActivateGameObject  Super Jump Thread
+```
+
+When the throw distance is 12 or less, action 7 fires `FINISHED` and action 8 never runs.
+So a short throw does not activate `Super Jump Thread`.
+
+| Distance | FloatCompare | Action 8 runs | TAIL on Get Distance |
+|---|---|---|---|
+| 7.48 | fires | no | no |
+| 22.88 | silent | yes | yes |
+| 49.82 | silent | yes | yes |
+| 114.45 | silent | yes | yes |
+
+### Cancel paths
+
+Both captured with head and tail spies. Every state logged both, so no early exits occur
+anywhere in either chain.
+
+**Cancelled during charge, before it completed:**
+
+```
+HEAD/TAIL  Enough Silk?
+HEAD/TAIL  Relinquish Control
+HEAD/TAIL  Start Delay
+HEAD/TAIL  Ground Charge            <- completes, the cancel comes from OnUpdate
+HEAD/TAIL  Charge Cancel Ground
+HEAD/TAIL  Regain Control To Idle
+HEAD/TAIL  Reset Effects
+HEAD/TAIL  Inactive
+```
+
+`Ground Charge` logs a TAIL even though it was cancelled. Its `ListenForSuperdash` fires
+`BUTTON UP` from `OnUpdate`, not `OnEnter`, so the whole array runs first.
+
+At `Charge Cancel Ground`: `Did Add Using Silk = True`, `Current Silk = 11`.
+
+**Cancelled mid-soar by pressing jump, distance 22.88:**
+
+```
+...
+HEAD/TAIL  Dashing
+HEAD/TAIL  Cancelable
+HEAD/TAIL  Fall Needle Cancel
+HEAD/TAIL  Air Cancel
+HEAD/TAIL  Regain Control To Idle
+HEAD/TAIL  Reset Effects
+HEAD/TAIL  Inactive
+```
+
+Matches the documented `Cancelable --NORM CANCEL--> Fall Needle Cancel --FINISHED-->
+Air Cancel`. The `Cancel` and `Cancel Rumbling Focus` states are not involved in a jump
+cancel, so that path was never a contradiction.
+
+### Early exits per state, by distance
+
+`both` means HEAD and TAIL both logged, so the state ran its whole action array.
+`HEAD` means only the head spy ran, so an action fired an event and the rest were skipped.
+
+```
+state                       7.48    22.88   49.82   114.45
+Get Distance                HEAD    both    both    both
+Position Stick Needle Pre   both    HEAD    HEAD    HEAD
+Position Stick Needle       both    both    both    HEAD
+Throw Wait                  HEAD    both    both    both
+Dash Start                  HEAD    HEAD    HEAD    HEAD
+```
+
+`Get Distance` and `Throw Wait` exit early only on the shortest soar, matching the
+`FloatCompare` threshold of 12.
+
+`Dash Start` exits early on every run, so it is unconditional.
+
+`Position Stick Needle Pre` completes only on the shortest soar. Inverted relative to the
+others. Cause not identified.
+
+`Position Stick Needle` exits early only on the longest. Cause not identified.
+
+### Is Distant
+
+Despite the name, not a distance flag. Set nowhere in `Get Distance`.
+
+`Throw Needle` contains:
+
+```
+BoolFlipEveryFrame   boolVariable = Is Distant,  everyFrame = True
+ActivateGameObject   gameObject = Throw Needle Damager,  activate = Is Distant
+```
+
+It is flipped every frame and used to switch the needle's `Damager` hitbox on and off,
+so the damage box is only live on alternating frames.
+
+Observed values confirm it is unrelated to distance. Within single soars it flips between
+snapshots:
+
+```
+distance   Throw Needle HEAD   Throw Needle TAIL   Position Stick Needle TAIL
+7.48       False               True                False
+22.88      False               True                True
+49.82      True                False               True
+114.45     True                False               (no TAIL)
+```
+
+Any reading of it in `Get Distance` is leftover from the previous soar, since nothing in
+that state writes it.
+
+### Reading HEAD values
+
+A `HEAD` snapshot is taken before the state's own actions run, so its values come from
+whatever the previous state left behind. A state's own output is only visible in its
+`TAIL` snapshot, or in the next state's `HEAD`.
+
+For the 7.48 soar, `Get Distance` had no TAIL, so its output was read from
+`Throw Needle`'s HEAD instead.
+
+### Room transition, resolved
+
+Recaptured with head and tail spies. The `Cancel` chain was always being taken. All three
+of its states exit early, so a tail-only spy never saw them.
+
+```
+HEAD/TAIL  Cancelable
+HEAD/TAIL  Leaving Scene
+HEAD       Cancel                    <- exits early
+HEAD       Cancel Rumbling Focus     <- exits early
+HEAD       Cancel Rumbling Focus 2   <- exits early
+HEAD/TAIL  Reset Effects
+HEAD/TAIL  Inactive
+HEAD       Cancel                    <- the whole chain repeats
+HEAD       Cancel Rumbling Focus
+HEAD       Cancel Rumbling Focus 2
+HEAD/TAIL  Reset Effects
+HEAD/TAIL  Inactive
+HEAD/TAIL  Pre Entered Jumping
+HEAD/TAIL  Entered Jumping
+HEAD/TAIL  Begin Jumping
+HEAD       Position Stick Needle Pre 2   <- gate ahead, exits early
+HEAD/TAIL  Hit Transition Gate 2
+HEAD/TAIL  Dash Start Quick
+HEAD/TAIL  Dashing
+HEAD/TAIL  Cancelable
+```
+
+The `Cancel` chain runs twice per room transition, which is why the doubled
+`Reset Effects -> Inactive` pairs appear in earlier captures.
+
+Final room, where the raycast finds terrain instead of a gate:
+
+```
+HEAD/TAIL  Begin Jumping
+HEAD/TAIL  Position Stick Needle Pre 2   <- runs to completion
+HEAD/TAIL  Dash Start Quick
+HEAD/TAIL  Dashing
+HEAD/TAIL  Cancelable
+HEAD/TAIL  Hit Roof Hard
+HEAD/TAIL  Hit Roof
+HEAD/TAIL  Regain Control To Idle
+HEAD/TAIL  Reset Effects
+HEAD/TAIL  Inactive
+```
+
+### Hero damaged, resolved
+
+Captured by taking damage during `Ground Charge`. Same `Cancel` chain as a room
+transition, and it also runs twice.
+
+```
+HEAD/TAIL  Ground Charge
+HEAD       Cancel                    <- exits early
+HEAD/TAIL  Cancel Rumbling Focus     <- ran to completion
+HEAD       Cancel Rumbling Focus 2   <- exits early
+HEAD/TAIL  Reset Effects
+HEAD/TAIL  Inactive
+HEAD       Cancel                    <- chain repeats
+HEAD       Cancel Rumbling Focus     <- exits early this time
+HEAD       Cancel Rumbling Focus 2
+HEAD/TAIL  Reset Effects
+HEAD/TAIL  Inactive
+```
+
+`HERO DAMAGED -> Cancel` behaves as the global transition implies.
+
+`Cancel Rumbling Focus` completed on the first pass and exited early on the second. Its
+`BoolTest` on `Started Rumbling Focus` is the likely cause, the first pass having state to
+tear down and the second not. Not confirmed.
+
+### Variables that change at runtime
+
+The other 35 variables held their initial values throughout. These 30 moved:
+
+```
+Charge Audio               Audio Player Actor 2D(Clone) (UnityEngine.GameObject) | null
+Check Y                    0 | 43.56768 | 58.56768
+Clip                       hornet_superjump_pt_5_needle_impact_2d (UnityEngine.AudioClip) | hornet_superjump_pt_5_needle_impact_2d_distant (UnityEngine.AudioClip) | null
+Current Silk               14 | 15 | 16 | 17
+Current Throw Needle Y     0 | 153.8282 | 33.83658 | 33.93768 | 72.81917
+Did Add Using Silk         False | True
+Did Find Roof              False | True
+Did Start Flash            False | True
+Is Distant                 False | True
+Needle Visible             False | True
+On Ground                  False | True
+Played Throw Wait          False | True
+Ray Hit Point              (0.00, 0.00) | (2.73, 32.51) | (21.60, 158.33)
+Roof                       Plate (UnityEngine.GameObject) | Roof Collider_Basic (9) (UnityEngine.GameObject) | null
+Show Thread                False | True
+Sprite Flash ID            0 | 2 | 4 | 6
+Started Rumbling Focus     False | True
+Started Rumbling Focus 2   False | True
+Stick Needle Offset X      -0.4500008 | 0
+Stick Needle Parent        Special Attacks (UnityEngine.GameObject) | null
+Stick Needle X             0 | 2.729032 | 21.59922
+Stick Needle Y             0 | 158.3286 | 32.5128
+Throw Needle Distance      -11.7 | 0 | 129.7609 | 3.945116
+Throw Needle Move By       (0.00, -11.70, 0.00) | (0.00, 0.00, 0.00) | (0.00, 129.76, 0.00) | (0.00, 3.95, 0.00)
+Throw Needle Pos Y         0 | 153.8282 | 153.9034 | 33.83658 | 33.93768
+Throw Needle Pos Y Start   0 | 33.93768
+Throw Needle Target Y      0 | 162.8282 | 42.83658 | 42.93768 | 61.11917
+Throw Needle X             0 | 2.279031 | 21.14922
+Throw Wait Time            0 | 0.5
+Y Speed                    0 | 33
+```
+
+### Notes
+
+`Is Distant` is a per-frame toggle for the needle's damage hitbox, not a distance flag.
+See the `Is Distant` section above.
+
+`Roof` resolved to real scene colliders: `Plate`, `Roof Collider_Basic (9)`.
+
+`Clip` switches between `hornet_superjump_pt_5_needle_impact_2d` and its `_distant`
+variant. What selects it is not identified; it is not `Is Distant`.
+
+ENTER and EXIT snapshots were identical in every state. PlayMaker runs all `OnEnter`
+calls in sequence before a state can exit, so a spy action appended to the array sees
+post-computation values in both phases.
+
 ## Full state listing
 
 Every state, every action, every action field value, every transition.

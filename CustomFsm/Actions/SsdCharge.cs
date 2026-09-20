@@ -5,7 +5,6 @@ namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdCharge : FsmStateAction
     {
-        private static readonly BepInEx.Logging.ManualLogSource SsdChargeLog = BepInEx.Logging.Logger.CreateLogSource("SsdCharge");
 
         private const float ChargeTime = 0.8f;
 
@@ -19,7 +18,6 @@ namespace SilkSoarDash.CustomFsm.Actions
         public override void OnEnter()
         {
             _elapsed = 0f;
-            SsdChargeLog.LogInfo("OnEnter - charging for " + ChargeTime + "s");
         }
 
         public override void OnUpdate()
@@ -32,7 +30,6 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             if (!ia.SuperDash.IsPressed)
             {
-                SsdChargeLog.LogInfo("released early at " + _elapsed.ToString("F2") + "s -> " + SsdEvents.Cancelled);
                 Fsm.Event(SsdEvents.Cancelled);
                 return;
             }
@@ -45,11 +42,6 @@ namespace SilkSoarDash.CustomFsm.Actions
             }
             
             Finish();
-        }
-
-        public override void OnExit()
-        {
-            SsdChargeLog.LogInfo("OnExit after " + _elapsed.ToString("F2") + "s");
         }
     }
 }

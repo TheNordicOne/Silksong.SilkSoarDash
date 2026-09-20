@@ -1,8 +1,6 @@
 using HutongGames.PlayMaker;
-using SilkSoarDash.CustomFsm;
 
-
-namespace SilkSoarDash
+namespace SilkSoarDash.CustomFsm
 {
     public static class SilkSoarDashFsm
     {

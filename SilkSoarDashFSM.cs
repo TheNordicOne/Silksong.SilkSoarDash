@@ -1,17 +1,14 @@
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm;
-using UnityEngine;
-using Object = UnityEngine.Object;
+
 
 namespace SilkSoarDash
 {
     public static class SilkSoarDashFsm
     {
-        private const string HostObjectName = "SSD_Fsm";
         private const string FsmName = "SilkSoarDash";
-
         private static PlayMakerFSM _host;
-
+        
         // ReSharper disable Unity.PerformanceAnalysis
         public static void Build()
         {
@@ -20,8 +17,12 @@ namespace SilkSoarDash
                 return;
             }
 
-            _host = CreateHost();
-
+            var hero = HeroController.instance;
+            if (hero == null)
+            {
+                return;
+            }
+            
             var fsm = new Fsm
             {
                 Name = FsmName,
@@ -54,6 +55,7 @@ namespace SilkSoarDash
             
             fsm.StartState = SsdStates.Inactive;
 
+            _host = hero.gameObject.AddComponent<PlayMakerFSM>();
             _host.Fsm = fsm;
             fsm.Init(_host);
             fsm.Start();
@@ -67,13 +69,6 @@ namespace SilkSoarDash
             }
 
             _host.Fsm.Event(SsdEvents.Start);
-        }
-
-        private static PlayMakerFSM CreateHost()
-        {
-            var go = new GameObject(HostObjectName);
-            Object.DontDestroyOnLoad(go);
-            return go.AddComponent<PlayMakerFSM>();
         }
     }
 }

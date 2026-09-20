@@ -11,5 +11,6 @@ namespace SilkSoarDash.CustomFsm
         public const string MoveBy = "MoveBy";
         
         public const int DefaultThrowDistance = 9;
+        public const int ShortThrowThreshold = 12;
     }
 }

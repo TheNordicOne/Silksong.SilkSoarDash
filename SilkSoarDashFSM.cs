@@ -43,6 +43,7 @@ namespace SilkSoarDash
             fsm.States = new[]
             {
                 SsdStateFactory.Inactive(fsm),
+                SsdStateFactory.RelinquishControl(fsm),
                 SsdStateFactory.Charge(fsm),
                 SsdStateFactory.Charged(fsm),
                 SsdStateFactory.Cancelled(fsm),

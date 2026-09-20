@@ -10,7 +10,17 @@ namespace SilkSoarDash.CustomFsm
             return FsmBuilder.State(fsm, SsdStates.Inactive,
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.Start, SsdStates.Charge)
+                    FsmBuilder.Transition(SsdEvents.Start, SsdStates.RelinquishControl)
+                });
+        }
+
+        public static FsmState RelinquishControl(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.RelinquishControl,
+                new FsmStateAction[] { new SsdRelinquishControl() },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.Charge)
                 });
         }
 
@@ -38,6 +48,7 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState Cancelled(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.Cancelled,
+                new FsmStateAction[] { new SsdRegainControl() },
                 new[]
                 {
                     FsmBuilder.TransitionToInactive()

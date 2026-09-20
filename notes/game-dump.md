@@ -399,31 +399,27 @@ others. Cause not identified.
 
 ### Is Distant
 
-Despite the name, not a distance flag. Set nowhere in `Get Distance`.
+Misleading name. It is the needle's damage box switch, and it is distance based, but
+against a 30 unit radius around Hornet, not the throw distance.
 
-`Throw Needle` contains:
-
-```
-BoolFlipEveryFrame   boolVariable = Is Distant,  everyFrame = True
-ActivateGameObject   gameObject = Throw Needle Damager,  activate = Is Distant
-```
-
-It is flipped every frame and used to switch the needle's `Damager` hitbox on and off,
-so the damage box is only live on alternating frames.
-
-Observed values confirm it is unrelated to distance. Within single soars it flips between
-snapshots:
+`Throw Needle` runs these three every frame, in array order:
 
 ```
-distance   Throw Needle HEAD   Throw Needle TAIL   Position Stick Needle TAIL
-7.48       False               True                False
-22.88      False               True                True
-49.82      True                False               True
-114.45     True                False               (no TAIL)
+FloatTestToBool      Is Distant = (Throw Needle Pos Y > Check Y)
+BoolFlipEveryFrame   Is Distant = !Is Distant
+ActivateGameObject   Throw Needle Damager active = Is Distant
 ```
 
-Any reading of it in `Get Distance` is leftover from the previous soar, since nothing in
-that state writes it.
+`Check Y` is Hornet's world Y plus 30, set earlier in the same state.
+
+`FloatTestToBool` overwrites the variable each frame before `BoolFlipEveryFrame` inverts
+it, so the flip is a fixed inversion rather than a toggle over time.
+
+Net effect: the needle's `Damager` is active while the needle is within 30 units above
+Hornet, and inactive beyond that.
+
+Snapshot readings of this variable vary by where in the array they are taken, which is why
+earlier captures looked random.
 
 ### Reading HEAD values
 

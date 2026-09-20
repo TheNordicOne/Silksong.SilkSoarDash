@@ -19,7 +19,6 @@ namespace SilkSoarDash.CustomFsm.Actions
             if (Hero == null)
             {
                 Fsm.Event(SsdEvents.Cancelled);
-                Finish();
                 return;
             }
 

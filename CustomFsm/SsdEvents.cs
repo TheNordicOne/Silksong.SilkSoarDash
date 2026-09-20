@@ -4,7 +4,6 @@ namespace SilkSoarDash.CustomFsm
     {
         public const string Start = "START";
         public const string Finished = "FINISHED";
-        public const string Charged = "CHARGED";
         public const string Cancelled = "CANCELLED";
         public const string GetDistance = "GET_DISTANCE";
         public const string ThrowNeedle = "THROW_NEEDLE";

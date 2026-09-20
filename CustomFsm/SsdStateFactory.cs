@@ -30,7 +30,7 @@ namespace SilkSoarDash.CustomFsm
                 new FsmStateAction[] { new SsdCharge() },
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.Charged, SsdStates.Charged),
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.Charged),
                     FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.Cancelled)
                 });
         }
@@ -80,8 +80,8 @@ namespace SilkSoarDash.CustomFsm
                 new FsmStateAction[] { new SsdThrowNeedle() },
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.DamagerHitSpikes, SsdStates.HitSpikes),
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
+                    FsmBuilder.Transition(SsdEvents.DamagerHitSpikes, SsdStates.HitSpikes),
                     FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ResetEffects),
                 });
         }

@@ -34,7 +34,6 @@ namespace SilkSoarDash.CustomFsm.Actions
             {
                 SsdChargeLog.LogInfo("released early at " + _elapsed.ToString("F2") + "s -> " + SsdEvents.Cancelled);
                 Fsm.Event(SsdEvents.Cancelled);
-                Finish();
                 return;
             }
 
@@ -44,9 +43,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             {
                 return;
             }
-
-            SsdChargeLog.LogInfo("charged at " + _elapsed.ToString("F2") + "s -> " + SsdEvents.Charged);
-            Fsm.Event(SsdEvents.Charged);
+            
             Finish();
         }
 

@@ -8,20 +8,22 @@ namespace SilkSoarDash.CustomFsm.Actions
     {
         public override void OnEnter()
         {
-            var rc = BuildRayCaster();
+            var dir = HeroController.instance.cState.facingRight ? Vector2.right : Vector2.left;
+            var rc = BuildRayCaster(dir);
 
             rc.Init(State);
             Fsm.GetFsmFloat(SsdVars.Distance).Value = SsdVars.DefaultThrowDistance;
             rc.OnEnter();
+            
+            var dist = Fsm.GetFsmFloat(SsdVars.Distance).Value;
+            Fsm.GetFsmVector3(SsdVars.MoveBy).Value = new Vector3(dist * dir.x, 0f, 0f);
 
             Fsm.Event(SsdEvents.ThrowNeedle);
             Finish();
         }
 
-        private SuperJumpRaycast BuildRayCaster()
+        private SuperJumpRaycast BuildRayCaster(Vector2 dir)
         {
-            var dir = HeroController.instance.cState.facingRight ? Vector2.right : Vector2.left;
-
             return new SuperJumpRaycast
             {
                 Direction = new FsmVector2

@@ -57,7 +57,7 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState ThrowNeedle(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.ThrowNeedle,
-                new FsmStateAction[] {  },
+                new FsmStateAction[] { new SsdThrowNeedle() },
                 new[]
                 {
                     FsmBuilder.TransitionToInactive()

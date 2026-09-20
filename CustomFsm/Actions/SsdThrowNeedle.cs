@@ -60,13 +60,12 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         private static void PreThrowEffects()
         {
-            // Presentation - Skipping all animations and sounds
-            // - Plays Super Jump Throw Wait animation
-            // - Voice clip from Attack Heavy Hornet Voice table
-            // - Sound hornet_superjump_pt_4_throw
-            // - Vibration hornet_need_throw_superjump
-            
-            
+            // Presentation
+            // - anim       Super Jump Throw Wait
+            // - audio      Attack Heavy Hornet Voice
+            // - audio      hornet_superjump_pt_4_throw
+            // - vibration  hornet_need_throw_superjump
+
             var chargedEffect = Hero.transform.Find("Effects/Super Jump Charged");
             if (chargedEffect != null)
             {

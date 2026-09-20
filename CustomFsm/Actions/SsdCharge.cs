@@ -18,6 +18,17 @@ namespace SilkSoarDash.CustomFsm.Actions
         public override void OnEnter()
         {
             _elapsed = 0f;
+
+            // Presentation
+            // - effect  Super Jump Extra Ground Effect
+            // - anim    Super Jump Antic
+            // - audio   hornet_superjump_pt_1_into_position
+            // - audio   hornet_superjump_pt_2_charge_2d
+            // - effect  Super Jump Antic Effect L
+            // - effect  Super Jump Antic Effect R
+            // - anim    Super Jump Antic Effect
+            // - event   FocusRumble
+            // - effect  Super Jump Charging Fader
         }
 
         public override void OnUpdate()

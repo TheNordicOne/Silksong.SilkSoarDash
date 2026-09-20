@@ -8,6 +8,11 @@ namespace SilkSoarDash.CustomFsm.Actions
         public override void OnEnter()
         {
             Fsm.GetFsmBool(SsdVars.DidHit).Value = false;
+
+            // Presentation
+            // - shake  Small Shake
+            // - audio  tink_effect
+
             Finish();
         }
     }

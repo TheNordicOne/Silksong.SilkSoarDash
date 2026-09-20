@@ -6,11 +6,21 @@ namespace SilkSoarDash.CustomFsm.Actions
     {
         public override void OnEnter()
         {
+            // Presentation
+            // - effect  Hornet_Super_Jump_Ready_Burst
+            // - audio   hornet_superjump_pt_3_charge_ready
+            // - audio   Nail Art Ready
+            // - audio   hornet_dramatic_stance_crazy_cloak_loop
+
             var chargedEffect = HeroController.instance.transform.Find("Effects/Super Jump Charged");
             if (chargedEffect != null)
             {
                 chargedEffect.gameObject.SetActive(true);
             }
+
+            // Presentation
+            // - flash  FlashingSuperDash
+            // - event  AverageShake
         }
 
         public override void OnUpdate()

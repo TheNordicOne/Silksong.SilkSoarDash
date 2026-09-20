@@ -48,7 +48,16 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState Cancelled(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.Cancelled,
-                new FsmStateAction[] { new SsdRegainControl() },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects)
+                });
+        }
+
+        public static FsmState ResetEffects(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.ResetEffects,
+                new FsmStateAction[] { new SsdResetEffects() },
                 new[]
                 {
                     FsmBuilder.TransitionToInactive()
@@ -71,7 +80,8 @@ namespace SilkSoarDash.CustomFsm
                 new FsmStateAction[] { new SsdThrowNeedle() },
                 new[]
                 {
-                    FsmBuilder.TransitionToInactive()
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ResetEffects)
                 });
         }
     }

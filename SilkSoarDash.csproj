@@ -97,7 +97,7 @@
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="SilkSoarDashFSM.cs" />
         <Compile Include="CustomFsm\Actions\SsdRelinquishControl.cs" />
-        <Compile Include="CustomFsm\Actions\SsdRegainControl.cs" />
+        <Compile Include="CustomFsm\Actions\SsdResetEffects.cs" />
         <Compile Include="CustomFsm\Actions\SsdCharge.cs" />
         <Compile Include="CustomFsm\FsmBuilder.cs" />
         <Compile Include="CustomFsm\SsdStateFactory.cs" />

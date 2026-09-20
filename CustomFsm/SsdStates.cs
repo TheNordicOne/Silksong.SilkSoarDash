@@ -8,6 +8,7 @@ namespace SilkSoarDash.CustomFsm
         public const string Charged = "Charged";
         public const string Cancelled = "Cancelled";
         public const string GetDistance = "GetDistance";
+        public const string ResetEffects = "ResetEffects";
         public const string ThrowNeedle = "ThrowNeedle";
     }
 }

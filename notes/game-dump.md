@@ -392,10 +392,15 @@ Dash Start                  HEAD    HEAD    HEAD    HEAD
 
 `Dash Start` exits early on every run, so it is unconditional.
 
-`Position Stick Needle Pre` completes only on the shortest soar. Inverted relative to the
-others. Cause not identified.
+`Position Stick Needle Pre` completes only on the shortest soar. The second to last action
+is `CheckOutOfCamera` on `Stick Needle` with `outsideEvent = FINISHED`. When the stick point
+is off screen the state leaves there and the last action, `SpawnObjectFromGlobalPool` of
+`Nail Terrain Hit Effect`, never runs. On the shortest soar the point is on camera, no event
+fires, and the state runs to the end.
 
-`Position Stick Needle` exits early only on the longest. Cause not identified.
+`Position Stick Needle` exits early only on the longest. The second to last action is
+`BoolTest` on `Played Throw Wait` with `isTrue = FINISHED`. When that bool is already true
+the state leaves there and the last action, `Tk2dWatchAnimationEvents`, never runs.
 
 ### Is Distant
 

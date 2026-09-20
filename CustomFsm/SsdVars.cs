@@ -8,5 +8,7 @@ namespace SilkSoarDash.CustomFsm
         public const string DidHit = "DidHit";
         public const string IsGate = "IsGate";
         public const string HitSpikes = "HitSpikes";
+        
+        public const int DefaultThrowDistance = 9;
     }
 }

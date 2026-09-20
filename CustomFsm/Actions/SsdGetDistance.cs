@@ -11,6 +11,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             var rc = BuildRayCaster();
 
             rc.Init(State);
+            Fsm.GetFsmFloat(SsdVars.Distance).Value = SsdVars.DefaultThrowDistance;
             rc.OnEnter();
 
             Fsm.Event(SsdEvents.ThrowNeedle);

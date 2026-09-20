@@ -1,20 +1,116 @@
 using HutongGames.PlayMaker;
+using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdThrowNeedle : FsmStateAction
     {
+        private Transform _needle;
+        private Transform _damager;
+        private float _dir;
+        private float _startX;
+        private float _elapsed;
+
+
         public override void OnEnter()
         {
-            var thread = HeroController.instance.transform.Find("Effects/Super Jump Thread");
+            var hero = HeroController.instance;
 
-            if (thread != null && Fsm.GetFsmFloat(SsdVars.Distance).Value > SsdVars.ShortThrowThreshold)
+            if (hero == null)
             {
-                thread.gameObject.SetActive(true);
+                Fsm.Event(SsdEvents.Cancelled);
+                Finish();
+                return;
             }
             
+            var threadEffect = hero.transform.Find("Effects/Super Jump Thread");
+            if (threadEffect != null && Fsm.GetFsmFloat(SsdVars.Distance).Value > SsdVars.ShortThrowThreshold)
+            {
+                threadEffect.gameObject.SetActive(true);
+            }
+   
+            PreThrowEffects(hero);
+
+            var needleThrown = TryThrowNeedle(hero);
+            if (needleThrown)
+            {
+                return;
+            }
+
             Fsm.Event(SsdEvents.Cancelled);
             Finish();
+        }
+
+        public override void OnUpdate()
+        {
+            _elapsed += Time.deltaTime;
+
+            SetDamager();
+            
+            if (ShouldFinish())
+            {
+                Finish();
+            }
+        }
+        
+
+        private static void PreThrowEffects(HeroController hero)
+        {
+            var chargedEffect = hero.transform.Find("Effects/Super Jump Charged");
+            if (chargedEffect != null)
+            {
+                chargedEffect.gameObject.SetActive(false);
+            }
+            
+            // Presentation - Skipping all animations and sounds
+            // - Plays Super Jump Throw Wait animation
+            // - Voice clip from Attack Heavy Hornet Voice table
+            // - Sound hornet_superjump_pt_4_throw
+            // - Vibration hornet_need_throw_superjump
+        }
+
+        private bool TryThrowNeedle(HeroController hero)
+        {
+            _dir = Fsm.GetFsmFloat(SsdVars.Direction).Value;
+
+            _needle = hero.transform.Find("Special Attacks/Super Jump Needle Throw");
+
+            if (_needle == null)
+            {
+                return false;
+            }
+
+            _damager = _needle.Find("Damager");
+            _needle.localPosition = new Vector3(0f, SsdVars.NeedleStartHeight, 0f);
+            _needle.gameObject.SetActive(true);
+            _needle.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(150f * _dir, 0f);
+            _startX = _needle.position.x;
+            
+            _elapsed = 0f;
+            return true;
+        }
+
+
+        private void SetDamager()
+        {
+            var hero = HeroController.instance;
+            var needleDistanceFromHornet = Mathf.Abs(_needle.position.x - hero.transform.position.x);
+            
+            if (_damager != null)
+            {
+                _damager.gameObject.SetActive(needleDistanceFromHornet <= 30f);
+            }
+        }
+        
+        private bool ShouldFinish()
+        {
+            
+            var travelled = (_needle.position.x - _startX) * _dir;
+            var needleLanded = travelled >= Fsm.GetFsmFloat(SsdVars.Distance).Value;
+            var backToBeginning = travelled < -0.1f;
+            var timeout = _elapsed > 0.8f;
+            
+            return timeout || needleLanded || backToBeginning;
         }
     }
 }

@@ -27,7 +27,7 @@ namespace SilkSoarDash
                 Name = FsmName,
                 Variables =
                 {
-                    FloatVariables = new[] { new FsmFloat(SsdVars.Distance) },
+                    FloatVariables = new[] { new FsmFloat(SsdVars.Distance), new FsmFloat(SsdVars.Direction) },
                     Vector2Variables = new[] { new FsmVector2(SsdVars.HitPoint) },
                     Vector3Variables = new[] { new FsmVector3(SsdVars.MoveBy) },
                     GameObjectVariables = new[] { new FsmGameObject(SsdVars.HitObject) },

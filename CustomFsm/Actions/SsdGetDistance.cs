@@ -9,6 +9,8 @@ namespace SilkSoarDash.CustomFsm.Actions
         public override void OnEnter()
         {
             var dir = HeroController.instance.cState.facingRight ? Vector2.right : Vector2.left;
+            Fsm.GetFsmFloat(SsdVars.Direction).Value = dir.x;
+
             var rc = BuildRayCaster(dir);
 
             rc.Init(State);

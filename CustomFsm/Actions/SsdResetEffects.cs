@@ -28,6 +28,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             hero.RegainControl();
             hero.StartAnimationControlToIdle();
 
+            ReattachStickNeedle();
+
             foreach (var path in EffectPaths)
             {
                 var effect = hero.transform.Find(path);
@@ -38,6 +40,19 @@ namespace SilkSoarDash.CustomFsm.Actions
             }
 
             Finish();
+        }
+
+        private void ReattachStickNeedle()
+        {
+            var needleStick = Fsm.GetFsmGameObject(SsdVars.StickNeedle).Value;
+            var parent = Fsm.GetFsmGameObject(SsdVars.StickNeedleParent).Value;
+
+            if (needleStick == null || parent == null)
+            {
+                return;
+            }
+
+            needleStick.transform.SetParent(parent.transform, true);
         }
     }
 }

@@ -10,6 +10,8 @@ namespace SilkSoarDash.CustomFsm
         public const string HitSpikes = "HitSpikes";
         public const string MoveBy = "MoveBy";
         public const string Direction = "Direction";
+        public const string StickNeedle = "StickNeedle";
+        public const string StickNeedleParent = "StickNeedleParent";
         
         public const int DefaultThrowDistance = 9;
         

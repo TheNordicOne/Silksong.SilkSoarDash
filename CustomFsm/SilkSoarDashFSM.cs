@@ -29,7 +29,12 @@ namespace SilkSoarDash.CustomFsm
                     FloatVariables = new[] { new FsmFloat(SsdVars.Distance), new FsmFloat(SsdVars.Direction) },
                     Vector2Variables = new[] { new FsmVector2(SsdVars.HitPoint) },
                     Vector3Variables = new[] { new FsmVector3(SsdVars.MoveBy) },
-                    GameObjectVariables = new[] { new FsmGameObject(SsdVars.HitObject) },
+                    GameObjectVariables = new[]
+                    {
+                        new FsmGameObject(SsdVars.HitObject),
+                        new FsmGameObject(SsdVars.StickNeedle),
+                        new FsmGameObject(SsdVars.StickNeedleParent)
+                    },
                     BoolVariables = new[]
                     {
                         new FsmBool(SsdVars.DidHit),

@@ -22,7 +22,22 @@ namespace SilkSoarDash
 
             _host = CreateHost();
 
-            var fsm = new Fsm { Name = FsmName };
+            var fsm = new Fsm
+            {
+                Name = FsmName,
+                Variables =
+                {
+                    FloatVariables = new[] { new FsmFloat(SsdVars.Distance) },
+                    Vector2Variables = new[] { new FsmVector2(SsdVars.HitPoint) },
+                    GameObjectVariables = new[] { new FsmGameObject(SsdVars.HitObject) },
+                    BoolVariables = new[]
+                    {
+                        new FsmBool(SsdVars.DidHit),
+                        new FsmBool(SsdVars.IsGate),
+                        new FsmBool(SsdVars.HitSpikes)
+                    }
+                }
+            };
 
             fsm.States = new[]
             {

@@ -51,7 +51,8 @@ namespace SilkSoarDash
                 SsdStateFactory.GetDistance(fsm),
                 SsdStateFactory.ThrowNeedle(fsm),
                 SsdStateFactory.ResetEffects(fsm),
-                SsdStateFactory.HitSpikes(fsm)
+                SsdStateFactory.HitSpikes(fsm),
+                SsdStateFactory.PositionStickNeedlePre(fsm)
             };
             
             fsm.StartState = SsdStates.Inactive;

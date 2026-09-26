@@ -101,8 +101,10 @@
         <Compile Include="CustomFsm\Actions\SsdHitSpikes.cs" />
         <Compile Include="CustomFsm\Actions\SsdHitTransitionGate.cs" />
         <Compile Include="CustomFsm\Actions\SsdHitWallCheck.cs" />
+        <Compile Include="CustomFsm\Actions\SsdHitWallHard.cs" />
         <Compile Include="CustomFsm\Actions\SsdPositionStickNeedle.cs" />
         <Compile Include="CustomFsm\Actions\SsdPositionStickNeedlePre.cs" />
+        <Compile Include="CustomFsm\Actions\SsdRetractNeedleCancel.cs" />
         <Compile Include="CustomFsm\Actions\SsdThreadLoop.cs" />
         <Compile Include="CustomFsm\Actions\SsdThrowNeedle.cs" />
         <Compile Include="CustomFsm\Actions\SsdThrowWait.cs" />

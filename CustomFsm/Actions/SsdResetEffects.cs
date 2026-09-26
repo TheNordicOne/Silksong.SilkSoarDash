@@ -13,7 +13,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             SsdObjects.ChargingFader,
             SsdObjects.Thread,
             SsdObjects.ThrowNeedle,
-            SsdObjects.ThrowNeedleFall,
+            SsdObjects.RetractNeedle,
             SsdObjects.StickNeedle
         };
 

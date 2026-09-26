@@ -19,5 +19,7 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string DashStart = "DashStart";
         public const string Dashing = "Dashing";
         public const string Cancelable = "Cancelable";
+        public const string HitWallHard = "HitWallHard";
+        public const string RetractNeedleCancel = "RetractNeedleCancel";
     }
 }

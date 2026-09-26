@@ -15,7 +15,7 @@ namespace SilkSoarDash.Extensions
         }
         public static bool HasStopped(this HeroController hero, float direction)
         {
-            return hero.GetForwardSpeed(direction) <= 0.1f;
+            return hero.GetForwardSpeed(direction) <= SsdVars.StoppedSpeed;
         }
 
         private static float GetForwardSpeed(this HeroController hero, float direction)

@@ -84,7 +84,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             _damager = _needle.Find(SsdObjects.NeedleDamagerChild);
             _needle.localPosition = new Vector3(0f, SsdVars.NeedleStartHeight, 0f);
             _needle.gameObject.SetActive(true);
-            _needle.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(150f * _dir, 0f);
+            _needle.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(SsdVars.NeedleThrowSpeed * _dir, 0f);
             _startX = _needle.position.x;
 
             return true;
@@ -97,7 +97,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             if (_damager != null)
             {
-                _damager.gameObject.SetActive(needleDistanceFromHornet <= 30f);
+                _damager.gameObject.SetActive(needleDistanceFromHornet <= SsdVars.NeedleDamagerRange);
             }
         }
 
@@ -105,7 +105,7 @@ namespace SilkSoarDash.CustomFsm.Actions
         {
             var travelled = (_needle.position.x - _startX) * _dir;
             var needleLanded = travelled >= Fsm.GetFsmFloat(SsdVars.Distance).Value;
-            var backToBeginning = travelled < -0.1f;
+            var backToBeginning = travelled < SsdVars.NeedleReturnedDistance;
 
             return needleLanded || backToBeginning;
         }

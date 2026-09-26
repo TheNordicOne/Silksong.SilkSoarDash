@@ -6,7 +6,6 @@ namespace SilkSoarDash.CustomFsm.Actions
     public class SsdPositionStickNeedle : FsmStateAction
     {
         private static HeroController Hero => HeroController.instance;
-        private const float DistanceOffset = 15f;
 
         public override void OnEnter()
         {
@@ -15,7 +14,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             // 2  isDistant = StickNeedleX > HeroX + 15
             var hitPoint = Fsm.GetFsmVector2(SsdVars.HitPoint).Value;
-            var isDistant = hitPoint.x > (heroX + DistanceOffset);
+            var isDistant = hitPoint.x > (heroX + SsdVars.DistantImpactRange);
 
             // 3  clip = distant clip if isDistant, near clip otherwise
             //    - audio  hornet_superjump_pt_5_needle_impact_2d_distant

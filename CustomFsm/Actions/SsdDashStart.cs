@@ -8,7 +8,6 @@ namespace SilkSoarDash.CustomFsm.Actions
     public class SsdDashStart : FsmStateAction
     {
         private static HeroController Hero => HeroController.instance;
-        private const float CancelableTime = 0.2f; 
         
         public override void OnEnter()
         {
@@ -16,7 +15,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             Fsm.GetFsmBool(SsdVars.QueuedCancel).Value = false;
             
             // 2  Set CancelableTime
-            Fsm.GetFsmFloat(SsdVars.CancelableTime).Value = CancelableTime;
+            Fsm.GetFsmFloat(SsdVars.CancelableTime).Value = SsdVars.DefaultCancelableTime;
             
             // 3  HeroController.DoHardLandingEffectNoHit()
             Hero.DoHardLandingEffectNoHit();

@@ -34,7 +34,7 @@ namespace SilkSoarDash.CustomFsm.Actions
                     Value = dir
                 },
                 Space = Space.World,
-                Distance = new FsmFloat { Value = 350f },
+                Distance = new FsmFloat { Value = SsdVars.NeedleRayDistance },
                 FromPosition = new FsmVector2 { Value = Vector2.zero },
                 FromGameObject = new FsmOwnerDefault
                 {

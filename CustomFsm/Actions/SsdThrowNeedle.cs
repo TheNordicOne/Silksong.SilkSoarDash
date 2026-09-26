@@ -51,7 +51,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         private void SetThreadEffect()
         {
-            var threadEffect = Hero.transform.Find("Effects/Super Jump Thread");
+            var threadEffect = Hero.transform.Find(SsdObjects.Thread);
             if (threadEffect != null && Fsm.GetFsmFloat(SsdVars.Distance).Value > SsdVars.ShortThrowThreshold)
             {
                 threadEffect.gameObject.SetActive(true);
@@ -65,7 +65,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             // - audio      hornet_superjump_pt_4_throw
             // - vibration  hornet_need_throw_superjump
 
-            var chargedEffect = Hero.transform.Find("Effects/Super Jump Charged");
+            var chargedEffect = Hero.transform.Find(SsdObjects.ChargedEffect);
             if (chargedEffect != null)
             {
                 chargedEffect.gameObject.SetActive(false);
@@ -76,14 +76,14 @@ namespace SilkSoarDash.CustomFsm.Actions
         {
             _dir = Fsm.GetFsmFloat(SsdVars.Direction).Value;
 
-            _needle = Hero.transform.Find("Special Attacks/Super Jump Needle Throw");
+            _needle = Hero.transform.Find(SsdObjects.ThrowNeedle);
 
             if (_needle == null)
             {
                 return false;
             }
 
-            _damager = _needle.Find("Damager");
+            _damager = _needle.Find(SsdObjects.NeedleDamagerChild);
             _needle.localPosition = new Vector3(0f, SsdVars.NeedleStartHeight, 0f);
             _needle.gameObject.SetActive(true);
             _needle.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(150f * _dir, 0f);

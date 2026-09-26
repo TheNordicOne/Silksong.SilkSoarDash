@@ -6,14 +6,14 @@ namespace SilkSoarDash.CustomFsm.Actions
     {
         private static readonly string[] EffectPaths =
         {
-            "Effects/Super Jump Antic Effect L",
-            "Effects/Super Jump Antic Effect R",
-            "Effects/Super Jump Charged",
-            "Effects/Super Jump Charging Fader",
-            "Effects/Super Jump Thread",
-            "Special Attacks/Super Jump Needle Throw",
-            "Special Attacks/Super Jump Needle Throw Fall",
-            "Special Attacks/Super Jump Needle Stick"
+            SsdObjects.AnticEffectL,
+            SsdObjects.AnticEffectR,
+            SsdObjects.ChargedEffect,
+            SsdObjects.ChargingFader,
+            SsdObjects.Thread,
+            SsdObjects.ThrowNeedle,
+            SsdObjects.ThrowNeedleFall,
+            SsdObjects.StickNeedle
         };
 
         public override void OnEnter()

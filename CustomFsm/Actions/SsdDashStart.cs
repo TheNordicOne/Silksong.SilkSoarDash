@@ -24,16 +24,16 @@ namespace SilkSoarDash.CustomFsm.Actions
             //    - vibration  super_jump_dash_burst
             
             // 5  Special Attacks/Super Jump Damager ON
-            Hero.transform.Find("Special Attacks/Super Jump Damager").gameObject.SetActive(true);
+            Hero.transform.Find(SsdObjects.Damager).gameObject.SetActive(true);
             
             // 6  start the dash animation
             //    - anim  Super Jump Loop
             
             // 7  HeroController.SetCState("freezeCharge", false)
-            Hero.SetCState("freezeCharge", false);
+            Hero.SetCState(SsdCStates.FreezeCharge, false);
             
             // 8  HeroController.SetCState("superDashing", true)
-            Hero.SetCState("superDashing", true);
+            Hero.SetCState(SsdCStates.SuperDashing, true);
             
             // 9  shake the camera
             //    - event  SuperDashShake
@@ -49,7 +49,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             // 12 CameraTarget.SetSuperJump is vertical only. Skipped until custom implementation
             
             // 13 send SUPER JUMP LAUNCH to the register
-            EventRegister.SendEvent("SUPER JUMP LAUNCH");
+            EventRegister.SendEvent(SsdRegisterEvents.SuperJumpLaunch);
             
             Finish();
         }

@@ -113,6 +113,10 @@
         <Compile Include="CustomFsm\SsdVars.cs" />
         <Compile Include="CustomFsm\SsdEvents.cs" />
         <Compile Include="CustomFsm\SsdStates.cs" />
+        <Compile Include="CustomFsm\SsdObjects.cs" />
+        <Compile Include="CustomFsm\SsdCStates.cs" />
+        <Compile Include="CustomFsm\SsdRegisterEvents.cs" />
+        <Compile Include="CustomFsm\SsdAudio.cs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all"/>

@@ -13,12 +13,12 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnEnter()
         {
-            _needle = Hero.transform.Find("Special Attacks/Super Jump Needle Throw");
+            _needle = Hero.transform.Find(SsdObjects.ThrowNeedle);
             // 1  Special Attacks/Super Jump Needle Throw OFF
             _needle.gameObject.SetActive(false);
 
             // 2  Special Attacks/Super Jump Needle Stick ON
-            _needleStick = Hero.transform.Find("Special Attacks/Super Jump Needle Stick");
+            _needleStick = Hero.transform.Find(SsdObjects.StickNeedle);
             _needleStick.gameObject.SetActive(true);
             Fsm.GetFsmGameObject(SsdVars.StickNeedle).Value = _needleStick.gameObject;
 

@@ -20,8 +20,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             //    - audio  hornet_superjump_pt_5_needle_impact_2d_distant
             //    - audio  hornet_superjump_pt_5_needle_impact_2d
             var audioClip = isDistant 
-                ? "hornet_superjump_pt_5_needle_impact_2d_distant" 
-                : "hornet_superjump_pt_5_needle_impact_2d";
+                ? SsdAudio.NeedleImpactDistant
+                : SsdAudio.NeedleImpact;
 
             // 4  play the clip
             

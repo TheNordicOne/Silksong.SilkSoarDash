@@ -6,7 +6,7 @@ namespace SilkSoarDash.CustomFsm
     {
         private const string FsmName = "SilkSoarDash";
         private static PlayMakerFSM _host;
-        
+
         // ReSharper disable Unity.PerformanceAnalysis
         public static void Build()
         {
@@ -20,13 +20,22 @@ namespace SilkSoarDash.CustomFsm
             {
                 return;
             }
-            
+
             var fsm = new Fsm
             {
                 Name = FsmName,
                 Variables =
                 {
-                    FloatVariables = new[] { new FsmFloat(SsdVars.Distance), new FsmFloat(SsdVars.Direction) },
+                    FloatVariables = new[]
+                    {
+                        new FsmFloat(SsdVars.Distance),
+                        new FsmFloat(SsdVars.Direction),
+                        new FsmFloat(SsdVars.CancelableTime),
+                        new FsmFloat(SsdVars.JumpSpeed)
+                        {
+                            Value = SsdVars.DefaultJumpSpeed
+                        },
+                    },
                     Vector2Variables = new[] { new FsmVector2(SsdVars.HitPoint) },
                     Vector3Variables = new[] { new FsmVector3(SsdVars.MoveBy) },
                     GameObjectVariables = new[]
@@ -41,6 +50,7 @@ namespace SilkSoarDash.CustomFsm
                         new FsmBool(SsdVars.IsGate),
                         new FsmBool(SsdVars.HitSpikes),
                         new FsmBool(SsdVars.NeedleOffScreen),
+                        new FsmBool(SsdVars.QueuedCancel),
                     }
                 }
             };
@@ -64,7 +74,7 @@ namespace SilkSoarDash.CustomFsm
                 SsdStateFactory.DashStart(fsm),
                 SsdStateFactory.Dashing(fsm),
             };
-            
+
             fsm.StartState = SsdStates.Inactive;
 
             _host = hero.gameObject.AddComponent<PlayMakerFSM>();

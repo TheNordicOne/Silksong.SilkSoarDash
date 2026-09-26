@@ -147,6 +147,26 @@ namespace SilkSoarDash.CustomFsm
                 new FsmStateAction[] { new SsdDashAntic() },
                 new[]
                 {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.DashStart),
+                });
+        }
+        
+        public static FsmState DashStart(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.DashStart,
+                new FsmStateAction[] { new SsdDashStart() },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.Dashing),
+                });
+        }
+        
+        public static FsmState Dashing(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.Dashing,
+                new FsmStateAction[] { new SsdDashing() },
+                new[]
+                {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
                 });
         }

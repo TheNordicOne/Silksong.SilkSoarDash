@@ -14,5 +14,7 @@ namespace SilkSoarDash.CustomFsm
         public const string PositionStickNeedlePre = "PositionStickNeedlePre";
         public const string HitTransitionGate = "HitTransitionGate";
         public const string PositionStickNeedle = "PositionStickNeedle";
+        public const string ThrowWait = "ThrowWait";
+        public const string DashAntic = "DashAntic";
     }
 }

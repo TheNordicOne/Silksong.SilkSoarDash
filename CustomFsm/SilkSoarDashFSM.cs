@@ -58,6 +58,8 @@ namespace SilkSoarDash.CustomFsm
                 SsdStateFactory.PositionStickNeedlePre(fsm),
                 SsdStateFactory.PositionStickNeedle(fsm),
                 SsdStateFactory.HitTransitionGate(fsm),
+                SsdStateFactory.ThrowWait(fsm),
+                SsdStateFactory.DashAntic(fsm),
             };
             
             fsm.StartState = SsdStates.Inactive;

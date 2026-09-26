@@ -115,7 +115,7 @@ namespace SilkSoarDash.CustomFsm
                 new FsmStateAction[] { new SsdPositionStickNeedle() },
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ThrowWait),
                     FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ResetEffects),
                 });
         }
@@ -128,6 +128,26 @@ namespace SilkSoarDash.CustomFsm
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
                     FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ResetEffects),
+                });
+        }
+        
+        public static FsmState ThrowWait(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.ThrowWait,
+                new FsmStateAction[] { new SsdThrowWait() },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.DashAntic),
+                });
+        }
+        
+        public static FsmState DashAntic(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.DashAntic,
+                new FsmStateAction[] { new SsdDashAntic() },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
                 });
         }
     }

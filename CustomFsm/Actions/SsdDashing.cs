@@ -44,8 +44,6 @@ namespace SilkSoarDash.CustomFsm.Actions
             }
             
             ShowThreadLoop(direction);
-            
-            Finish();
         }
 
         private void ShowThreadLoop(float direction)

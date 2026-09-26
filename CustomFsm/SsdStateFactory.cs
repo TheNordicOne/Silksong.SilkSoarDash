@@ -204,11 +204,13 @@ namespace SilkSoarDash.CustomFsm
                     new SsdApplyVelocity(),
                     FsmBuilder.Activate(SsdObjects.ThreadLoop),
                     new SsdThreadLoop(),
-                    new SsdHitWallCheck()
+                    new SsdHitWallCheck(),
+                    new SsdCancelOnAction()
                 },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.HitWall, SsdStates.ResetEffects),
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ResetEffects),
                 });
         }
     }

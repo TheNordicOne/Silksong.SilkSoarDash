@@ -182,7 +182,8 @@ namespace SilkSoarDash.CustomFsm
                     FsmBuilder.CheckSides(fsm, SsdVars.WallHitLeft, SsdVars.WallHitRight),
                     new SsdDashing(),
                     FsmBuilder.WaitFor(fsm, SsdVars.CancelableTime, SsdEvents.Finished),
-                    FsmBuilder.ActivateAfter(SsdObjects.ThreadLoop, SsdVars.ThreadLoopDelay)
+                    FsmBuilder.ActivateAfter(SsdObjects.ThreadLoop, SsdVars.ThreadLoopDelay),
+                    new SsdThreadLoop(),
                 },
                 new[]
                 {
@@ -197,7 +198,9 @@ namespace SilkSoarDash.CustomFsm
                 new FsmStateAction[]
                 {
                     FsmBuilder.CheckSides(fsm, SsdVars.WallHitLeft, SsdVars.WallHitRight),
-                    new SsdCancelable()
+                    new SsdCancelable(),
+                    FsmBuilder.Activate(SsdObjects.ThreadLoop),
+                    new SsdThreadLoop(),
                 },
                 new[]
                 {

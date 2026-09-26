@@ -63,6 +63,33 @@ namespace SilkSoarDash.CustomFsm
             };
         }
 
+        public static ActivateGameObject Activate(string heroPath)
+        {
+            var target = HeroController.instance.transform.Find(heroPath);
+
+            return new ActivateGameObject
+            {
+                gameObject = new FsmOwnerDefault
+                {
+                    OwnerOption = OwnerDefaultOption.SpecifyGameObject,
+                    GameObject = new FsmGameObject
+                    {
+                        Value = target == null ? null : target.gameObject
+                    }
+                },
+                activate = new FsmBool
+                {
+                    Value = true
+                },
+                recursive = new FsmBool
+                {
+                    Value = false
+                },
+                resetOnExit = false,
+                everyFrame = false
+            };
+        }
+
         public static ActivateGameObjectDelay ActivateAfter(string heroPath, float delay)
         {
             var target = HeroController.instance.transform.Find(heroPath);

@@ -1,5 +1,4 @@
 using HutongGames.PlayMaker;
-using UnityEngine;
 using SilkSoarDash.Extensions;
 using SilkSoarDash.CustomFsm.Constants;
 
@@ -8,8 +7,7 @@ namespace SilkSoarDash.CustomFsm.Actions
     public class SsdCancelable : FsmStateAction
     {
         private static HeroController Hero => HeroController.instance;
-
-        private MeshRenderer _threadLoop;
+        
         
         public override void OnEnter()
         {
@@ -19,9 +17,6 @@ namespace SilkSoarDash.CustomFsm.Actions
             // QueuedCancel true -> cancel
 
             // shake  Tiny Rumble
-
-            var threadLoop = Hero.transform.Find(SsdObjects.ThreadLoop);
-            _threadLoop = threadLoop == null ? null : threadLoop.GetComponent<MeshRenderer>();
         }
 
         public override void OnFixedUpdate()
@@ -42,24 +37,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             if (hasHitWall || Hero.HasStopped(direction))
             {
                 Fsm.Event(SsdEvents.HitWall);
-                return;
             }
-            
-            ShowThreadLoop(direction);
-        }
-
-        private void ShowThreadLoop(float direction)
-        {
-            if (_threadLoop == null)
-            {
-                return;
-            }
-
-            var origin = Hero.transform.position;
-            var ahead = new Vector2(direction, 0f);
-            var hit = Physics2D.Raycast(origin, ahead, SsdVars.ThreadRayDistance, 1 << SsdVars.TerrainLayer);
-
-            _threadLoop.enabled = hit.collider == null;
         }
     }
 }

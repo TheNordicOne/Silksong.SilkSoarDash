@@ -18,5 +18,6 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string DashAntic = "DashAntic";
         public const string DashStart = "DashStart";
         public const string Dashing = "Dashing";
+        public const string Cancelable = "Cancelable";
     }
 }

@@ -81,6 +81,7 @@ namespace SilkSoarDash.CustomFsm
                 SsdStateFactory.DashAntic(fsm),
                 SsdStateFactory.DashStart(fsm),
                 SsdStateFactory.Dashing(fsm),
+                SsdStateFactory.Cancelable(fsm),
             };
 
             fsm.StartState = SsdStates.Inactive;

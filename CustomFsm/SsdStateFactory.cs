@@ -186,7 +186,21 @@ namespace SilkSoarDash.CustomFsm
                 },
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.Cancelable),
+                    FsmBuilder.Transition(SsdEvents.HitWall, SsdStates.ResetEffects),
+                });
+        }
+        
+        public static FsmState Cancelable(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.Cancelable,
+                new FsmStateAction[]
+                {
+                    FsmBuilder.CheckSides(fsm, SsdVars.WallHitLeft, SsdVars.WallHitRight),
+                    new SsdCancelable()
+                },
+                new[]
+                {
                     FsmBuilder.Transition(SsdEvents.HitWall, SsdStates.ResetEffects),
                 });
         }

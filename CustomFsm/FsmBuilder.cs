@@ -18,7 +18,8 @@ namespace SilkSoarDash.CustomFsm
                 Transitions = transitions ?? Array.Empty<FsmTransition>()
             };
         }
-        public static FsmState State(Fsm fsm, string name, FsmStateAction[] actions,  [CanBeNull] FsmTransition[] transitions)
+
+        public static FsmState State(Fsm fsm, string name, FsmStateAction[] actions, [CanBeNull] FsmTransition[] transitions)
         {
             var state = new FsmState(fsm)
             {
@@ -33,9 +34,13 @@ namespace SilkSoarDash.CustomFsm
 
         public static FsmTransition Transition(string eventName, string toState)
         {
-            return new FsmTransition { FsmEvent = new FsmEvent(eventName), ToState = toState };
+            return new FsmTransition
+            {
+                FsmEvent = new FsmEvent(eventName),
+                ToState = toState
+            };
         }
-        
+
         public static Wait WaitFor(Fsm fsm, string timeVariable, string finishEvent)
         {
             return new Wait
@@ -58,7 +63,11 @@ namespace SilkSoarDash.CustomFsm
 
         public static FsmTransition TransitionToInactive()
         {
-            return new FsmTransition { FsmEvent = FsmEvent.Finished, ToState = SsdStates.Inactive };
+            return new FsmTransition
+            {
+                FsmEvent = FsmEvent.Finished,
+                ToState = SsdStates.Inactive
+            };
         }
     }
 }

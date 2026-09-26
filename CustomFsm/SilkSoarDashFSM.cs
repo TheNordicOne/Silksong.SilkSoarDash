@@ -39,7 +39,8 @@ namespace SilkSoarDash.CustomFsm
                     {
                         new FsmBool(SsdVars.DidHit),
                         new FsmBool(SsdVars.IsGate),
-                        new FsmBool(SsdVars.HitSpikes)
+                        new FsmBool(SsdVars.HitSpikes),
+                        new FsmBool(SsdVars.NeedleOffScreen),
                     }
                 }
             };

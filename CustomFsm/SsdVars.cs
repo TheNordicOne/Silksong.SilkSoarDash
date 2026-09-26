@@ -12,6 +12,7 @@ namespace SilkSoarDash.CustomFsm
         public const string Direction = "Direction";
         public const string StickNeedle = "StickNeedle";
         public const string StickNeedleParent = "StickNeedleParent";
+        public const string NeedleOffScreen = "NeedleOffScreen";
         
         public const int DefaultThrowDistance = 9;
         

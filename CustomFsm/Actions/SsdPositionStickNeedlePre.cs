@@ -81,7 +81,10 @@ namespace SilkSoarDash.CustomFsm.Actions
             }
 
             // 14 stick needle off camera -> finish here
-            if (IsOutsideCamera())
+            var isNeedleOffScreen = IsOutsideCamera();
+            Fsm.GetFsmBool(SsdVars.NeedleOffScreen).Value = isNeedleOffScreen;
+            
+            if (isNeedleOffScreen)
             {
                 Finish();
                 return;

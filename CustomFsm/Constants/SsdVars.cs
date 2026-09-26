@@ -18,12 +18,17 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string JumpSpeed = "JumpSpeed";
         public const string ChargeTime = "ChargeTime";
         public const string ThrowWaitTime = "ThrowWaitTime";
+        public const string WallHitLeft = "WallHitLeft";
+        public const string WallHitRight = "WallHitRight";
         
         public const int DefaultThrowDistance = 9;
         public const float DefaultJumpSpeed = 33f;
         public const float DefaultChargeTime = 0.8f;
         public const float ThrowWaitTimeOffScreen = 0.5f;
         public const float NeedleThrowTimeout = 0.8f;
+        public const float ThreadLoopDelay = 0.1f;
+        public const float ThreadRayDistance = 10f;
+        public const int TerrainLayer = 8;
         
         public const float NeedleStartHeight = 0.85f;
         public const int ShortThrowThreshold = 12;

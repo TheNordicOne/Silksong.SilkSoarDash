@@ -1,9 +1,15 @@
 using HutongGames.PlayMaker;
+using UnityEngine;
+using SilkSoarDash.Extensions;
+using SilkSoarDash.CustomFsm.Constants;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdDashing : FsmStateAction
     {
+        private static HeroController Hero => HeroController.instance;
+
+        private MeshRenderer _threadLoop;
         
         public override void OnEnter()
         {
@@ -12,21 +18,63 @@ namespace SilkSoarDash.CustomFsm.Actions
             //    - vibration  Sounds/Superjump Loop
             
             // 2  HeroController.AffectedByGravity(false)
-            // 3  gravityScale = 0
-            // 4  show the thread loop after 0.1
-            //    - effect  Effects/Super Jump Thread Loop
-            // 5  shake the camera
+            Hero.AffectedByGravity(false);
+            
+            // 3  Hero.Body.gravityScale = 0
+            Hero.Body.gravityScale = 0;
+
+            // 4  shake the camera
             //    - shake  Tiny Rumble
+
+            var threadLoop = Hero.transform.Find(SsdObjects.ThreadLoop);
+            _threadLoop = threadLoop == null ? null : threadLoop.GetComponent<MeshRenderer>();
+        }
+
+        public override void OnFixedUpdate()
+        {
+            // 5  velocity = (JumpSpeed * Direction, 0)
+            Hero.ApplySsdVelocity(Fsm);
         }
 
         public override void OnUpdate()
         {
-            // 6  velocity = (JumpSpeed * Direction, 0)
-            // 7  wall hit ahead -> hit wall
-            // 8  speed along Direction <= 0.1 -> hit wall
-            // 9  raycast 10 ahead, toggle the thread loop renderer every frame
+            // 6  wall hit ahead -> hit wall
+            var direction = Fsm.GetFsmFloat(SsdVars.Direction).Value;
+            var wallVariable = direction > 0f ? SsdVars.WallHitRight : SsdVars.WallHitLeft;
+            var hasHitWall = Fsm.GetFsmBool(wallVariable).Value;
+            
+            if (hasHitWall)
+            {
+                Fsm.Event(SsdEvents.HitWall);
+                return;
+            }
+
+            // 7  speed along Direction <= 0.1 -> hit wall
+            if (Hero.HasStopped(direction))
+            {
+                Fsm.Event(SsdEvents.HitWall);
+                return;
+            }
+            
+            // 8  raycast 10 ahead, toggle the thread loop renderer every frame
+            ShowThreadLoop(direction);
+
             
             Finish();
+        }
+
+        private void ShowThreadLoop(float direction)
+        {
+            if (_threadLoop == null)
+            {
+                return;
+            }
+
+            var origin = Hero.transform.position;
+            var ahead = new Vector2(direction, 0f);
+            var hit = Physics2D.Raycast(origin, ahead, SsdVars.ThreadRayDistance, 1 << SsdVars.TerrainLayer);
+
+            _threadLoop.enabled = hit.collider == null;
         }
     }
 }

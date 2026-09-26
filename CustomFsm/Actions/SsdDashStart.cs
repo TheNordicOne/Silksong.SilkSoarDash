@@ -1,6 +1,7 @@
 using HutongGames.PlayMaker;
 using UnityEngine;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Extensions;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -43,9 +44,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             Hero.AffectedByGravity(false);
             
             // 11 velocity = (JumpSpeed * Direction, 0)
-            var jumpSpeed = Fsm.GetFsmFloat(SsdVars.JumpSpeed).Value;
-            var direction = Fsm.GetFsmFloat(SsdVars.Direction).Value;
-            Hero.Body.linearVelocity = new Vector2(jumpSpeed * direction, 0f);
+            Hero.ApplySsdVelocity(Fsm);
             
             // 12 CameraTarget.SetSuperJump is vertical only. Skipped until custom implementation
             

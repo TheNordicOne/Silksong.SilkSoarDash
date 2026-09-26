@@ -179,12 +179,15 @@ namespace SilkSoarDash.CustomFsm
             return FsmBuilder.State(fsm, SsdStates.Dashing,
                 new FsmStateAction[]
                 {
+                    FsmBuilder.CheckSides(fsm, SsdVars.WallHitLeft, SsdVars.WallHitRight),
                     new SsdDashing(),
-                    FsmBuilder.WaitFor(fsm, SsdVars.CancelableTime, SsdEvents.Finished)
+                    FsmBuilder.WaitFor(fsm, SsdVars.CancelableTime, SsdEvents.Finished),
+                    FsmBuilder.ActivateAfter(SsdObjects.ThreadLoop, SsdVars.ThreadLoopDelay)
                 },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
+                    FsmBuilder.Transition(SsdEvents.HitWall, SsdStates.ResetEffects),
                 });
         }
     }

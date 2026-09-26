@@ -6,7 +6,6 @@ using SilkSoarDash.CustomFsm.Constants;
 
 namespace SilkSoarDash.CustomFsm
 {
-
     public static class FsmBuilder
     {
         public static FsmState State(Fsm fsm, string name, [CanBeNull] FsmTransition[] transitions)
@@ -58,6 +57,57 @@ namespace SilkSoarDash.CustomFsm
                 time = new FsmFloat { Value = time },
                 finishEvent = new FsmEvent(finishEvent),
                 realTime = false
+            };
+        }
+
+        public static ActivateGameObjectDelay ActivateAfter(string heroPath, float delay)
+        {
+            var target = HeroController.instance.transform.Find(heroPath);
+
+            return new ActivateGameObjectDelay
+            {
+                gameObject = new FsmOwnerDefault
+                {
+                    OwnerOption = OwnerDefaultOption.SpecifyGameObject,
+                    GameObject = new FsmGameObject
+                    {
+                        Value = target == null ? null : target.gameObject
+                    }
+                },
+                activate = new FsmBool
+                {
+                    Value = true
+                },
+                resetOnExit = true,
+                delay = new FsmFloat
+                {
+                    Value = delay
+                }
+            };
+        }
+
+        public static CheckCollisionSide CheckSides(Fsm fsm, string leftVariable, string rightVariable)
+        {
+            return new CheckCollisionSide
+            {
+                collidingObject = new FsmOwnerDefault
+                {
+                    OwnerOption = OwnerDefaultOption.UseOwner
+                },
+                topHit = new FsmBool(),
+                bottomHit = new FsmBool(),
+                leftHit = fsm.GetFsmBool(leftVariable),
+                rightHit = fsm.GetFsmBool(rightVariable),
+                topHitEvent = null,
+                rightHitEvent = null,
+                bottomHitEvent = null,
+                leftHitEvent = null,
+                otherLayer = false,
+                otherLayerNumber = 0,
+                ignoreTriggers = new FsmBool
+                {
+                    Value = true
+                }
             };
         }
 

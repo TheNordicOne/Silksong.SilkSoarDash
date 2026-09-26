@@ -9,5 +9,6 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string ThrowNeedle = "THROW_NEEDLE";
         public const string DamagerHitSpikes = "DAMAGER_HIT_SPIKES";
         public const string TransitionGate = "TransitionGate";
+        public const string HitWall = "HIT_WALL";
     }
 }

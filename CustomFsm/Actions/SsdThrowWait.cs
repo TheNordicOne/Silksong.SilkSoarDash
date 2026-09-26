@@ -7,12 +7,9 @@ namespace SilkSoarDash.CustomFsm.Actions
     {
         public override void OnEnter()
         {
-            // 1  play the throw wait animation
-            //    - anim  Super Jump Throw Wait
-            // 2  read isNeedleVisible
-            var isNeedleVisible = !Fsm.GetFsmBool(SsdVars.NeedleOffScreen).Value;
+            // anim  Super Jump Throw Wait
 
-            // 3  ThrowWaitTime = 0 if isNeedleVisible, 0.5 otherwise
+            var isNeedleVisible = !Fsm.GetFsmBool(SsdVars.NeedleOffScreen).Value;
             Fsm.GetFsmFloat(SsdVars.ThrowWaitTime).Value = isNeedleVisible ? 0f : SsdVars.ThrowWaitTimeOffScreen;
 
             Finish();

@@ -9,24 +9,21 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnEnter()
         {
-            // 1  read HeroX
-            var heroX = Hero.transform.position.x;
 
-            // 2  isDistant = StickNeedleX > HeroX + 15
+            var heroX = Hero.transform.position.x;
+            
             var hitPoint = Fsm.GetFsmVector2(SsdVars.HitPoint).Value;
             var isDistant = hitPoint.x > (heroX + SsdVars.DistantImpactRange);
 
-            // 3  clip = distant clip if isDistant, near clip otherwise
-            //    - audio  hornet_superjump_pt_5_needle_impact_2d_distant
-            //    - audio  hornet_superjump_pt_5_needle_impact_2d
+            // audio  hornet_superjump_pt_5_needle_impact_2d_distant if isDistant
+            // audio  hornet_superjump_pt_5_needle_impact_2d
+            
             var audioClip = isDistant 
                 ? SsdAudio.NeedleImpactDistant
                 : SsdAudio.NeedleImpact;
 
-            // 4  play the clip
-            
-            // 5  PlayedThrowWait true -> finish here
-            
+            //  play the clip
+            // PlayedThrowWait true -> finish here
         }
 
         public override void OnUpdate()

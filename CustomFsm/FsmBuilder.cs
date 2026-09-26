@@ -1,6 +1,7 @@
 using System;
 using HutongGames.PlayMaker;
 using JetBrains.Annotations;
+using SilkSoarDash.CustomFsm.Constants;
 
 namespace SilkSoarDash.CustomFsm
 {

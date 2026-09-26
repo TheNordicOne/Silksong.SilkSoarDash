@@ -110,13 +110,13 @@
         <Compile Include="CustomFsm\FsmBuilder.cs" />
         <Compile Include="CustomFsm\SsdStateFactory.cs" />
         <Compile Include="SsdDumpProbe.cs" />
-        <Compile Include="CustomFsm\SsdVars.cs" />
-        <Compile Include="CustomFsm\SsdEvents.cs" />
-        <Compile Include="CustomFsm\SsdStates.cs" />
-        <Compile Include="CustomFsm\SsdObjects.cs" />
-        <Compile Include="CustomFsm\SsdCStates.cs" />
-        <Compile Include="CustomFsm\SsdRegisterEvents.cs" />
-        <Compile Include="CustomFsm\SsdAudio.cs" />
+        <Compile Include="CustomFsm\Constants\SsdVars.cs" />
+        <Compile Include="CustomFsm\Constants\SsdEvents.cs" />
+        <Compile Include="CustomFsm\Constants\SsdStates.cs" />
+        <Compile Include="CustomFsm\Constants\SsdObjects.cs" />
+        <Compile Include="CustomFsm\Constants\SsdCStates.cs" />
+        <Compile Include="CustomFsm\Constants\SsdRegisterEvents.cs" />
+        <Compile Include="CustomFsm\Constants\SsdAudio.cs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all"/>

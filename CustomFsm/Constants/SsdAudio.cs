@@ -1,4 +1,4 @@
-namespace SilkSoarDash.CustomFsm
+namespace SilkSoarDash.CustomFsm.Constants
 {
     public static class SsdAudio
     {

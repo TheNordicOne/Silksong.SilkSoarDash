@@ -6,7 +6,6 @@ namespace SilkSoarDash.CustomFsm.Actions
     {
         public override void OnEnter()
         {
-            // Presentation
             // - effect  Hornet_Super_Jump_Ready_Burst
             // - audio   hornet_superjump_pt_3_charge_ready
             // - audio   Nail Art Ready
@@ -18,7 +17,6 @@ namespace SilkSoarDash.CustomFsm.Actions
                 chargedEffect.gameObject.SetActive(true);
             }
 
-            // Presentation
             // - flash  FlashingSuperDash
             // - event  AverageShake
         }

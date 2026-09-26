@@ -19,7 +19,6 @@ namespace SilkSoarDash.CustomFsm.Actions
         {
             _elapsed = 0f;
 
-            // Presentation
             // - effect  Super Jump Extra Ground Effect
             // - anim    Super Jump Antic
             // - audio   hornet_superjump_pt_1_into_position

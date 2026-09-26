@@ -9,7 +9,6 @@ namespace SilkSoarDash.CustomFsm.Actions
         {
             Fsm.GetFsmBool(SsdVars.DidHit).Value = false;
 
-            // Presentation
             // - shake  Small Shake
             // - audio  tink_effect
 

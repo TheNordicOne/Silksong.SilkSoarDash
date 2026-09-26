@@ -76,7 +76,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             var isGate = Fsm.GetFsmBool(SsdVars.IsGate).Value;
             if (isGate)
             {
-                // Fsm.Events(SsdEvents.GateTransition);
+                Fsm.Event(SsdEvents.TransitionGate);
                 return;
             }
 
@@ -87,8 +87,8 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
 
-            // Presentation
-            // - effect  Nail Terrain Hit Effect
+            // 15 spawn the terrain hit effect
+            //    - effect  Nail Terrain Hit Effect
 
             Finish();
         }

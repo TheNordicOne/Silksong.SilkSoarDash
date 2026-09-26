@@ -60,7 +60,6 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         private static void PreThrowEffects()
         {
-            // Presentation
             // - anim       Super Jump Throw Wait
             // - audio      Attack Heavy Hornet Voice
             // - audio      hornet_superjump_pt_4_throw

@@ -1,25 +1,12 @@
 using HutongGames.PlayMaker;
-using UnityEngine;
 using SilkSoarDash.CustomFsm.Constants;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdCharge : FsmStateAction
     {
-
-        private const float ChargeTime = 0.8f;
-
-        private float _elapsed;
-
-        public override void Reset()
-        {
-            _elapsed = 0f;
-        }
-
         public override void OnEnter()
         {
-            _elapsed = 0f;
-
             // - effect  Effects/Super Jump Extra Ground Effect
             // - anim    Super Jump Antic
             // - audio   hornet_superjump_pt_1_into_position
@@ -42,17 +29,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             if (!ia.SuperDash.IsPressed)
             {
                 Fsm.Event(SsdEvents.Cancelled);
-                return;
             }
-
-            _elapsed += Time.deltaTime;
-
-            if (!(_elapsed >= ChargeTime))
-            {
-                return;
-            }
-            
-            Finish();
         }
     }
 }

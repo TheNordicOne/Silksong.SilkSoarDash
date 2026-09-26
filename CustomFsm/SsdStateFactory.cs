@@ -28,7 +28,11 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState Charge(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.Charge,
-                new FsmStateAction[] { new SsdCharge() },
+                new FsmStateAction[]
+                {
+                    new SsdCharge(),
+                    FsmBuilder.WaitFor(fsm, SsdVars.ChargeTime, SsdEvents.Finished)
+                },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.Charged),
@@ -78,7 +82,11 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState ThrowNeedle(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.ThrowNeedle,
-                new FsmStateAction[] { new SsdThrowNeedle() },
+                new FsmStateAction[]
+                {
+                    new SsdThrowNeedle(),
+                    FsmBuilder.WaitFor(SsdVars.NeedleThrowTimeout, SsdEvents.Finished)
+                },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.PositionStickNeedlePre),
@@ -135,7 +143,11 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState ThrowWait(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.ThrowWait,
-                new FsmStateAction[] { new SsdThrowWait() },
+                new FsmStateAction[]
+                {
+                    new SsdThrowWait(),
+                    FsmBuilder.WaitFor(fsm, SsdVars.ThrowWaitTime, SsdEvents.Finished)
+                },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.DashAntic),
@@ -165,7 +177,11 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState Dashing(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.Dashing,
-                new FsmStateAction[] { new SsdDashing() },
+                new FsmStateAction[]
+                {
+                    new SsdDashing(),
+                    FsmBuilder.WaitFor(fsm, SsdVars.CancelableTime, SsdEvents.Finished)
+                },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),

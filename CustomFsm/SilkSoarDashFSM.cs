@@ -36,6 +36,11 @@ namespace SilkSoarDash.CustomFsm
                         {
                             Value = SsdVars.DefaultJumpSpeed
                         },
+                        new FsmFloat(SsdVars.ChargeTime)
+                        {
+                            Value = SsdVars.DefaultChargeTime
+                        },
+                        new FsmFloat(SsdVars.ThrowWaitTime),
                     },
                     Vector2Variables = new[] { new FsmVector2(SsdVars.HitPoint) },
                     Vector3Variables = new[] { new FsmVector3(SsdVars.MoveBy) },

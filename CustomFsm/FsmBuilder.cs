@@ -1,5 +1,6 @@
 using System;
 using HutongGames.PlayMaker;
+using HutongGames.PlayMaker.Actions;
 using JetBrains.Annotations;
 using SilkSoarDash.CustomFsm.Constants;
 
@@ -35,6 +36,26 @@ namespace SilkSoarDash.CustomFsm
             return new FsmTransition { FsmEvent = new FsmEvent(eventName), ToState = toState };
         }
         
+        public static Wait WaitFor(Fsm fsm, string timeVariable, string finishEvent)
+        {
+            return new Wait
+            {
+                time = fsm.GetFsmFloat(timeVariable),
+                finishEvent = new FsmEvent(finishEvent),
+                realTime = false
+            };
+        }
+
+        public static Wait WaitFor(float time, string finishEvent)
+        {
+            return new Wait
+            {
+                time = new FsmFloat { Value = time },
+                finishEvent = new FsmEvent(finishEvent),
+                realTime = false
+            };
+        }
+
         public static FsmTransition TransitionToInactive()
         {
             return new FsmTransition { FsmEvent = FsmEvent.Finished, ToState = SsdStates.Inactive };

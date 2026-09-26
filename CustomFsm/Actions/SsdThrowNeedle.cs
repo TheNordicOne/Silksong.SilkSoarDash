@@ -10,7 +10,6 @@ namespace SilkSoarDash.CustomFsm.Actions
         private Transform _damager;
         private float _dir;
         private float _startX;
-        private float _elapsed;
 
         private static HeroController Hero => HeroController.instance;
 
@@ -39,13 +38,11 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnUpdate()
         {
-            _elapsed += Time.deltaTime;
-
             SetDamager();
             
             if (ShouldFinish())
             {
-                Finish();
+                Fsm.Event(SsdEvents.Finished);
             }
         }
 
@@ -90,7 +87,6 @@ namespace SilkSoarDash.CustomFsm.Actions
             _needle.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(150f * _dir, 0f);
             _startX = _needle.position.x;
 
-            _elapsed = 0f;
             return true;
         }
 
@@ -110,9 +106,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             var travelled = (_needle.position.x - _startX) * _dir;
             var needleLanded = travelled >= Fsm.GetFsmFloat(SsdVars.Distance).Value;
             var backToBeginning = travelled < -0.1f;
-            var timeout = _elapsed > 0.8f;
 
-            return timeout || needleLanded || backToBeginning;
+            return needleLanded || backToBeginning;
         }
     }
 }

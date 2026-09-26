@@ -114,9 +114,15 @@ namespace SilkSoarDash.CustomFsm.Actions
                 gameObject = new FsmOwnerDefault
                 {
                     OwnerOption = OwnerDefaultOption.SpecifyGameObject,
-                    GameObject = new FsmGameObject { Value = _needleStick.gameObject }
+                    GameObject = new FsmGameObject
+                    {
+                        Value = _needleStick.gameObject
+                    }
                 },
-                margin = new FsmFloat { Value = 0f },
+                margin = new FsmFloat
+                {
+                    Value = 0f
+                },
                 outsideEvent = null,
                 insideEvent = null,
                 insideBool = new FsmBool(),

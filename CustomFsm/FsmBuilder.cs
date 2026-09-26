@@ -54,7 +54,10 @@ namespace SilkSoarDash.CustomFsm
         {
             return new Wait
             {
-                time = new FsmFloat { Value = time },
+                time = new FsmFloat
+                {
+                    Value = time
+                },
                 finishEvent = new FsmEvent(finishEvent),
                 realTime = false
             };

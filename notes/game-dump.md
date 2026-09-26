@@ -557,6 +557,58 @@ ENTER and EXIT snapshots were identical in every state. PlayMaker runs all `OnEn
 calls in sequence before a state can exit, so a spy action appended to the array sees
 post-computation values in both phases.
 
+## Object paths
+
+`Init` resolves every GameObject the FSM uses, with `FindChild` calls relative to the hero.
+Paths below are relative to `Hero_Hornet(Clone)`.
+
+```
+Effects/Super Jump Antic Effect L
+Effects/Super Jump Antic Effect R
+Effects/Super Jump Charging Fader
+Effects/Super Jump Catch Effect
+Effects/Super Jump Charged
+Effects/Super Jump Thread
+Effects/Super Jump Thread Loop
+Effects/Super Jump Extra Throw Effect
+Effects/Super Jump Extra Ground Effect
+Special Attacks/Super Jump Needle Throw
+Special Attacks/Super Jump Needle Throw/Move To
+Special Attacks/Super Jump Needle Throw/Damager
+Special Attacks/Super Jump Needle Throw Fall
+Special Attacks/Super Jump Needle Throw Fall/Move To
+Special Attacks/Super Jump Needle Stick
+Special Attacks/Super Jump Damager
+Sounds/Superjump Loop
+Sounds/Nail Art Ready
+```
+
+FSM variable name on the left, path on the right.
+
+| Variable | Path |
+|---|---|
+| `Antic Effect L` | `Effects/Super Jump Antic Effect L` |
+| `Antic Effect R` | `Effects/Super Jump Antic Effect R` |
+| `Charging Fader` | `Effects/Super Jump Charging Fader` |
+| `Grab Effect` | `Effects/Super Jump Catch Effect` |
+| `Charged Effect` | `Effects/Super Jump Charged` |
+| `Thread` | `Effects/Super Jump Thread` |
+| `Thread Loop` | `Effects/Super Jump Thread Loop` |
+| `Extra Throw Effect` | `Effects/Super Jump Extra Throw Effect` |
+| `Extra Ground Effect` | `Effects/Super Jump Extra Ground Effect` |
+| `Throw Needle` | `Special Attacks/Super Jump Needle Throw` |
+| `Throw Needle Target` | `Special Attacks/Super Jump Needle Throw/Move To` |
+| `Throw Needle Damager` | `Special Attacks/Super Jump Needle Throw/Damager` |
+| `Throw Needle Fall` | `Special Attacks/Super Jump Needle Throw Fall` |
+| `Throw Needle Fall Target` | `Special Attacks/Super Jump Needle Throw Fall/Move To` |
+| `Stick Needle` | `Special Attacks/Super Jump Needle Stick` |
+| `Damager` | `Special Attacks/Super Jump Damager` |
+| `Superjump Audio Loop` | `Sounds/Superjump Loop` |
+| `Nail Art Ready` | `Sounds/Nail Art Ready` |
+
+`Init` also deactivates `Thread`, `Thread Loop`, `Extra Throw Effect` and
+`Extra Ground Effect` right after finding them.
+
 ## Full state listing
 
 Every state, every action, every action field value, every transition.

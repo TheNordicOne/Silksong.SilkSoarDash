@@ -102,7 +102,32 @@ namespace SilkSoarDash.CustomFsm
                 new FsmStateAction[] { new SsdPositionStickNeedlePre() },
                 new[]
                 {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.PositionStickNeedle),
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ResetEffects),
+                    FsmBuilder.Transition(SsdEvents.TransitionGate, SsdStates.HitTransitionGate),
+                });
+        }
+        
+        
+        public static FsmState PositionStickNeedle(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.PositionStickNeedle,
+                new FsmStateAction[] { new SsdPositionStickNeedle() },
+                new[]
+                {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ResetEffects),
+                });
+        }
+        
+        public static FsmState HitTransitionGate(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.HitTransitionGate,
+                new FsmStateAction[] { new SsdHitTransitionGate() },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ResetEffects),
                 });
         }
     }

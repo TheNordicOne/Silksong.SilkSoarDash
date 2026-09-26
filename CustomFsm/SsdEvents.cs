@@ -8,6 +8,6 @@ namespace SilkSoarDash.CustomFsm
         public const string GetDistance = "GET_DISTANCE";
         public const string ThrowNeedle = "THROW_NEEDLE";
         public const string DamagerHitSpikes = "DAMAGER_HIT_SPIKES";
-        public const string PositionStickNeedlePre = "POSITION_STICK_NEEDLE_PRE";
+        public const string TransitionGate = "TransitionGate";
     }
 }

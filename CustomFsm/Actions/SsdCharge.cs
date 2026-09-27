@@ -20,19 +20,35 @@ namespace SilkSoarDash.CustomFsm.Actions
            var didAddUsingSilk =  Spool.AddUsing(SilkSpool.SilkUsingFlags.Normal, SsdVars.SilkCost);
            Fsm.GetFsmBool(SsdVars.DidAddUsingSilk).Value = didAddUsingSilk;
 
-           // - effect  Effects/Super Jump Extra Ground Effect
-           // - anim    Super Jump Antic
+           var groundEffect = SsdClones.ExtraGroundEffect;
+           if (groundEffect != null)
+           {
+               groundEffect.gameObject.SetActive(true);
+           }
+
+           Hero.GetComponent<tk2dSpriteAnimator>().Play(SsdAnims.Antic);
+
            // - audio   hornet_superjump_pt_1_into_position
            // - audio   hornet_superjump_pt_2_charge_2d
            // - effect  Effects/Super Jump Antic Effect L
            // - effect  Effects/Super Jump Antic Effect R
            // - anim    Super Jump Antic Effect
-           // - event   FocusRumble
+           StartRumblingFocus();
+
            // - effect  Effects/Super Jump Charging Fader
            
            Hero.SetCState(SsdCStates.FreezeCharge, true);
-           
-           // turn the camera's RumblingFocus on, and set StartedRumblingFocus
+        }
+
+        private void StartRumblingFocus()
+        {
+            var cameraParent = GameCameras.instance.cameraParent.gameObject;
+            var cameraShake = FSMUtility.LocateFSM(cameraParent, SsdCamera.ShakeFsm);
+
+            FSMUtility.SetBool(cameraShake, SsdCamera.RumblingFocus, true);
+            FSMUtility.SendEventToGameObject(cameraParent, SsdCamera.FocusRumble);
+
+            Fsm.GetFsmBool(SsdVars.StartedRumblingFocus).Value = true;
         }
 
         public override void OnUpdate()

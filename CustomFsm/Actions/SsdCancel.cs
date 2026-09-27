@@ -51,7 +51,7 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
 
-            // flash  cancel the sprite flash by its stored id
+            SsdFlash.Cancel();
 
             Finish();
         }

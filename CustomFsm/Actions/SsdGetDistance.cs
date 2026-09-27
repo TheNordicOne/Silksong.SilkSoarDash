@@ -1,4 +1,5 @@
 using BepInEx.Logging;
+using GlobalEnums;
 using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
 using UnityEngine;
@@ -20,10 +21,13 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             rc.Init(State);
             Fsm.GetFsmFloat(SsdVars.Distance).Value = SsdVars.DefaultThrowDistance;
+            Fsm.GetFsmBool(SsdVars.IsGate).Value = false;
            
             StoreHitAhead(dir);
             
             rc.OnEnter();
+
+            StoreSideGateAhead(dir);
             
             var dist = Fsm.GetFsmFloat(SsdVars.Distance).Value;
             Fsm.GetFsmVector3(SsdVars.MoveBy).Value = new Vector3(dist * dir.x, 0f, 0f);
@@ -58,6 +62,44 @@ namespace SilkSoarDash.CustomFsm.Actions
             Fsm.GetFsmGameObject(SsdVars.HitObject).Value = hits[0].collider.gameObject;
             Fsm.GetFsmVector2(SsdVars.HitPoint).Value = hits[0].point;
             Fsm.GetFsmFloat(SsdVars.Distance).Value = hits[0].distance;
+        }
+
+        // SuperJumpRaycast only accepts a gate at the top of the room, so a sideways soar needs the side gates added
+        private void StoreSideGateAhead(Vector2 dir)
+        {
+            var filter = new ContactFilter2D
+            {
+                useTriggers = true,
+                useLayerMask = true,
+                layerMask = 1 << SsdVars.GateLayer
+            };
+
+            var hits = new RaycastHit2D[SsdVars.GateHitCapacity];
+            var origin = HeroController.instance.transform.position;
+            var hitCount = Physics2D.Raycast(origin, dir, filter, hits, SsdVars.NeedleRayDistance);
+            var wantedSide = dir.x > 0f ? GatePosition.right : GatePosition.left;
+
+            for (var i = 0; i < hitCount; i++)
+            {
+                var gate = hits[i].collider.GetComponent<TransitionPoint>();
+                if (gate == null || gate.GetGatePosition() != wantedSide)
+                {
+                    continue;
+                }
+
+                var isCloser = !Fsm.GetFsmBool(SsdVars.DidHit).Value || hits[i].distance < Fsm.GetFsmFloat(SsdVars.Distance).Value;
+                if (!isCloser)
+                {
+                    return;
+                }
+
+                Fsm.GetFsmBool(SsdVars.DidHit).Value = true;
+                Fsm.GetFsmBool(SsdVars.IsGate).Value = true;
+                Fsm.GetFsmGameObject(SsdVars.HitObject).Value = hits[i].collider.gameObject;
+                Fsm.GetFsmVector2(SsdVars.HitPoint).Value = hits[i].point;
+                Fsm.GetFsmFloat(SsdVars.Distance).Value = hits[i].distance;
+                return;
+            }
         }
 
         private SuperJumpRaycast BuildRayCaster(Vector2 dir)

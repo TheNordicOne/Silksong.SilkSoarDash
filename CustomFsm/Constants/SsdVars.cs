@@ -32,6 +32,8 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const float ChargingFaderFadeTime = 0.1f;
         public const float ThreadRayDistance = 10f;
         public const int TerrainLayer = 8;
+        public const int GateLayer = 13;
+        public const int GateHitCapacity = 8;
         public const float DefaultCancelableTime = 0.2f;
         public const float StoppedSpeed = 0.1f;
         public const float CatchFallSpeed = 5f;

@@ -113,31 +113,6 @@ namespace SilkSoarDash.CustomFsm
             };
         }
 
-        public static CheckCollisionSide CheckSides(Fsm fsm, string leftVariable, string rightVariable)
-        {
-            return new CheckCollisionSide
-            {
-                collidingObject = new FsmOwnerDefault
-                {
-                    OwnerOption = OwnerDefaultOption.UseOwner
-                },
-                topHit = new FsmBool(),
-                bottomHit = new FsmBool(),
-                leftHit = fsm.GetFsmBool(leftVariable),
-                rightHit = fsm.GetFsmBool(rightVariable),
-                topHitEvent = null,
-                rightHitEvent = null,
-                bottomHitEvent = null,
-                leftHitEvent = null,
-                otherLayer = false,
-                otherLayerNumber = 0,
-                ignoreTriggers = new FsmBool
-                {
-                    Value = true
-                }
-            };
-        }
-
         public static CheckCollisionSideV2 CheckSideHits(Transform target, string hitEvent)
         {
             return new CheckCollisionSideV2

@@ -18,8 +18,6 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string JumpSpeed = "JumpSpeed";
         public const string ChargeTime = "ChargeTime";
         public const string ThrowWaitTime = "ThrowWaitTime";
-        public const string WallHitLeft = "WallHitLeft";
-        public const string WallHitRight = "WallHitRight";
         public const string DidAddUsingSilk = "DidAddUsingSilk";
         public const string DidStartFlash = "DidStartFlash";
         public const string StartedRumblingFocus = "StartedRumblingFocus";

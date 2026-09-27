@@ -14,17 +14,15 @@ namespace SilkSoarDash.CustomFsm.Actions
         
         public override void OnUpdate()
         {
+            // the side collision check never saw the wall, stopping dead is what tells us she arrived
             var direction = Fsm.GetFsmFloat(SsdVars.Direction).Value;
-            var wallVariable = direction > 0f ? SsdVars.WallHitRight : SsdVars.WallHitLeft;
-            var hasHitWall = Fsm.GetFsmBool(wallVariable).Value;
-            
-            var hasStopped = Hero.HasStopped(direction);
-
-            if (hasHitWall || hasStopped)
+            if (!Hero.HasStopped(direction))
             {
-                SsdLog.Debug("stopping wall={Wall} stopped={Stopped} direction={Direction}", hasHitWall, hasStopped, direction);
-                Fsm.Event(SsdEvents.HitWall);
+                return;
             }
+
+            SsdLog.Debug("stopping direction={Direction}", direction);
+            Fsm.Event(SsdEvents.HitWall);
         }
     }
 }

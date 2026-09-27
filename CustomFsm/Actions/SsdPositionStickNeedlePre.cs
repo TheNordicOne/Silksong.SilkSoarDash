@@ -2,6 +2,7 @@ using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
 using UnityEngine;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Extensions;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -19,6 +20,9 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             _needleStick = SsdClones.StickNeedle;
             _needleStick.gameObject.SetActive(true);
+
+            // it comes back from being unparented with a world rotation, so Hornet turning around flips it
+            _needleStick.TurnForward();
             Fsm.GetFsmGameObject(SsdVars.StickNeedle).Value = _needleStick.gameObject;
             
             var didHit = Fsm.GetFsmBool(SsdVars.DidHit).Value;

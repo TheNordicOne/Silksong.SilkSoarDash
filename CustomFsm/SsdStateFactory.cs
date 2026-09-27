@@ -18,7 +18,10 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState RelinquishControl(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.RelinquishControl,
-                new FsmStateAction[] { new SsdRelinquishControl() },
+                new FsmStateAction[]
+                {
+                    new SsdRelinquishControl()
+                },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.Charge)
@@ -43,7 +46,10 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState Charged(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.Charged,
-                new FsmStateAction[] { new SsdCharged() },
+                new FsmStateAction[]
+                {
+                    new SsdCharged()
+                },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.GetDistance, SsdStates.GetDistance)
@@ -62,7 +68,10 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState ResetEffects(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.ResetEffects,
-                new FsmStateAction[] { new SsdResetEffects() },
+                new FsmStateAction[]
+                {
+                    new SsdResetEffects()
+                },
                 new[]
                 {
                     FsmBuilder.TransitionToInactive()
@@ -72,7 +81,10 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState GetDistance(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.GetDistance,
-                new FsmStateAction[] { new SsdGetDistance() },
+                new FsmStateAction[]
+                {
+                    new SsdGetDistance()
+                },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.ThrowNeedle, SsdStates.ThrowNeedle)
@@ -98,7 +110,10 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState HitSpikes(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.HitSpikes,
-                new FsmStateAction[] { new SsdHitSpikes() },
+                new FsmStateAction[]
+                {
+                    new SsdHitSpikes()
+                },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
@@ -108,7 +123,10 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState PositionStickNeedlePre(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.PositionStickNeedlePre,
-                new FsmStateAction[] { new SsdPositionStickNeedlePre() },
+                new FsmStateAction[]
+                {
+                    new SsdPositionStickNeedlePre()
+                },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.PositionStickNeedle),
@@ -121,7 +139,10 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState PositionStickNeedle(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.PositionStickNeedle,
-                new FsmStateAction[] { new SsdPositionStickNeedle() },
+                new FsmStateAction[]
+                {
+                    new SsdPositionStickNeedle()
+                },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ThrowWait),
@@ -132,7 +153,10 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState HitTransitionGate(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.HitTransitionGate,
-                new FsmStateAction[] { new SsdHitTransitionGate() },
+                new FsmStateAction[]
+                {
+                    new SsdHitTransitionGate()
+                },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
@@ -157,7 +181,10 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState DashAntic(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.DashAntic,
-                new FsmStateAction[] { new SsdDashAntic() },
+                new FsmStateAction[]
+                {
+                    new SsdDashAntic()
+                },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.DashStart),
@@ -167,7 +194,10 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState DashStart(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.DashStart,
-                new FsmStateAction[] { new SsdDashStart() },
+                new FsmStateAction[]
+                {
+                    new SsdDashStart()
+                },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.Dashing),
@@ -217,7 +247,10 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState HitWallHard(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.HitWallHard,
-                new FsmStateAction[] { new SsdHitWallHard() },
+                new FsmStateAction[]
+                {
+                    new SsdHitWallHard()
+                },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.HitWall),
@@ -242,7 +275,10 @@ namespace SilkSoarDash.CustomFsm
         public static FsmState HitWall(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.HitWall,
-                new FsmStateAction[] { new SsdHitWall() },
+                new FsmStateAction[]
+                {
+                    new SsdHitWall()
+                },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.RegainControlToIdle),

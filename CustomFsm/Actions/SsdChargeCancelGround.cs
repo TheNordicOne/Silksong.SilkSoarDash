@@ -1,7 +1,6 @@
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Extensions;
-using TeamCherry.NestedFadeGroup;
 using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm.Actions
@@ -25,8 +24,11 @@ namespace SilkSoarDash.CustomFsm.Actions
             Deactivate(SsdClones.AnticEffectL);
             Deactivate(SsdClones.AnticEffectR);
 
-            // vanilla fades the fader out over 0.1, this snaps it
-            ClearChargingFader();
+            var fader = SsdClones.ChargingFader;
+            if (fader != null)
+            {
+                fader.FadeTo(0f, SsdVars.ChargingFaderFadeTime);
+            }
 
             Hero.SetCState(SsdCStates.FreezeCharge, false);
 
@@ -66,19 +68,5 @@ namespace SilkSoarDash.CustomFsm.Actions
             }
         }
 
-        private static void ClearChargingFader()
-        {
-            var fader = SsdClones.ChargingFader;
-            if (fader == null)
-            {
-                return;
-            }
-
-            var group = fader.GetComponent<NestedFadeGroupBase>();
-            if (group != null)
-            {
-                group.AlphaSelf = 0f;
-            }
-        }
     }
 }

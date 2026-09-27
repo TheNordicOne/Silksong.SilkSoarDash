@@ -1,3 +1,4 @@
+using TeamCherry.NestedFadeGroup;
 using UnityEngine;
 
 namespace SilkSoarDash.Extensions
@@ -17,6 +18,24 @@ namespace SilkSoarDash.Extensions
         public static void TurnForward(this Transform effect)
         {
             effect.localEulerAngles = new Vector3(0f, 0f, ForwardAngle);
+        }
+
+        public static void SetAlpha(this Transform effect, float alpha)
+        {
+            var group = effect.GetComponent<NestedFadeGroupBase>();
+            if (group != null)
+            {
+                group.AlphaSelf = alpha;
+            }
+        }
+
+        public static void FadeTo(this Transform effect, float alpha, float fadeTime)
+        {
+            var group = effect.GetComponent<NestedFadeGroupBase>();
+            if (group != null)
+            {
+                group.FadeTo(alpha, fadeTime);
+            }
         }
 
         public static void PlayAnim(this Transform effect, string clip)

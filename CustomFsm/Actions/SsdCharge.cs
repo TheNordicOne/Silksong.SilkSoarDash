@@ -3,7 +3,6 @@ using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Extensions;
 using SilkSoarDash.Logging;
-using TeamCherry.NestedFadeGroup;
 using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm.Actions
@@ -15,8 +14,6 @@ namespace SilkSoarDash.CustomFsm.Actions
         private static HeroController Hero => HeroController.instance;
         private static SilkSpool Spool =>  SilkSpool.Instance;
 
-        private NestedFadeGroupBase _fader;
-        private float _faded;
         
         public override void OnEnter()
         {
@@ -73,31 +70,12 @@ namespace SilkSoarDash.CustomFsm.Actions
             }
 
             fader.gameObject.SetActive(true);
-
-            _fader = fader.GetComponent<NestedFadeGroupBase>();
-            _faded = 0f;
-
-            if (_fader != null)
-            {
-                _fader.AlphaSelf = 0f;
-            }
-        }
-
-        private void FadeCharging()
-        {
-            if (_fader == null)
-            {
-                return;
-            }
-
-            _faded += Time.deltaTime;
-            _fader.AlphaSelf = Mathf.Clamp01(_faded / Fsm.GetFsmFloat(SsdVars.ChargeTime).Value);
+            fader.SetAlpha(0f);
+            fader.FadeTo(1f, Fsm.GetFsmFloat(SsdVars.ChargeTime).Value);
         }
 
         public override void OnUpdate()
         {
-            FadeCharging();
-
             var ia = GameManager.instance?.inputHandler?.inputActions;
             if (ia == null)
             {

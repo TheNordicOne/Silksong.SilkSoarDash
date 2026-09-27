@@ -31,6 +31,7 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const float ThrowWaitTimeOffScreen = 0.5f;
         public const float NeedleThrowTimeout = 0.8f;
         public const float ThreadLoopDelay = 0.1f;
+        public const float ChargingFaderFadeTime = 0.1f;
         public const float ThreadRayDistance = 10f;
         public const int TerrainLayer = 8;
         public const float DefaultCancelableTime = 0.2f;

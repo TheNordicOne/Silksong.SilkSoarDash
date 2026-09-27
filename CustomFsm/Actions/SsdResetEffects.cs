@@ -1,7 +1,7 @@
 using GlobalEnums;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
-using UnityEngine;
+using SilkSoarDash.Extensions;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -51,14 +51,23 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             
             
-            var threadEffect = Hero.transform.Find(SsdObjects.Thread);
-            if (threadEffect != null)
-            {
-                var local = threadEffect.localPosition;
-                threadEffect.localEulerAngles = new Vector3(0f, 0f, 0f);
-                threadEffect.localPosition = new Vector3(-local.y, local.x, local.z);
-            }
+            PointThreadsUp();
             Finish();
+        }
+
+        private static void PointThreadsUp()
+        {
+            var thread = Hero.transform.Find(SsdObjects.Thread);
+            if (thread != null)
+            {
+                thread.PointUp();
+            }
+
+            var threadLoop = Hero.transform.Find(SsdObjects.ThreadLoop);
+            if (threadLoop != null)
+            {
+                threadLoop.PointUp();
+            }
         }
 
         private void ReattachStickNeedle()

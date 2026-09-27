@@ -2,6 +2,7 @@ using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using UnityEngine;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Extensions;
 using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
@@ -63,10 +64,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             {
                 return;
             }
-            var local = threadEffect.localPosition;
             threadEffect.gameObject.SetActive(true);
-            threadEffect.localEulerAngles = new Vector3(0f, 0f, -90f);
-            threadEffect.localPosition = new Vector3(local.y, -local.x, local.z);
+            threadEffect.PointForward();
         }
 
         private static void PreThrowEffects()

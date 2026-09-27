@@ -115,6 +115,7 @@
         <Compile Include="CustomFsm\Actions\SsdThrowWait.cs" />
         <Compile Include="CustomFsm\SilkSoarDashFSM.cs" />
         <Compile Include="Extensions\HeroController.cs" />
+        <Compile Include="Extensions\Transform.cs" />
         <Compile Include="SilkLog.cs" />
         <Compile Include="Logging\SilkLogEvent.cs" />
         <Compile Include="Logging\SilkLogSourceExtensions.cs" />

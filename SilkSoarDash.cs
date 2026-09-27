@@ -9,7 +9,6 @@ namespace SilkSoarDash
     {
         private static readonly BepInEx.Logging.ManualLogSource SsdLog = BepInEx.Logging.Logger.CreateLogSource("SilkSoarDash");
         private static HeroActions InputActions => GameManager.instance?.inputHandler?.inputActions;
-        private static HeroController Hero => HeroController.instance;
 
         private void Awake()
         {

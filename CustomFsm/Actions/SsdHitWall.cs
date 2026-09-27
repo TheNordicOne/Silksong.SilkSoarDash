@@ -20,7 +20,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             Hero.SetCState(SsdCStates.SuperDashOnWall, true);
             Hero.SetCState(SsdCStates.SuperDashing, false);
-            Hero.AffectedByGravity(false);
+            Hero.AffectedByGravity(true);
 
             Hero.PlayAnim(SsdAnims.WallCatch);
 
@@ -29,8 +29,21 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnUpdate()
         {
-            // finish when the current animation completes
+            ClampFall();
+
+            if (Hero.IsAnimPlaying(SsdAnims.WallCatch))
+            {
+                return;
+            }
+
             Finish();
+        }
+
+        private static void ClampFall()
+        {
+            var velocity = Hero.Body.linearVelocity;
+
+            Hero.Body.linearVelocity = new Vector2(velocity.x, Mathf.Clamp(velocity.y, -SsdVars.CatchFallSpeed, SsdVars.CatchFallSpeed));
         }
     }
 }

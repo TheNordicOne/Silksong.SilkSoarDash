@@ -3362,6 +3362,56 @@ HeroLockState        ControlLocked and GravityLocked, mode Remove
 There is no wall cling state. The grab look is the `Harpoon Catch` clip plus
 `Hornet_harpoon_grab_effect`, with the fall speed clamped to 5 while it plays.
 
+### Harpoon objects on the hero
+
+```
+Harpoon Needle                     hero root, rot 0, clip Harpoon Needle
+  Thread                           lpos (6.31, -0.03), scale (-1.65, -0.79), clip Harpoon Thread,
+                                   DeactivateAfter2dtkAnimation
+  Harpoon Tinker                   PolygonCollider2D, DamageEnemies, Rigidbody2D
+Effects/Harpoon Thread Ring/Thread clip Harpoon Thread
+Effects/Hornet_harpoon_throw_effect   DeactivateAfterDelay, sprite children, rot 0
+Effects/Hornet_harpoon_dash           DeactivateAfterDelay, child sprite at lpos x 3.61
+Effects/Hornet_harpoon_grab_effect    DeactivateAfterDelay, VibrationPlayer, scale x 0.85
+Attacks/Harpoon Breaker (+ Extend)    BoxCollider2D, Rigidbody2D, BreakableBreaker, no sprite
+Attacks/Harpoon Dash Damager          DamageEnemies, BoxCollider2D, DeactivateNextFrame
+```
+
+`Harpoon Breaker` is a collider that breaks things along the line, not the visible thread.
+The visible thread is the `Thread` child of `Harpoon Needle`.
+
+`Special Attacks/Super Jump Needle Stick` has default clip `Harpoon Needle Wall Hit` and rests
+at local rotation 270. Silk Soar's stuck needle is the harpoon wall needle stood upright.
+At rotation 0 it is horizontal. Setting it to 90 points it straight down.
+
+### Flip?, Face L/R, Kick Up?
+
+```
+Flip?     Wallsliding or Fixed Direction -> WALL (Wall Flip)
+          ListenForRight isPressed -> R, ListenForLeft isPressed -> L, else FINISHED
+Face L    HeroController.FaceLeft
+Face R    HeroController.FaceRight
+Kick Up?  GetHeroCState onGround; not grounded -> FINISHED
+          grounded: Translate owner y +0.25 World, then FINISHED to Antic
+```
+
+Kick Up? is a position nudge, not a velocity.
+
+### Dir, Left, Air Needle L, Suspend, Freeze Needle
+
+```
+Dir            SendEventByScale on owner, xScale, World: positive -> L, negative -> R
+Left           Travel Angle 180, three RayCast2dV2 on layer 11 (enemies) -> HIT ENEMY,
+               one on layer 17 for TinkEffect -> HIT TINK,
+               two RayCastHeroBlocker from (0, -0.5) Self -> HIT WALL, else FINISHED
+Air Needle L   Harpoon Needle local pos (0, 0, -0.001), scale x 1, Translate World, activate
+Suspend        Harpoon Damager EndDamage, play Harpoon Needle on the needle
+Freeze Needle  KeepWorldPosition.SetStay(true) on the needle, SetParent null
+```
+
+Positive hero scale sends L, which matches `FaceRight` setting scale -1.
+The harpoon needle never flies. It is placed at its end point and shown there.
+
 ## Runtime facts from our own FSM
 
 `Super Jump Needle Throw` rigidbody: Dynamic, simulated, linearDamping 0, gravityScale 0,

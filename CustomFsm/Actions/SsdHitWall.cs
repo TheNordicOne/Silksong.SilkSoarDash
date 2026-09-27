@@ -1,22 +1,29 @@
 using HutongGames.PlayMaker;
+using SilkSoarDash.CustomFsm.Constants;
+using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdHitWall : FsmStateAction
     {
-        
+        private static HeroController Hero => HeroController.instance;
+
         public override void OnEnter()
         {
-            // StickNeedle OFF
-            // Damager OFF
+            var stickNeedle = Fsm.GetFsmGameObject(SsdVars.StickNeedle).Value;
+            var damager = Hero.transform.Find(SsdObjects.Damager);
+            stickNeedle.SetActive(false);
+            damager.gameObject.SetActive(false);
 
-            // CameraTarget.SetSuperJump is vertical only. Skipped
+            // CameraTarget.SetSuperJump is vertical only. Skipped until custom implementation
 
-            // Hero.SetCState(SuperDashOnWall, true)
-            // Hero.SetCState(SuperDashing, false)
-            // Hero.AffectedByGravity(false)
-            // SendMessage SetPlaySuperJumpFall(false) on the hero
-            // Hero.Body.linearVelocity = (0, 0)
+            Hero.SetCState(SsdCStates.SuperDashOnWall, true);
+            Hero.SetCState(SsdCStates.SuperDashing, false);
+            Hero.AffectedByGravity(false);
+
+            // anim  HeroAnimationController.SetPlaySuperJumpFall()
+
+            Hero.Body.linearVelocity = new Vector2(0, 0);
         }
 
         public override void OnUpdate()

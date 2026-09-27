@@ -48,6 +48,7 @@ namespace SilkSoarDash.CustomFsm
                 new FsmStateAction[]
                 {
                     new SsdCharge(),
+                    FsmBuilder.DecelerateAxes(SsdVars.ChargeDecelerationX, SsdVars.ChargeDecelerationY, true),
                     FsmBuilder.WaitFor(fsm, SsdVars.ChargeTime, SsdEvents.Finished)
                 },
                 new[]

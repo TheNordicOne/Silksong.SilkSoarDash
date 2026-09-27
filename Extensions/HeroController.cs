@@ -17,6 +17,11 @@ namespace SilkSoarDash.Extensions
         {
             return hero.GetForwardSpeed(direction) <= SsdVars.StoppedSpeed;
         }
+        
+        public static bool IsFalling(this HeroController hero)
+        {
+            return hero.Body.linearVelocityY < SsdVars.FallDetectionSpeed;
+        }
 
         private static float GetForwardSpeed(this HeroController hero, float direction)
         {

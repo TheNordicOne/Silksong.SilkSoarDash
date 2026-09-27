@@ -201,6 +201,26 @@ namespace SilkSoarDash.CustomFsm
             };
         }
 
+        public static DecelerateXY DecelerateAxes(float decelerationX, float decelerationY, bool brakeOnExit)
+        {
+            return new DecelerateXY
+            {
+                gameObject = new FsmOwnerDefault
+                {
+                    OwnerOption = OwnerDefaultOption.UseOwner
+                },
+                decelerationX = new FsmFloat
+                {
+                    Value = decelerationX
+                },
+                decelerationY = new FsmFloat
+                {
+                    Value = decelerationY
+                },
+                brakeOnExit = brakeOnExit
+            };
+        }
+
         public static DecelerateV2 Decelerate(float deceleration)
         {
             return new DecelerateV2

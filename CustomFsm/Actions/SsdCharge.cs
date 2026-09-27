@@ -1,15 +1,17 @@
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Extensions;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdCharge : FsmStateAction
     {
+        private static HeroController Hero => HeroController.instance;
         private static SilkSpool Spool =>  SilkSpool.Instance;
+        
         public override void OnEnter()
         {
-            // stop the hero's animation control
-            // decelerate the hero on X at 0.9, braking on exit
+            Hero.StopAnimationControl();
          
            var didAddUsingSilk =  Spool.AddUsing(SilkSpool.SilkUsingFlags.Normal, SsdVars.SilkCost);
            Fsm.GetFsmBool(SsdVars.DidAddUsingSilk).Value = didAddUsingSilk;
@@ -23,8 +25,9 @@ namespace SilkSoarDash.CustomFsm.Actions
            // - anim    Super Jump Antic Effect
            // - event   FocusRumble
            // - effect  Effects/Super Jump Charging Fader
-
-           // set the freezeCharge cState
+           
+           Hero.SetCState(SsdCStates.FreezeCharge, true);
+           
            // turn the camera's RumblingFocus on
         }
 
@@ -36,12 +39,11 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
 
-            if (!ia.SuperDash.IsPressed)
+            if (!ia.SuperDash.IsPressed || Hero.IsFalling())
             {
                 Fsm.Event(SsdEvents.Cancelled);
             }
-
-            // falling -> cancel
+            
         }
     }
 }

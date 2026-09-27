@@ -59,7 +59,6 @@ namespace SilkSoarDash.CustomFsm.Actions
             _needleStick.position = new Vector3(hitPoint.x, _needle.position.y, _needleStick.position.z);
             _needleStick.SetParent(null, true);
             _needleStick.PlayAnim(SsdAnims.NeedleWallHit);
-            ShowThread();
 
             SsdLog.Debug("stuck needle={Needle} hit={Hit} stick={Stick} hero={Hero}", _needle.position, hitPoint, _needleStick.position, Hero.transform.position);
             SsdLog.Debug("stuck name={Name} angle={Angle} scale={Scale} throwActive={ThrowActive}", _needleStick.name, _needleStick.eulerAngles.z, _needleStick.lossyScale, _needle.gameObject.activeInHierarchy);
@@ -83,17 +82,6 @@ namespace SilkSoarDash.CustomFsm.Actions
             // effect  Nail Terrain Hit Effect
 
             Finish();
-        }
-
-        private void ShowThread()
-        {
-            var thread = SsdClones.Thread;
-            if (thread == null || !(Fsm.GetFsmFloat(SsdVars.Distance).Value > SsdVars.ShortThrowThreshold))
-            {
-                return;
-            }
-
-            thread.gameObject.SetActive(true);
         }
 
         private bool IsOutsideCamera()

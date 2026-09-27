@@ -12,6 +12,7 @@ namespace SilkSoarDash.CustomFsm.Actions
         public override void OnEnter()
         {
             Activate(SsdClones.ExtraThrowEffect);
+            Activate(SsdClones.HarpoonThrowEffect);
 
             var fader = SsdClones.ChargingFader;
             if (fader != null)

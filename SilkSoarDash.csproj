@@ -116,6 +116,8 @@
         <Compile Include="CustomFsm\SilkSoarDashFSM.cs" />
         <Compile Include="Extensions\HeroController.cs" />
         <Compile Include="SilkLog.cs" />
+        <Compile Include="Logging\SilkLogEvent.cs" />
+        <Compile Include="Logging\SilkLogSourceExtensions.cs" />
         <Compile Include="SilkSoarDash.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="CustomFsm\Actions\SsdRelinquishControl.cs" />

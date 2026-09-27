@@ -1,6 +1,7 @@
 using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -17,12 +18,12 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             if (!hasEnoughSilk)
             {
-                SsdLog.LogDebug("cancelled, silk " + silk + " below cost " + SsdVars.SilkCost);
+                SsdLog.Debug("cancelled silk={Silk} cost={Cost}", silk, SsdVars.SilkCost);
                 Fsm.Event(SsdEvents.Cancelled);
                 return;
             }
 
-            SsdLog.LogDebug("silk " + silk);
+            SsdLog.Debug("charging silk={Silk}", silk);
 
             Finish();
         }

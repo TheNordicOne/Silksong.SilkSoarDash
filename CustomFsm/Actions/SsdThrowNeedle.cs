@@ -2,6 +2,7 @@ using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using UnityEngine;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -43,12 +44,14 @@ namespace SilkSoarDash.CustomFsm.Actions
         {
             SetDamager();
             
-            if (!ShouldFinish())
+            var travelled = Travelled();
+
+            if (!ShouldFinish(travelled))
             {
                 return;
             }
 
-            SsdLog.LogDebug("landed at " + Mathf.Abs(_needle.position.x - _startX));
+            SsdLog.Debug("needle done travelled={Travelled} target={Target}", travelled, Fsm.GetFsmFloat(SsdVars.Distance).Value);
             Fsm.Event(SsdEvents.Finished);
         }
 
@@ -84,7 +87,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             if (_needle == null)
             {
-                SsdLog.LogWarning(SsdObjects.ThrowNeedle + " not found");
+                SsdLog.Warning("needle not found, cancelling path={Path}", SsdObjects.ThrowNeedle);
                 return false;
             }
 
@@ -108,9 +111,13 @@ namespace SilkSoarDash.CustomFsm.Actions
             }
         }
 
-        private bool ShouldFinish()
+        private float Travelled()
         {
-            var travelled = (_needle.position.x - _startX) * _dir;
+            return (_needle.position.x - _startX) * _dir;
+        }
+
+        private bool ShouldFinish(float travelled)
+        {
             var needleLanded = travelled >= Fsm.GetFsmFloat(SsdVars.Distance).Value;
             var backToBeginning = travelled < SsdVars.NeedleReturnedDistance;
 

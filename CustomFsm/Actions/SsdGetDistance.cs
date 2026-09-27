@@ -3,6 +3,7 @@ using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
 using UnityEngine;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -29,7 +30,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             var dist = Fsm.GetFsmFloat(SsdVars.Distance).Value;
             Fsm.GetFsmVector3(SsdVars.MoveBy).Value = new Vector3(dist * dir.x, 0f, 0f);
 
-            SsdLog.LogDebug("direction " + dir.x + ", hit " + Fsm.GetFsmBool(SsdVars.DidHit).Value + ", distance " + dist + ", gate " + Fsm.GetFsmBool(SsdVars.IsGate).Value + ", spikes " + Fsm.GetFsmBool(SsdVars.HitSpikes).Value);
+            SsdLog.Debug("measured direction={Direction} hit={Hit} distance={Distance} object={Object} gate={Gate} spikes={Spikes}", dir.x, Fsm.GetFsmBool(SsdVars.DidHit).Value, dist, Fsm.GetFsmGameObject(SsdVars.HitObject).Value, Fsm.GetFsmBool(SsdVars.IsGate).Value, Fsm.GetFsmBool(SsdVars.HitSpikes).Value);
 
             Fsm.Event(SsdEvents.ThrowNeedle);
             Finish();

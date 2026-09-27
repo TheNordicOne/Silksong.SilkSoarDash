@@ -2,6 +2,7 @@ using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using SilkSoarDash.CustomFsm;
+using SilkSoarDash.Logging;
 
 namespace SilkSoarDash
 {
@@ -14,7 +15,7 @@ namespace SilkSoarDash
 
         private void Awake()
         {
-            Log.LogInfo("Plugin loaded and initialized.");
+            Log.Info("loaded");
 
             Harmony.CreateAndPatchAll(typeof(SilkSoarDash));
         }

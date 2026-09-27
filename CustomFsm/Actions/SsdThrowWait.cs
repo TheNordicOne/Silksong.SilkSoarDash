@@ -1,6 +1,7 @@
 using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -16,7 +17,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             var waitTime = isNeedleVisible ? 0f : SsdVars.ThrowWaitTimeOffScreen;
             Fsm.GetFsmFloat(SsdVars.ThrowWaitTime).Value = waitTime;
 
-            SsdLog.LogDebug("needle visible " + isNeedleVisible + ", waiting " + waitTime);
+            SsdLog.Debug("waiting visible={Visible} seconds={Seconds}", isNeedleVisible, waitTime);
 
             Finish();
         }

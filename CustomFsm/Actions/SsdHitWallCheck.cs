@@ -2,6 +2,7 @@ using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Extensions;
+using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -21,7 +22,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             if (hasHitWall || hasStopped)
             {
-                SsdLog.LogDebug("hit wall " + hasHitWall + ", stopped " + hasStopped);
+                SsdLog.Debug("stopping wall={Wall} stopped={Stopped} direction={Direction}", hasHitWall, hasStopped, direction);
                 Fsm.Event(SsdEvents.HitWall);
             }
         }

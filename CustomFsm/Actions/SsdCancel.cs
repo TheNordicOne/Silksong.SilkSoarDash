@@ -1,6 +1,7 @@
 using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -21,7 +22,10 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnEnter()
         {
-            SsdLog.LogDebug("global cancel from " + Fsm.PreviousActiveState);
+            var previous = Fsm.PreviousActiveState;
+            var transition = Fsm.LastTransition;
+
+            SsdLog.Debug("cancelled from={State} event={Event}", previous == null ? "none" : previous.Name, transition == null ? "none" : transition.EventName);
 
             if (Fsm.GetFsmBool(SsdVars.DidAddUsingSilk).Value)
             {

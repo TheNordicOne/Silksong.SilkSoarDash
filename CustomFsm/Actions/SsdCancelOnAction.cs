@@ -1,6 +1,7 @@
 using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -22,8 +23,18 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
 
-            SsdLog.LogDebug("cancelled, jump " + InputAction.Jump.WasPressed + ", attack " + InputAction.Attack.WasPressed + ", superdash " + InputAction.SuperDash.WasPressed);
+            SsdLog.Debug("cancelled button={Button}", PressedButton());
             Fsm.Event(SsdEvents.Cancelled);
+        }
+
+        private static string PressedButton()
+        {
+            if (InputAction.Jump.WasPressed)
+            {
+                return "jump";
+            }
+
+            return InputAction.Attack.WasPressed ? "attack" : "superdash";
         }
     }
 }

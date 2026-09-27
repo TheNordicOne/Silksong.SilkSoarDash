@@ -2,6 +2,7 @@ using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Extensions;
+using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -45,7 +46,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             
             if (Hero.IsFalling())
             {
-                SsdLog.LogDebug("throwing, left the ground");
+                SsdLog.Debug("throwing reason={Reason}", "falling");
                 Fsm.Event(SsdEvents.GetDistance);
                 return;
             }
@@ -55,7 +56,7 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
 
-            SsdLog.LogDebug("throwing, button released");
+            SsdLog.Debug("throwing reason={Reason}", "released");
             Fsm.Event(SsdEvents.GetDistance);
         }
     }

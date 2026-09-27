@@ -2,6 +2,7 @@ using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using UnityEngine;
+using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -41,7 +42,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             var distance = needleChildX - needleX;
             Fsm.GetFsmFloat(SsdVars.Distance).Value = distance;
 
-            SsdLog.LogDebug("retracting over " + distance);
+            SsdLog.Debug("retracting distance={Distance}", distance);
             
             needle.gameObject.SetActive(true);
             

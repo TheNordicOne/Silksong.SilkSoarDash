@@ -1,6 +1,7 @@
 using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -11,7 +12,7 @@ namespace SilkSoarDash.CustomFsm.Actions
         
         public override void OnEnter()
         {
-            SsdLog.LogDebug("needle hit spikes");
+            SsdLog.Debug("spikes object={Object}", Fsm.GetFsmGameObject(SsdVars.HitObject).Value);
             Fsm.GetFsmBool(SsdVars.DidHit).Value = false;
 
             // - shake  Small Shake

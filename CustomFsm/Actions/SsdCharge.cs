@@ -2,6 +2,7 @@ using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Extensions;
+using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -47,7 +48,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             if (released || falling)
             {
-                SsdLog.LogDebug("cancelled, released " + released + ", falling " + falling);
+                SsdLog.Debug("cancelled released={Released} falling={Falling}", released, falling);
                 Fsm.Event(SsdEvents.Cancelled);
             }
             

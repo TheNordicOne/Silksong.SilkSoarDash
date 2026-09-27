@@ -16,6 +16,7 @@ namespace SilkSoarDash.CustomFsm.Actions
         private float _dir;
         private float _startX;
         private float _startTime;
+        private Rigidbody2D _body;
 
         private static HeroController Hero => HeroController.instance;
 
@@ -101,9 +102,10 @@ namespace SilkSoarDash.CustomFsm.Actions
             }
 
             _damager = _needle.Find(SsdObjects.NeedleDamagerChild);
-            _needle.position = Hero.transform.position + new Vector3(0f, SsdVars.NeedleStartHeight, 0f);
+            _needle.position = Hero.transform.position + new Vector3(SsdVars.NeedleStartForward * _dir, SsdVars.NeedleStartHeight, 0f);
             _needle.gameObject.SetActive(true);
-            _needle.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(SsdVars.NeedleThrowSpeed * _dir, 0f);
+            _body = _needle.GetComponent<Rigidbody2D>();
+            _body.linearVelocity = new Vector2(SsdVars.NeedleThrowSpeed * _dir, 0f);
             _startX = _needle.position.x;
             _startTime = Time.time;
 
@@ -126,9 +128,12 @@ namespace SilkSoarDash.CustomFsm.Actions
             return (_needle.position.x - _startX) * _dir;
         }
 
-        private static bool ShouldFinish(float travelled)
+        private bool ShouldFinish(float travelled)
         {
-            return travelled < SsdVars.NeedleReturnedDistance;
+            var backToBeginning = travelled < SsdVars.NeedleReturnedDistance;
+            var landed = travelled > 0f && Mathf.Abs(_body.linearVelocityX) < SsdVars.StoppedSpeed;
+
+            return backToBeginning || landed;
         }
     }
 }

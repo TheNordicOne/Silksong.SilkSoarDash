@@ -60,8 +60,6 @@ namespace SilkSoarDash.CustomFsm.Actions
             _needleStick.SetParent(null, true);
             _needleStick.PlayAnim(SsdAnims.NeedleWallHit);
 
-            SsdLog.Debug("stuck needle={Needle} hit={Hit} stick={Stick} hero={Hero}", _needle.position, hitPoint, _needleStick.position, Hero.transform.position);
-            SsdLog.Debug("stuck name={Name} angle={Angle} scale={Scale} throwActive={ThrowActive}", _needleStick.name, _needleStick.eulerAngles.z, _needleStick.lossyScale, _needle.gameObject.activeInHierarchy);
             
             var isGate = Fsm.GetFsmBool(SsdVars.IsGate).Value;
             if (isGate)

@@ -135,7 +135,6 @@
         <Compile Include="CustomFsm\Constants\SsdAnims.cs" />
         <Compile Include="CustomFsm\Constants\SsdCamera.cs" />
         <Compile Include="CustomFsm\SsdStateFactory.cs" />
-        <Compile Include="SsdDumpProbe.cs" />
         <Compile Include="CustomFsm\Constants\SsdVars.cs" />
         <Compile Include="CustomFsm\Constants\SsdEvents.cs" />
         <Compile Include="CustomFsm\Constants\SsdStates.cs" />

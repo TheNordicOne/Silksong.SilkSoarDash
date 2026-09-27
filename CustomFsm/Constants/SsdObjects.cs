@@ -14,6 +14,7 @@ namespace SilkSoarDash.CustomFsm.Constants
 
         public const string ThrowNeedle = "Special Attacks/Super Jump Needle Throw";
         public const string RetractNeedle = "Special Attacks/Super Jump Needle Throw Fall";
+        public const string RetractNeedleChild = "Special Attacks/Super Jump Needle Throw Fall/Move To";
         public const string StickNeedle = "Special Attacks/Super Jump Needle Stick";
         public const string Damager = "Special Attacks/Super Jump Damager";
 

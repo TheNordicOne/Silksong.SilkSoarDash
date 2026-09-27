@@ -78,7 +78,7 @@ namespace SilkSoarDash.CustomFsm
                     FsmBuilder.Transition(SsdEvents.ThrowNeedle, SsdStates.ThrowNeedle)
                 });
         }
-        
+
         public static FsmState ThrowNeedle(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.ThrowNeedle,
@@ -94,7 +94,7 @@ namespace SilkSoarDash.CustomFsm
                     FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ResetEffects),
                 });
         }
-        
+
         public static FsmState HitSpikes(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.HitSpikes,
@@ -104,7 +104,7 @@ namespace SilkSoarDash.CustomFsm
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
                 });
         }
-        
+
         public static FsmState PositionStickNeedlePre(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.PositionStickNeedlePre,
@@ -116,8 +116,8 @@ namespace SilkSoarDash.CustomFsm
                     FsmBuilder.Transition(SsdEvents.TransitionGate, SsdStates.HitTransitionGate),
                 });
         }
-        
-        
+
+
         public static FsmState PositionStickNeedle(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.PositionStickNeedle,
@@ -128,7 +128,7 @@ namespace SilkSoarDash.CustomFsm
                     FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ResetEffects),
                 });
         }
-        
+
         public static FsmState HitTransitionGate(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.HitTransitionGate,
@@ -139,7 +139,7 @@ namespace SilkSoarDash.CustomFsm
                     FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ResetEffects),
                 });
         }
-        
+
         public static FsmState ThrowWait(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.ThrowWait,
@@ -153,7 +153,7 @@ namespace SilkSoarDash.CustomFsm
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.DashAntic),
                 });
         }
-        
+
         public static FsmState DashAntic(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.DashAntic,
@@ -163,7 +163,7 @@ namespace SilkSoarDash.CustomFsm
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.DashStart),
                 });
         }
-        
+
         public static FsmState DashStart(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.DashStart,
@@ -173,7 +173,7 @@ namespace SilkSoarDash.CustomFsm
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.Dashing),
                 });
         }
-        
+
         public static FsmState Dashing(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.Dashing,
@@ -193,7 +193,7 @@ namespace SilkSoarDash.CustomFsm
                     FsmBuilder.Transition(SsdEvents.HitWall, SsdStates.ResetEffects),
                 });
         }
-        
+
         public static FsmState Cancelable(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.Cancelable,
@@ -213,7 +213,7 @@ namespace SilkSoarDash.CustomFsm
                     FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.RetractNeedleCancel),
                 });
         }
-        
+
         public static FsmState HitWallHard(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.HitWallHard,
@@ -223,11 +223,16 @@ namespace SilkSoarDash.CustomFsm
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
                 });
         }
-        
+
         public static FsmState RetractNeedleCancel(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.RetractNeedleCancel,
-                new FsmStateAction[] { new SsdRetractNeedleCancel() },
+                new FsmStateAction[]
+                {
+                    new SsdRetractNeedleCancel(),
+                    FsmBuilder.MoveBy(fsm, SsdObjects.RetractNeedle, SsdVars.MoveBy, SsdVars.RetractNeedleSpeed, SsdEvents.Finished),
+                    FsmBuilder.Decelerate(SsdVars.CancelDeceleration)
+                },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),

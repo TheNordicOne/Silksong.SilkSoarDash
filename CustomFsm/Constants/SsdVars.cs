@@ -35,6 +35,8 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const float NeedleStartHeight = 0.85f;
         public const int ShortThrowThreshold = 12;
         public const float NeedleThrowSpeed = 150f;
+        public const float RetractNeedleSpeed = 150f;
+        public const float CancelDeceleration = 0.98f;
         public const float NeedleDamagerRange = 30f;
         public const float NeedleReturnedDistance = -0.1f;
         public const float NeedleRayDistance = 350f;

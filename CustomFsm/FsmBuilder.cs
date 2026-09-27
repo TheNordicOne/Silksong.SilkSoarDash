@@ -3,6 +3,7 @@ using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
 using JetBrains.Annotations;
 using SilkSoarDash.CustomFsm.Constants;
+using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm
 {
@@ -138,6 +139,81 @@ namespace SilkSoarDash.CustomFsm
                 {
                     Value = true
                 }
+            };
+        }
+
+        public static iTweenMoveBy MoveBy(Fsm fsm, string heroPath, string vectorVariable, float speed, string finishEvent)
+        {
+            var target = HeroController.instance.transform.Find(heroPath);
+
+            return new iTweenMoveBy
+            {
+                gameObject = new FsmOwnerDefault
+                {
+                    OwnerOption = OwnerDefaultOption.SpecifyGameObject,
+                    GameObject = new FsmGameObject
+                    {
+                        Value = target == null ? null : target.gameObject
+                    }
+                },
+                id = new FsmString(),
+                vector = fsm.GetFsmVector3(vectorVariable),
+                time = new FsmFloat
+                {
+                    Value = 0f
+                },
+                delay = new FsmFloat
+                {
+                    Value = 0f
+                },
+                speed = new FsmFloat
+                {
+                    Value = speed
+                },
+                easeType = iTween.EaseType.linear,
+                loopType = iTween.LoopType.none,
+                space = Space.World,
+                orientToPath = new FsmBool
+                {
+                    Value = false
+                },
+                lookAtObject = new FsmGameObject(),
+                lookAtVector = new FsmVector3(),
+                lookTime = new FsmFloat
+                {
+                    Value = 0f
+                },
+                axis = iTweenFsmAction.AxisRestriction.none,
+                startEvent = null,
+                finishEvent = new FsmEvent(finishEvent),
+                realTime = new FsmBool
+                {
+                    Value = false
+                },
+                stopOnExit = new FsmBool
+                {
+                    Value = true
+                },
+                loopDontFinish = new FsmBool
+                {
+                    Value = false
+                }
+            };
+        }
+
+        public static DecelerateV2 Decelerate(float deceleration)
+        {
+            return new DecelerateV2
+            {
+                gameObject = new FsmOwnerDefault
+                {
+                    OwnerOption = OwnerDefaultOption.UseOwner
+                },
+                deceleration = new FsmFloat
+                {
+                    Value = deceleration
+                },
+                brakeOnExit = false
             };
         }
 

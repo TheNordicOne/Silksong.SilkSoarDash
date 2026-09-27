@@ -1,36 +1,48 @@
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdRetractNeedleCancel : FsmStateAction
     {
+        private static HeroController Hero => HeroController.instance;
         
         public override void OnEnter()
         {
-            // QueuedCancel = false
+            Fsm.GetFsmBool(SsdVars.QueuedCancel).Value = false;
 
             // audio  hornet_superjump_cancel
+            
+            RetractNeedle();
 
-            // read RetractNeedle X
-            // read RetractNeedle Move To child X
-            // needleDistance = Move To X - RetractNeedle X
-            // RetractNeedle ON
-            // StickNeedle OFF
-            // moveBy = (needleDistance, 0, 0)
-            // Damager OFF
-            // tween RetractNeedle by moveBy at speed 150, linear, world space
-            // DecelerateV2 on the hero
+            // CameraTarget.SetSuperJump is vertical only. Skipped until custom implementation
 
-            // CameraTarget.SetSuperJump is vertical only. Skipped
-
-            // EventRegister.SendEvent(SuperJumpEnded)
+            EventRegister.SendEvent(SsdRegisterEvents.SuperJumpEnded);
         }
 
-        public override void OnUpdate()
+        private void RetractNeedle()
         {
-            // finish when RetractNeedle reaches the target
-            Finish();
+            var needle = Hero.transform.Find(SsdObjects.RetractNeedle);
+            var damager = Hero.transform.Find(SsdObjects.Damager);
+            
+            var stickNeedle = Fsm.GetFsmGameObject(SsdVars.StickNeedle).Value;
+            var needleChild = Hero.transform.Find(SsdObjects.RetractNeedleChild);
+            
+            var needleX = needle.position.x;
+            var needleChildX = needleChild.position.x;
+
+            var distance = needleChildX - needleX;
+            Fsm.GetFsmFloat(SsdVars.Distance).Value = distance;
+            
+            needle.gameObject.SetActive(true);
+            
+            stickNeedle.SetActive(false);
+            
+           
+            Fsm.GetFsmVector3(SsdVars.MoveBy).Value = new Vector3(distance, 0f, 0f);
+            
+            damager.gameObject.SetActive(false);
         }
     }
 }

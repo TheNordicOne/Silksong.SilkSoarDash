@@ -1,3 +1,4 @@
+using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using UnityEngine;
 using SilkSoarDash.CustomFsm.Constants;
@@ -6,6 +7,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdThrowNeedle : FsmStateAction
     {
+        private static readonly ManualLogSource SsdLog = SilkLog.For<SsdThrowNeedle>();
+
         private Transform _needle;
         private Transform _damager;
         private float _dir;
@@ -40,10 +43,13 @@ namespace SilkSoarDash.CustomFsm.Actions
         {
             SetDamager();
             
-            if (ShouldFinish())
+            if (!ShouldFinish())
             {
-                Fsm.Event(SsdEvents.Finished);
+                return;
             }
+
+            SsdLog.LogDebug("landed at " + Mathf.Abs(_needle.position.x - _startX));
+            Fsm.Event(SsdEvents.Finished);
         }
 
 
@@ -78,6 +84,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             if (_needle == null)
             {
+                SsdLog.LogWarning(SsdObjects.ThrowNeedle + " not found");
                 return false;
             }
 

@@ -1,3 +1,4 @@
+using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 
@@ -5,6 +6,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdCancel : FsmStateAction
     {
+        private static readonly ManualLogSource SsdLog = SilkLog.For<SsdCancel>();
+
         private static HeroController Hero => HeroController.instance;
         private static SilkSpool Spool => SilkSpool.Instance;
 
@@ -18,6 +21,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnEnter()
         {
+            SsdLog.LogDebug("global cancel from " + Fsm.PreviousActiveState);
+
             if (Fsm.GetFsmBool(SsdVars.DidAddUsingSilk).Value)
             {
                 Spool.RemoveUsing(SilkSpool.SilkUsingFlags.Normal, SsdVars.SilkCost);

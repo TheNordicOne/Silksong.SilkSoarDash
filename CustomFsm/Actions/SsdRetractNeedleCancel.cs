@@ -1,3 +1,4 @@
+using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using UnityEngine;
@@ -6,6 +7,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdRetractNeedleCancel : FsmStateAction
     {
+        private static readonly ManualLogSource SsdLog = SilkLog.For<SsdRetractNeedleCancel>();
+
         private static HeroController Hero => HeroController.instance;
         
         public override void OnEnter()
@@ -37,6 +40,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             var distance = needleChildX - needleX;
             Fsm.GetFsmFloat(SsdVars.Distance).Value = distance;
+
+            SsdLog.LogDebug("retracting over " + distance);
             
             needle.gameObject.SetActive(true);
             

@@ -1,3 +1,4 @@
+using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Extensions;
@@ -6,6 +7,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdHitWallCheck : FsmStateAction
     {
+        private static readonly ManualLogSource SsdLog = SilkLog.For<SsdHitWallCheck>();
+
         private static HeroController Hero => HeroController.instance;
         
         public override void OnUpdate()
@@ -14,8 +17,11 @@ namespace SilkSoarDash.CustomFsm.Actions
             var wallVariable = direction > 0f ? SsdVars.WallHitRight : SsdVars.WallHitLeft;
             var hasHitWall = Fsm.GetFsmBool(wallVariable).Value;
             
-            if (hasHitWall || Hero.HasStopped(direction))
+            var hasStopped = Hero.HasStopped(direction);
+
+            if (hasHitWall || hasStopped)
             {
+                SsdLog.LogDebug("hit wall " + hasHitWall + ", stopped " + hasStopped);
                 Fsm.Event(SsdEvents.HitWall);
             }
         }

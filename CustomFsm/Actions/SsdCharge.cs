@@ -1,3 +1,4 @@
+using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Extensions;
@@ -6,6 +7,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdCharge : FsmStateAction
     {
+        private static readonly ManualLogSource SsdLog = SilkLog.For<SsdCharge>();
+
         private static HeroController Hero => HeroController.instance;
         private static SilkSpool Spool =>  SilkSpool.Instance;
         
@@ -39,8 +42,12 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
 
-            if (!ia.SuperDash.IsPressed || Hero.IsFalling())
+            var released = !ia.SuperDash.IsPressed;
+            var falling = Hero.IsFalling();
+
+            if (released || falling)
             {
+                SsdLog.LogDebug("cancelled, released " + released + ", falling " + falling);
                 Fsm.Event(SsdEvents.Cancelled);
             }
             

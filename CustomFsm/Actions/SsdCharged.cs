@@ -1,3 +1,4 @@
+using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Extensions;
@@ -6,6 +7,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdCharged : FsmStateAction
     {
+        private static readonly ManualLogSource SsdLog = SilkLog.For<SsdCharged>();
+
         private static HeroController Hero => HeroController.instance;
         private static SilkSpool Spool => SilkSpool.Instance;
 
@@ -42,6 +45,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             
             if (Hero.IsFalling())
             {
+                SsdLog.LogDebug("throwing, left the ground");
                 Fsm.Event(SsdEvents.GetDistance);
                 return;
             }
@@ -51,7 +55,7 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
 
-
+            SsdLog.LogDebug("throwing, button released");
             Fsm.Event(SsdEvents.GetDistance);
         }
     }

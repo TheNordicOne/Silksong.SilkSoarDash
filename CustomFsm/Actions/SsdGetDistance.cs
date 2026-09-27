@@ -1,3 +1,4 @@
+using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
 using UnityEngine;
@@ -7,6 +8,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdGetDistance : FsmStateAction
     {
+        private static readonly ManualLogSource SsdLog = SilkLog.For<SsdGetDistance>();
+
         public override void OnEnter()
         {
             var dir = HeroController.instance.cState.facingRight ? Vector2.right : Vector2.left;
@@ -25,6 +28,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             
             var dist = Fsm.GetFsmFloat(SsdVars.Distance).Value;
             Fsm.GetFsmVector3(SsdVars.MoveBy).Value = new Vector3(dist * dir.x, 0f, 0f);
+
+            SsdLog.LogDebug("direction " + dir.x + ", hit " + Fsm.GetFsmBool(SsdVars.DidHit).Value + ", distance " + dist + ", gate " + Fsm.GetFsmBool(SsdVars.IsGate).Value + ", spikes " + Fsm.GetFsmBool(SsdVars.HitSpikes).Value);
 
             Fsm.Event(SsdEvents.ThrowNeedle);
             Finish();

@@ -59,10 +59,13 @@ namespace SilkSoarDash.CustomFsm.Actions
         private void SetThreadEffect()
         {
             var threadEffect = Hero.transform.Find(SsdObjects.Thread);
-            if (threadEffect != null && Fsm.GetFsmFloat(SsdVars.Distance).Value > SsdVars.ShortThrowThreshold)
+            if (threadEffect == null || !(Fsm.GetFsmFloat(SsdVars.Distance).Value > SsdVars.ShortThrowThreshold))
             {
-                threadEffect.gameObject.SetActive(true);
+                return;
             }
+
+            threadEffect.gameObject.SetActive(true);
+            threadEffect.localEulerAngles = new Vector3(0f, 0f, -90f);
         }
 
         private static void PreThrowEffects()
@@ -116,12 +119,9 @@ namespace SilkSoarDash.CustomFsm.Actions
             return (_needle.position.x - _startX) * _dir;
         }
 
-        private bool ShouldFinish(float travelled)
+        private static bool ShouldFinish(float travelled)
         {
-            var needleLanded = travelled >= Fsm.GetFsmFloat(SsdVars.Distance).Value;
-            var backToBeginning = travelled < SsdVars.NeedleReturnedDistance;
-
-            return needleLanded || backToBeginning;
+            return travelled < SsdVars.NeedleReturnedDistance;
         }
     }
 }

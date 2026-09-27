@@ -1,5 +1,6 @@
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -45,6 +46,14 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             EventRegister.SendEvent(SsdRegisterEvents.SuperJumpEnded);
 
+            
+            
+            var threadEffect = Hero.transform.Find(SsdObjects.Thread);
+            if (threadEffect != null)
+            {
+                threadEffect.gameObject.SetActive(true);
+                threadEffect.localEulerAngles = new Vector3(0f, 0f, 0f);
+            }
             Finish();
         }
 

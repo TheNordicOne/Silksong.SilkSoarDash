@@ -122,7 +122,7 @@ namespace SilkSoarDash.CustomFsm
                 },
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.RegainControlToIdle),
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.PositionStickNeedlePre),
                 });
         }
 
@@ -226,7 +226,7 @@ namespace SilkSoarDash.CustomFsm
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.Cancelable),
-                    FsmBuilder.Transition(SsdEvents.HitWall, SsdStates.RegainControlToIdle),
+                    FsmBuilder.Transition(SsdEvents.HitWall, SsdStates.HitWallHard),
                 });
         }
 

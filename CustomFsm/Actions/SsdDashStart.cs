@@ -32,7 +32,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             Hero.SetCState(SsdCStates.SuperDashing, true);
             
-            Hero.hero_state = ActorStates.no_input;
+            Hero.RelinquishControlNotVelocity();
             
             SsdShake.Send(SsdCamera.SuperDashShake);
             

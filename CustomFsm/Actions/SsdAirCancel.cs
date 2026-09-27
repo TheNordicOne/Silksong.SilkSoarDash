@@ -30,18 +30,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             SsdShake.Send(SsdCamera.EnemyKillShake);
             
-            Hero.SetStartWithUpdraftExit();
-
-            Hero.PlayAnim(SsdAnims.LoopCancel);
-        }
-
-        public override void OnUpdate()
-        {
-            if (Hero.IsAnimPlaying(SsdAnims.LoopCancel))
-            {
-                return;
-            }
-
+            // vanilla plays Super Jump Loop Cancel and sets an updraft exit, both are for an upward soar
+            // the game's own fall animation takes over once control is back
             Finish();
         }
     }

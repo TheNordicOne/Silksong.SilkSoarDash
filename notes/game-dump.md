@@ -3158,3 +3158,214 @@ FsmGameObject Throw Needle Damager = Damager (UnityEngine.GameObject)
 FsmGameObject Thread Loop = Super Jump Thread Loop (UnityEngine.GameObject)
 FsmObject Clip = null
 ```
+
+## Hero control API
+
+```
+FaceRight()   cState.facingRight = true,  transform.localScale.x = -1
+FaceLeft()    cState.facingRight = false, transform.localScale.x = +1
+RefreshFacing()  cState.facingRight = lossyScale.x < 0
+```
+
+So facing right is a NEGATIVE local scale. Hornet's art is authored facing left.
+`harpoonDashFSM` picks its direction with `SendEventByScale xScale space=World`,
+positive scale sends `L`, negative sends `R`.
+
+`HeroController.Dash()` sets `rb2d.linearVelocity` to `facingRight ? +speed : -speed`.
+
+`HeroController.FixedUpdate` reaches `DoMovement` -> `Move(move_input, useInput)` unless
+`hero_state == no_input`. `Move` always ends with `rb2d.linearVelocity = v` where only
+`v.x` is replaced by `move_input * GetRunSpeed()`. Y is never touched, which is why the
+vertical soar never noticed. `hero_state` is a public field.
+
+`RelinquishControl()` calls `ResetInput`, `ResetMotion(true)`, `IgnoreInput`, sets
+`controlReqlinquished`. It does NOT set `hero_state`.
+
+`RelinquishControlNotVelocity()` does the same but calls `ResetMotionNotVelocity()` and
+`SetState(ActorStates.no_input)`. This is what `harpoonDashFSM` uses for its dash.
+
+`CanSuperJump()` requires: not paused, `hero_state` not hard_landing or dash_landing,
+onGround, not dashing, not hazardDeath or hazardRespawning, not backDashing, attack
+recovery elapsed, `CanDoFSMCancelMove()`, not recoilFrozen, not recoiling, not
+transitioning, `playerData.hasSuperJump`.
+
+`LookForInput` gates the soar with
+`SuperDash.WasPressed && IsPressingOnlyDown() && CanSuperJump()`.
+`IsPressingOnlyDown()` is private: `Down.IsPressed && !Right.IsPressed && !Left.IsPressed`.
+
+## PlayMaker runtime rules
+
+`Fsm.Init(component)` calls `Preprocess()`, which calls `Init(state)` and `OnPreprocess()`
+on every action of every state. `CheckCollisionSide.OnPreprocess` sets
+`Fsm.HandleFixedUpdate`, which is the only reason `OnFixedUpdate` runs at all on a
+hand-built FSM.
+
+`Fsm.ProcessEvent` checks `globalTransitions` BEFORE the active state's transitions. A
+state cannot override a global transition.
+
+`NamedVariable.IsNone` is `useVariable && string.IsNullOrEmpty(name)`. A stock action
+field left as `new FsmX()` is therefore NOT none, and the action will read its value.
+`iTween.CleanArgs` calls `GetType()` on every hashtable value, so a null value there
+throws. Unused stock fields need `UseVariable = true`.
+
+`CheckCollisionSide` and `CheckCollisionSideV2` set their hit bools from a
+`CustomPlayMakerCollisionStay2D` proxy on the target. `OnEnter` and `OnFixedUpdate` only
+re-check when one of the four bools is already true. `DoCollisionExit2D` clears all four.
+`checkUp`/`checkLeft`/... are enabled per side only when that side's bool is not none or
+its event is not null.
+
+`FSMUtility.SendEventUpwards(go, name)` sends to every FSM on the object and then walks up
+the parent chain doing the same. `DamageEnemies.OnHitSpikes` uses it, so
+`DAMAGER HIT SPIKES` reaches any FSM on the needle's ancestors, including ours.
+
+Useful helpers: `FSMUtility.LocateFSM(go, fsmName)`, `FSMUtility.SetBool(fsm, name, value)`,
+`FSMUtility.SendEventToGameObject(go, eventName)`.
+
+## Camera shake, flash and fade
+
+The shake FSM is `CameraShake` on `GameCameras.instance.cameraParent`. Rumble is a bool on
+it, shakes are events sent to the object:
+
+```
+bools    RumblingFocus, RumblingFocus2
+events   FocusRumble, AverageShake, SuperDashShake, EnemyKillShake
+```
+
+`SpriteFlash.FlashingSuperDashHandled()` returns a `FlashHandle`, which is a struct with an
+`ID` property. It calls `Flash(colour, ..., repeating: true, ...)`, so it ends with
+`CancelRepeatingFlash(handle)` or `CancelFlashByID(handle.ID)`.
+
+`NestedFadeGroupBase` has `AlphaSelf` and
+`FadeTo(toAlpha, fadeTime, curve = null, isRealtime = false, callback = null)`. The tween
+runs on the component, so it survives the state that started it.
+
+## Harpoon dash FSM
+
+The game's own horizontal version of this ability, on `HeroController.harpoonDashFSM`.
+
+Main chain:
+
+```
+Idle --DO MOVE--> Can Do? --> Take Control --> Flip? --> Kick Up? --> Antic
+Antic --FINISHED--> Dir --L/R--> Ring Check L/R --> Left/Right
+Left --HIT WALL--> Wall Needle L --FINISHED--> Hit Wall --FINISHED--> Throw
+Left --FINISHED--> Air Needle L --FINISHED--> Suspend --FINISHED--> Throw
+Throw --FINISHED--> Freeze Needle --> Enemy Still Alive? --> Dash
+Dash --END--> Hit Enemy? --CANCEL--> Catch --FINISHED--> Wall Slide?
+Wall Slide? --CANCEL--> Anim To Idle,  --FINISHED--> Wallslide Cancel
+```
+
+`Dash` also exits on `CATCH` (to `To Needle`), `HIT ENEMY`, `RING`, `CRUST WALL`.
+
+Animation clips, all in Hornet's own library:
+
+```
+Harpoon Antic   Harpoon Throw   Harpoon Dash   Harpoon Catch   Harpoon Catch Back
+Harpoon Needle  Harpoon Thread  Harpoon Needle Wall Hit   Harpoon Needle Return
+Ring Harpoon Connect
+```
+
+Objects under the hero:
+
+```
+Harpoon Needle                        child of Hero_Hornet(Clone)
+Harpoon Thread Ring                   Effects
+Harpoon Dash Damager, Harpoon Damager, Harpoon Breaker, Harpoon Breaker Extend   Attacks
+Hornet_harpoon_throw_effect, Hornet_harpoon_dash, Hornet_harpoon_grab_effect
+```
+
+### Antic
+
+```
+Tk2dPlayAnimationWithEvents  Harpoon Antic, animationCompleteEvent = FINISHED
+ClampVelocity2D              x -20..20, y -10..5
+DecelerateXY                 0.975 / 0.875, brakeOnExit
+DecelerateV2                 0.875
+SendEventToRegister          THROWING HARPOON
+```
+
+### Wall Needle L, the stuck needle placement
+
+```
+SetPosition    Harpoon Needle  y = -0.5, z = -0.001, space Self
+GetVector2XY   from the hit point, keeps X only
+SetPosition    Harpoon Needle  x = hit X, space World
+ActivateGameObject  Harpoon Needle
+SetParent      Harpoon Needle -> null, resetLocalPosition and resetLocalRotation False
+```
+
+So the travel axis comes from the hit point and the across axis from a fixed local offset
+of -0.5, and the needle is unparented AFTER it is placed.
+
+### Hit Wall
+
+```
+Tk2dPlayAnimation   on Harpoon Needle, clip Harpoon Needle Wall Hit
+SpawnObjectFromGlobalPool  Nail Terrain Hit Effect at the needle
+PlayAudioEvent      sword_terrain_temp, pitch 0.9 to 1.1
+```
+
+### Throw, which is also how the thread is drawn
+
+```
+SetPositionToObject  Harpoon Breaker -> Harpoon Needle
+SetPositionToObject  Harpoon Breaker Extend -> Harpoon Needle
+GetAngleToTarget2D   Harpoon Breaker -> Hero
+SetRotation          Harpoon Breaker, z = that angle, space Self
+GetDistance          Harpoon Breaker -> Hero          (9.70 captured)
+SetScale             Harpoon Breaker, x = that distance
+Tk2dPlayAnimationWithEvents  Harpoon Throw, animationCompleteEvent = FINISHED
+DecelerateV2         0.9
+ActivateGameObject   Hornet_harpoon_throw_effect, Thread, Harpoon Breaker, Harpoon Breaker Extend
+SendMessageDelay     Camera Target, delay 0.075
+```
+
+The thread is not a fixed length. It is moved to the needle, rotated to the angle back to
+Hornet, and scaled on X by the measured distance.
+
+### Dash
+
+```
+HeroControllerMethods  RelinquishControlNotVelocity
+HeroBoxControlV2       heroBoxState = Harpoon, setOnExit = Normal
+CheckCollisionSideEnter  leftHitEvent and rightHitEvent = FINISHED, otherLayer False
+SetVelocityAsAngle     angle 180, speed 70, everyFrame
+Wait                   0.1 -> END
+Tk2dPlayAnimation      Harpoon Dash
+GetXDistance           owner -> Harpoon Needle, everyFrame
+FloatCompare           distance <= 1 -> CATCH
+ClampVelocity2D        y -5..5, everyFrame
+ActivateGameObject     Harpoon Dash Damager, Hornet_harpoon_dash
+```
+
+Dash speed is 70, re-applied every frame. It ends on a side collision, on `END` after
+0.1s, or when Hornet is within 1 unit of the needle.
+
+### Catch, the wall arrival
+
+```
+HeroBoxControlV2     heroBoxState = Harpoon, setOnExit = Normal
+ActivateGameObject   Harpoon Dash Damager off
+ListenForJump
+DecelerateV2         0.75
+Tk2dPlayAnimationWithEvents  Harpoon Catch, animationCompleteEvent = FINISHED
+ActivateGameObject   Hornet_harpoon_grab_effect on
+SendEventByName      EnemyKillShake
+ActivateGameObject   Harpoon Needle off
+SetParent            Harpoon Needle -> Hero_Hornet(Clone)
+SetScale             Harpoon Needle x = 1
+AllowMantle
+ClampVelocity2D      y -5..5, everyFrame
+HeroLockState        ControlLocked and GravityLocked, mode Remove
+```
+
+There is no wall cling state. The grab look is the `Harpoon Catch` clip plus
+`Hornet_harpoon_grab_effect`, with the fall speed clamped to 5 while it plays.
+
+## Runtime facts from our own FSM
+
+`Super Jump Needle Throw` rigidbody: Dynamic, simulated, linearDamping 0, gravityScale 0,
+mass 1. Nothing damps it, so it only stops on collision.
+
+`CheckCollisionSideV2` with left and right events on the thrown needle never fired in
+testing. The throw state always ran its full 0.8s `Wait`.

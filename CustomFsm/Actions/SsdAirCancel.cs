@@ -1,25 +1,30 @@
 using HutongGames.PlayMaker;
+using SilkSoarDash.CustomFsm.Constants;
+using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdAirCancel : FsmStateAction
     {
+        private static HeroController Hero => HeroController.instance;
         
         public override void OnEnter()
         {
             // effect  Effects/Super Jump Catch Effect
             // audio   Grunt Hornet Voice
+            
+            var needle = Hero.transform.Find(SsdObjects.RetractNeedle);
+            needle.gameObject.SetActive(false);
+            needle.localPosition = new Vector3(0,SsdVars.NeedleStartHeight,0);
+ 
 
-            // RetractNeedle OFF
-            // RetractNeedle localPosition = (0, NeedleStartHeight, 0)
-
-            // CameraTarget.SetSuperJump is vertical only. Skipped
-
-            // Hero.SetCState(SuperDashing, false)
+            // CameraTarget.SetSuperJump is vertical only. Skipped until custom implementation
+            
+            Hero.SetCState(SsdCStates.SuperDashing, false);
 
             // event  EnemyKillShake
-
-            // Hero.SetStartWithUpdraftExit()
+            
+            Hero.SetStartWithUpdraftExit();
 
             // anim  Super Jump Loop Cancel
         }

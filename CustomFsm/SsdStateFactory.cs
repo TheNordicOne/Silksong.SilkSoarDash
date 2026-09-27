@@ -304,6 +304,7 @@ namespace SilkSoarDash.CustomFsm
                 new FsmStateAction[]
                 {
                     new SsdAirCancel(),
+                    FsmBuilder.Decelerate(SsdVars.CancelDeceleration)
                 },
                 new[]
                 {

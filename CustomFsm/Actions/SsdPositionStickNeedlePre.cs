@@ -2,6 +2,7 @@ using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
 using UnityEngine;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Extensions;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -19,6 +20,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             _needleStick = Hero.transform.Find(SsdObjects.StickNeedle);
             _needleStick.gameObject.SetActive(true);
+            _needleStick.TurnForward();
             Fsm.GetFsmGameObject(SsdVars.StickNeedle).Value = _needleStick.gameObject;
             
             var didHit = Fsm.GetFsmBool(SsdVars.DidHit).Value;

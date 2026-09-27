@@ -97,6 +97,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             _damager = _needle.Find(SsdObjects.NeedleDamagerChild);
             _needle.localPosition = new Vector3(0f, SsdVars.NeedleStartHeight, 0f);
             _needle.gameObject.SetActive(true);
+            _needle.TurnForward();
             _needle.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(SsdVars.NeedleThrowSpeed * _dir, 0f);
             _startX = _needle.position.x;
 

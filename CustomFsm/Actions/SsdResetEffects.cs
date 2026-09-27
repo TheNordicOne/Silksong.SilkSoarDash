@@ -21,6 +21,20 @@ namespace SilkSoarDash.CustomFsm.Actions
             SsdObjects.StickNeedle
         };
 
+        private static readonly string[] ThreadPaths =
+        {
+            SsdObjects.Thread,
+            SsdObjects.ThreadLoop
+        };
+
+        private static readonly string[] TurnedPaths =
+        {
+            SsdObjects.ThrowNeedle,
+            SsdObjects.RetractNeedle,
+            SsdObjects.StickNeedle,
+            SsdObjects.Damager
+        };
+
         public override void OnEnter()
         {
             var hero = HeroController.instance;
@@ -57,16 +71,22 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         private static void PointThreadsUp()
         {
-            var thread = Hero.transform.Find(SsdObjects.Thread);
-            if (thread != null)
+            foreach (var path in ThreadPaths)
             {
-                thread.PointUp();
+                var thread = Hero.transform.Find(path);
+                if (thread != null)
+                {
+                    thread.PointUp();
+                }
             }
 
-            var threadLoop = Hero.transform.Find(SsdObjects.ThreadLoop);
-            if (threadLoop != null)
+            foreach (var path in TurnedPaths)
             {
-                threadLoop.PointUp();
+                var turned = Hero.transform.Find(path);
+                if (turned != null)
+                {
+                    turned.TurnUp();
+                }
             }
         }
 

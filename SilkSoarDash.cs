@@ -39,16 +39,7 @@ namespace SilkSoarDash
             {
                 return;
             }
-
-
-            if (Hero.controlReqlinquished)
-            {
-                EventRegister.SendEvent(EventRegisterEvents.FsmCancel);
-                Hero.RegainControl();
-                Hero.StartAnimationControlToIdle();
-            }
             
-            SsdLog.LogInfo("Dashing!");
             SilkSoarDashFsm.Build();
             SilkSoarDashFsm.Trigger();
         }

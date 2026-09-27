@@ -18,14 +18,14 @@ namespace SilkSoarDash.CustomFsm.Actions
             var previous = Fsm.PreviousActiveState;
             var transition = Fsm.LastTransition;
 
-            SsdLog.Debug("cancelled from={State} event={Event}", previous == null ? "none" : previous.Name, transition == null ? "none" : transition.EventName);
-
             // the game broadcasts its cancel events to every FSM, so ignore them while the ability is not running
             if (previous == null || previous.Name == SsdStates.Inactive)
             {
                 Fsm.Event(SsdEvents.Cancelled);
                 return;
             }
+
+            SsdLog.Debug("cancelled from={State} event={Event}", previous.Name, transition == null ? "none" : transition.EventName);
 
             if (Fsm.GetFsmBool(SsdVars.DidAddUsingSilk).Value)
             {

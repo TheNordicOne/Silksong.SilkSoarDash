@@ -268,7 +268,7 @@ namespace SilkSoarDash.CustomFsm
                 },
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.RegainControlToIdle),
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.AirCancel),
                 });
         }
 
@@ -295,6 +295,19 @@ namespace SilkSoarDash.CustomFsm
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
+                });
+        }
+        
+        public static FsmState AirCancel(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.AirCancel,
+                new FsmStateAction[]
+                {
+                    new SsdAirCancel(),
+                },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.RegainControlToIdle),
                 });
         }
     }

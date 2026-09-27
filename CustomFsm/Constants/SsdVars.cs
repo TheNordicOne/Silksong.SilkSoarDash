@@ -49,7 +49,6 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const float ChargeDecelerationY = 0f;
         public const float NeedleDamagerRange = 30f;
         public const float NeedleReturnedDistance = -0.1f;
-        public const float NeedleStoppedShortDistance = 3f;
         public const float NeedleRayDistance = 350f;
         public const float DistantImpactRange = 15f;
         

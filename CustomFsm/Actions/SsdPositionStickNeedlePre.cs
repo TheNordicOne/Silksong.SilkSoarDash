@@ -58,16 +58,9 @@ namespace SilkSoarDash.CustomFsm.Actions
             // store the stick needle's current parent
             Fsm.GetFsmGameObject(SsdVars.StickNeedleParent).Value = _needleStick.parent.gameObject;
             
+            _needleStick.TurnForward();
+            _needleStick.position = new Vector3(hitPoint.x, _needle.position.y, _needleStick.position.z);
             _needleStick.SetParent(null, true);
-            _needleStick.TurnForwardInWorld(Fsm.GetFsmFloat(SsdVars.Direction).Value);
-
-            var needleY = _needle.position.y;
-            _needleStick.position = new Vector3(hitPoint.x, hitPoint.y, _needleStick.position.z);
-
-            var stickY = _needleStick.position.y;
-            var offsetY = needleY - stickY;
-
-            _needleStick.Translate(0f, offsetY, 0f, Space.World);
 
             SsdLog.Debug("stuck needle={Needle} hit={Hit} stick={Stick} hero={Hero}", _needle.position, hitPoint, _needleStick.position, Hero.transform.position);
             SsdLog.Debug("stuck name={Name} angle={Angle} scale={Scale} throwActive={ThrowActive}", _needleStick.name, _needleStick.eulerAngles.z, _needleStick.lossyScale, _needle.gameObject.activeInHierarchy);

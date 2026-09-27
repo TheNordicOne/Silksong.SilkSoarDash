@@ -21,7 +21,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             Hero.SetCState(SsdCStates.SuperDashing, false);
             Hero.AffectedByGravity(false);
 
-            // anim  HeroAnimationController.SetPlaySuperJumpFall()
+            Hero.AnimCtrl.SetPlaySuperJumpFall();
 
             Hero.Body.linearVelocity = Vector2.zero;
         }

@@ -1,5 +1,6 @@
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Extensions;
 using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm.Actions
@@ -22,7 +23,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             // effect  Roof Slam Effect R
             // audio   Grunt Hornet Voice
             // shake   Average Shake
-            // anim    Super Jump Hit Roof
+
+            Hero.PlayAnim(SsdAnims.HitRoof);
 
             // CameraTarget.SetSuperJump is vertical only. Skipped until custom implementation
 
@@ -36,7 +38,11 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnUpdate()
         {
-            // finish when the Super Jump Hit Roof animation completes
+            if (Hero.IsAnimPlaying(SsdAnims.HitRoof))
+            {
+                return;
+            }
+
             Finish();
         }
     }

@@ -15,7 +15,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             Fsm.GetFsmBool(SsdVars.StartedRumblingFocus).Value = false;
 
-            // turn the camera's RumblingFocus off
+            SsdShake.SetFocus(false);
 
             Finish();
         }

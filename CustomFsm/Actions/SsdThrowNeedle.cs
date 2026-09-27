@@ -2,6 +2,7 @@ using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using UnityEngine;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Extensions;
 using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
@@ -68,7 +69,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         private static void PreThrowEffects()
         {
-            // - anim       Super Jump Throw Wait
+            Hero.PlayAnim(SsdAnims.ThrowWait);
+
             // - audio      Attack Heavy Hornet Voice
             // - audio      hornet_superjump_pt_4_throw
             // - vibration  hornet_need_throw_superjump

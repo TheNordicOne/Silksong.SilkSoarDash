@@ -18,5 +18,14 @@ namespace SilkSoarDash.Extensions
         {
             effect.localEulerAngles = new Vector3(0f, 0f, ForwardAngle);
         }
+
+        public static void PlayAnim(this Transform effect, string clip)
+        {
+            var animator = effect.GetComponent<tk2dSpriteAnimator>();
+            if (animator != null)
+            {
+                animator.Play(clip);
+            }
+        }
     }
 }

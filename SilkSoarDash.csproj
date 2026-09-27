@@ -130,6 +130,7 @@
         <Compile Include="CustomFsm\FsmBuilder.cs" />
         <Compile Include="CustomFsm\SsdClones.cs" />
         <Compile Include="CustomFsm\SsdFlash.cs" />
+        <Compile Include="CustomFsm\SsdShake.cs" />
         <Compile Include="CustomFsm\Constants\SsdAnims.cs" />
         <Compile Include="CustomFsm\Constants\SsdCamera.cs" />
         <Compile Include="CustomFsm\SsdStateFactory.cs" />

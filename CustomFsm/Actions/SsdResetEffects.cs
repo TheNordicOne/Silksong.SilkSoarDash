@@ -22,7 +22,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             
             Hero.hero_state = ActorStates.idle;
             
-            // clear the sprite flash tracker
+            Fsm.GetFsmBool(SsdVars.DidStartFlash).Value = false;
 
             ReattachStickNeedle();
 

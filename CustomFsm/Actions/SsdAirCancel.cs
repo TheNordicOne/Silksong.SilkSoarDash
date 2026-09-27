@@ -1,5 +1,6 @@
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Extensions;
 using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm.Actions
@@ -10,7 +11,12 @@ namespace SilkSoarDash.CustomFsm.Actions
         
         public override void OnEnter()
         {
-            // effect  Effects/Super Jump Catch Effect
+            var catchEffect = SsdClones.CatchEffect;
+            if (catchEffect != null)
+            {
+                catchEffect.gameObject.SetActive(true);
+            }
+
             // audio   Grunt Hornet Voice
             
             var needle = SsdClones.RetractNeedle;
@@ -22,16 +28,20 @@ namespace SilkSoarDash.CustomFsm.Actions
             
             Hero.SetCState(SsdCStates.SuperDashing, false);
 
-            // event  EnemyKillShake
+            SsdShake.Send(SsdCamera.EnemyKillShake);
             
             Hero.SetStartWithUpdraftExit();
 
-            // anim  Super Jump Loop Cancel
+            Hero.PlayAnim(SsdAnims.LoopCancel);
         }
 
         public override void OnUpdate()
         {
-            // finish when the Super Jump Loop Cancel animation completes
+            if (Hero.IsAnimPlaying(SsdAnims.LoopCancel))
+            {
+                return;
+            }
+
             Finish();
         }
     }

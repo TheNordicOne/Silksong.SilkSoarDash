@@ -33,9 +33,12 @@ namespace SilkSoarDash.CustomFsm.Actions
             SsdFlash.StartSuperDash();
             Fsm.GetFsmBool(SsdVars.DidStartFlash).Value = true;
 
-            // - event  AverageShake
+            Fsm.GetFsmBool(SsdVars.StartedRumblingFocus).Value = false;
+            Fsm.GetFsmBool(SsdVars.StartedRumblingFocus2).Value = true;
 
-            // turn the camera's RumblingFocus off and RumblingFocus2 on, clearing StartedRumblingFocus and setting StartedRumblingFocus2
+            SsdShake.SetFocus(false);
+            SsdShake.SetFocus2(true);
+            SsdShake.Send(SsdCamera.AverageShake);
         }
 
         public override void OnUpdate()

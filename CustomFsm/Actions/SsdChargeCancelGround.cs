@@ -1,5 +1,7 @@
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Extensions;
+using TeamCherry.NestedFadeGroup;
 using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm.Actions
@@ -16,26 +18,67 @@ namespace SilkSoarDash.CustomFsm.Actions
                 Spool.RemoveUsing(SilkSpool.SilkUsingFlags.Normal, SsdVars.SilkCost);
             }
 
-            // effect  Effects/Super Jump Extra Ground Effect off
+            Deactivate(SsdClones.ExtraGroundEffect);
+
             // audio   stop the charge loop
-            // effect  Effects/Super Jump Antic Effect L off
-            // effect  Effects/Super Jump Antic Effect R off
-            // effect  Effects/Super Jump Charging Fader to alpha 0 over 0.1
+
+            Deactivate(SsdClones.AnticEffectL);
+            Deactivate(SsdClones.AnticEffectR);
+
+            // vanilla fades the fader out over 0.1, this snaps it
+            ClearChargingFader();
 
             Hero.SetCState(SsdCStates.FreezeCharge, false);
 
-            // anim  Super Jump Antic Cancel
-            // anim  Super Jump Antic Effect End on both antic effects
+            Hero.PlayAnim(SsdAnims.AnticCancel);
+            EndAnticEffect(SsdClones.AnticEffectL);
+            EndAnticEffect(SsdClones.AnticEffectR);
 
-            // turn the camera's RumblingFocus and RumblingFocus2 off
+            SsdShake.SetFocus(false);
+            SsdShake.SetFocus2(false);
 
             Hero.Body.linearVelocity = Vector2.zero;
         }
 
         public override void OnUpdate()
         {
-            // finish when the Super Jump Antic Cancel animation completes
+            if (Hero.IsAnimPlaying(SsdAnims.AnticCancel))
+            {
+                return;
+            }
+
             Finish();
+        }
+
+        private static void Deactivate(Transform effect)
+        {
+            if (effect != null)
+            {
+                effect.gameObject.SetActive(false);
+            }
+        }
+
+        private static void EndAnticEffect(Transform anticEffect)
+        {
+            if (anticEffect != null)
+            {
+                anticEffect.PlayAnim(SsdAnims.AnticEffectEnd);
+            }
+        }
+
+        private static void ClearChargingFader()
+        {
+            var fader = SsdClones.ChargingFader;
+            if (fader == null)
+            {
+                return;
+            }
+
+            var group = fader.GetComponent<NestedFadeGroupBase>();
+            if (group != null)
+            {
+                group.AlphaSelf = 0f;
+            }
         }
     }
 }

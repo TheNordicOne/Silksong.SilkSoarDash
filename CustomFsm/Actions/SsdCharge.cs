@@ -3,6 +3,8 @@ using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Extensions;
 using SilkSoarDash.Logging;
+using TeamCherry.NestedFadeGroup;
+using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -12,6 +14,9 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         private static HeroController Hero => HeroController.instance;
         private static SilkSpool Spool =>  SilkSpool.Instance;
+
+        private NestedFadeGroupBase _fader;
+        private float _faded;
         
         public override void OnEnter()
         {
@@ -30,29 +35,69 @@ namespace SilkSoarDash.CustomFsm.Actions
 
            // - audio   hornet_superjump_pt_1_into_position
            // - audio   hornet_superjump_pt_2_charge_2d
-           // - effect  Effects/Super Jump Antic Effect L
-           // - effect  Effects/Super Jump Antic Effect R
-           // - anim    Super Jump Antic Effect
+
+           PlayAnticEffect(SsdClones.AnticEffectL);
+           PlayAnticEffect(SsdClones.AnticEffectR);
+           Hero.SetCState(SsdCStates.FreezeCharge, true);
+
            StartRumblingFocus();
 
-           // - effect  Effects/Super Jump Charging Fader
-           
-           Hero.SetCState(SsdCStates.FreezeCharge, true);
+           StartChargingFader();
+        }
+
+        private static void PlayAnticEffect(Transform anticEffect)
+        {
+            if (anticEffect == null)
+            {
+                return;
+            }
+
+            anticEffect.gameObject.SetActive(true);
+            anticEffect.PlayAnim(SsdAnims.AnticEffect);
         }
 
         private void StartRumblingFocus()
         {
-            var cameraParent = GameCameras.instance.cameraParent.gameObject;
-            var cameraShake = FSMUtility.LocateFSM(cameraParent, SsdCamera.ShakeFsm);
-
-            FSMUtility.SetBool(cameraShake, SsdCamera.RumblingFocus, true);
-            FSMUtility.SendEventToGameObject(cameraParent, SsdCamera.FocusRumble);
-
             Fsm.GetFsmBool(SsdVars.StartedRumblingFocus).Value = true;
+
+            SsdShake.SetFocus(true);
+            SsdShake.Send(SsdCamera.FocusRumble);
+        }
+
+        private void StartChargingFader()
+        {
+            var fader = SsdClones.ChargingFader;
+            if (fader == null)
+            {
+                return;
+            }
+
+            fader.gameObject.SetActive(true);
+
+            _fader = fader.GetComponent<NestedFadeGroupBase>();
+            _faded = 0f;
+
+            if (_fader != null)
+            {
+                _fader.AlphaSelf = 0f;
+            }
+        }
+
+        private void FadeCharging()
+        {
+            if (_fader == null)
+            {
+                return;
+            }
+
+            _faded += Time.deltaTime;
+            _fader.AlphaSelf = Mathf.Clamp01(_faded / Fsm.GetFsmFloat(SsdVars.ChargeTime).Value);
         }
 
         public override void OnUpdate()
         {
+            FadeCharging();
+
             var ia = GameManager.instance?.inputHandler?.inputActions;
             if (ia == null)
             {

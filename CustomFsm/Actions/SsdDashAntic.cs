@@ -1,9 +1,13 @@
 using HutongGames.PlayMaker;
+using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Extensions;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdDashAntic : FsmStateAction
     {
+        private static HeroController Hero => HeroController.instance;
+
         
         public override void OnEnter()
         {
@@ -11,13 +15,17 @@ namespace SilkSoarDash.CustomFsm.Actions
             //    - audio  Sounds/Superjump Loop
             // play the antic clip
             //    - audio  hornet_superjump_pt_6_hornet_jump_antic
-            // play the antic animation
-            //    - anim  Super Jump Jump Antic
+
+            Hero.PlayAnim(SsdAnims.JumpAntic);
         }
 
         public override void OnUpdate()
         {
-            // finish when the antic animation completes
+            if (Hero.IsAnimPlaying(SsdAnims.JumpAntic))
+            {
+                return;
+            }
+
             Finish();
         }
     }

@@ -8,5 +8,8 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string RumblingFocus2 = "RumblingFocus2";
 
         public const string FocusRumble = "FocusRumble";
+        public const string AverageShake = "AverageShake";
+        public const string SuperDashShake = "SuperDashShake";
+        public const string EnemyKillShake = "EnemyKillShake";
     }
 }

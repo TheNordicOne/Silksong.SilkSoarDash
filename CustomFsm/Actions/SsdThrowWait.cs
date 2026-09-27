@@ -1,6 +1,7 @@
 using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Extensions;
 using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
@@ -11,7 +12,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnEnter()
         {
-            // anim  Super Jump Throw Wait
+            HeroController.instance.PlayAnim(SsdAnims.ThrowWait);
 
             var isNeedleVisible = !Fsm.GetFsmBool(SsdVars.NeedleOffScreen).Value;
             var waitTime = isNeedleVisible ? 0f : SsdVars.ThrowWaitTimeOffScreen;

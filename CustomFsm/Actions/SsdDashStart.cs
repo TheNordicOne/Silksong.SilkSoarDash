@@ -22,7 +22,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             
             SsdClones.Damager.gameObject.SetActive(true);
             
-            // anim  Super Jump Loop
+            Hero.PlayAnim(SsdAnims.Loop);
             
             Hero.SetCState(SsdCStates.FreezeCharge, false);
 
@@ -30,7 +30,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             
             Hero.hero_state = ActorStates.no_input;
             
-            // event  SuperDashShake
+            SsdShake.Send(SsdCamera.SuperDashShake);
             
             Hero.AffectedByGravity(false);
 

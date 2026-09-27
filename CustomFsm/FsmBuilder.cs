@@ -142,6 +142,41 @@ namespace SilkSoarDash.CustomFsm
             };
         }
 
+        public static CheckCollisionSideV2 CheckSideHits(string heroPath, string hitEvent)
+        {
+            var target = HeroController.instance.transform.Find(heroPath);
+
+            return new CheckCollisionSideV2
+            {
+                collidingObject = new FsmOwnerDefault
+                {
+                    OwnerOption = OwnerDefaultOption.SpecifyGameObject,
+                    GameObject = new FsmGameObject
+                    {
+                        Value = target == null ? null : target.gameObject
+                    }
+                },
+                topHit = new FsmBool(),
+                rightHit = new FsmBool(),
+                bottomHit = new FsmBool(),
+                leftHit = new FsmBool(),
+                topHitEvent = null,
+                rightHitEvent = new FsmEvent(hitEvent),
+                bottomHitEvent = null,
+                leftHitEvent = new FsmEvent(hitEvent),
+                otherLayer = true,
+                otherLayerNumber = SsdVars.TerrainLayer,
+                ignoreTriggers = new FsmBool
+                {
+                    Value = true
+                },
+                ignoreBodyVelocity = new FsmBool
+                {
+                    Value = true
+                }
+            };
+        }
+
         public static iTweenMoveBy MoveBy(Fsm fsm, string heroPath, string vectorVariable, float speed, string finishEvent)
         {
             var target = HeroController.instance.transform.Find(heroPath);

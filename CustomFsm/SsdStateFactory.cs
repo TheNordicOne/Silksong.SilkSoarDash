@@ -103,6 +103,7 @@ namespace SilkSoarDash.CustomFsm
                 new FsmStateAction[]
                 {
                     new SsdThrowNeedle(),
+                    FsmBuilder.CheckSideHits(SsdObjects.ThrowNeedle, SsdEvents.Finished),
                     FsmBuilder.WaitFor(SsdVars.NeedleThrowTimeout, SsdEvents.Finished)
                 },
                 new[]

@@ -1,3 +1,4 @@
+using GlobalEnums;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Extensions;
@@ -26,6 +27,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             Hero.SetCState(SsdCStates.FreezeCharge, false);
 
             Hero.SetCState(SsdCStates.SuperDashing, true);
+            
+            Hero.hero_state = ActorStates.no_input;
             
             // event  SuperDashShake
             

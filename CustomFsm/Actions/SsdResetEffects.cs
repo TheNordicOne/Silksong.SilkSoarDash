@@ -1,3 +1,4 @@
+using GlobalEnums;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using UnityEngine;
@@ -30,6 +31,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             }
             
             Hero.SetCState(SsdCStates.SuperDashOnWall, false);
+            
+            Hero.hero_state = ActorStates.idle;
             
             // clear the sprite flash tracker
 

@@ -1,13 +1,17 @@
+using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
 using UnityEngine;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Extensions;
+using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdPositionStickNeedlePre : FsmStateAction
     {
+        private static readonly ManualLogSource SsdLog = SilkLog.For<SsdPositionStickNeedlePre>();
+
         private Transform _needle;
         private Transform _needleStick;
 
@@ -63,6 +67,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             var offsetY = needleY - stickY;
 
             _needleStick.Translate(0f, offsetY, 0f, Space.World);
+
+            SsdLog.Debug("stuck needle={Needle} hit={Hit} stick={Stick} hero={Hero}", _needle.position, hitPoint, _needleStick.position, Hero.transform.position);
             
             var isGate = Fsm.GetFsmBool(SsdVars.IsGate).Value;
             if (isGate)

@@ -76,6 +76,7 @@ namespace SilkSoarDash.CustomFsm
                 SsdStateFactory.RelinquishControl(fsm),
                 SsdStateFactory.Charge(fsm),
                 SsdStateFactory.Charged(fsm),
+                SsdStateFactory.ThrowNeedleStart(fsm),
                 SsdStateFactory.GetDistance(fsm),
                 SsdStateFactory.ThrowNeedle(fsm),
                 SsdStateFactory.ResetEffects(fsm),

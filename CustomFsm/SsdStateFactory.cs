@@ -67,7 +67,20 @@ namespace SilkSoarDash.CustomFsm
                 },
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.GetDistance, SsdStates.GetDistance)
+                    FsmBuilder.Transition(SsdEvents.ThrowNeedleStart, SsdStates.ThrowNeedleStart)
+                });
+        }
+
+        public static FsmState ThrowNeedleStart(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.ThrowNeedleStart,
+                new FsmStateAction[]
+                {
+                    new SsdThrowNeedleStart()
+                },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.GetDistance)
                 });
         }
 

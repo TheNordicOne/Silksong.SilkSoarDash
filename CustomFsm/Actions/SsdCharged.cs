@@ -52,7 +52,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             if (Hero.IsFalling())
             {
                 SsdLog.Debug("throwing reason={Reason}", "falling");
-                Fsm.Event(SsdEvents.GetDistance);
+                Fsm.Event(SsdEvents.ThrowNeedleStart);
                 return;
             }
 
@@ -62,7 +62,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             }
 
             SsdLog.Debug("throwing reason={Reason}", "released");
-            Fsm.Event(SsdEvents.GetDistance);
+            Fsm.Event(SsdEvents.ThrowNeedleStart);
         }
     }
 }

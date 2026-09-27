@@ -5,6 +5,7 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string Start = "START";
         public const string Finished = "FINISHED";
         public const string Cancelled = "CANCELLED";
+        public const string ThrowNeedleStart = "THROW_NEEDLE_START";
         public const string GetDistance = "GET_DISTANCE";
         public const string ThrowNeedle = "THROW_NEEDLE";
         public const string DamagerHitSpikes = "DAMAGER HIT SPIKES";

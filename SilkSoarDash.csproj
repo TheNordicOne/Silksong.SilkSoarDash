@@ -112,6 +112,7 @@
         <Compile Include="CustomFsm\Actions\SsdRetractNeedleCancel.cs" />
         <Compile Include="CustomFsm\Actions\SsdThreadLoop.cs" />
         <Compile Include="CustomFsm\Actions\SsdThrowNeedle.cs" />
+        <Compile Include="CustomFsm\Actions\SsdThrowNeedleStart.cs" />
         <Compile Include="CustomFsm\Actions\SsdThrowWait.cs" />
         <Compile Include="CustomFsm\SilkSoarDashFSM.cs" />
         <Compile Include="Extensions\HeroController.cs" />

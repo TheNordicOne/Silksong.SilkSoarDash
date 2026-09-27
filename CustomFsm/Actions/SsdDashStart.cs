@@ -1,12 +1,16 @@
+using BepInEx.Logging;
 using GlobalEnums;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Extensions;
+using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdDashStart : FsmStateAction
     {
+        private static readonly ManualLogSource SsdLog = SilkLog.For<SsdDashStart>();
+
         private static HeroController Hero => HeroController.instance;
         
         public override void OnEnter()
@@ -35,6 +39,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             Hero.AffectedByGravity(false);
 
             Hero.ApplySsdVelocity(Fsm);
+
+            SsdLog.Debug("dashing direction={Direction} facingRight={FacingRight} scaleX={ScaleX} velocity={Velocity}", Fsm.GetFsmFloat(SsdVars.Direction).Value, Hero.cState.facingRight, Hero.transform.localScale.x, Hero.Body.linearVelocity);
             
             // CameraTarget.SetSuperJump is vertical only. Skipped until custom implementation
             

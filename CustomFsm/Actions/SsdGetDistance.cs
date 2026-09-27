@@ -93,6 +93,8 @@ namespace SilkSoarDash.CustomFsm.Actions
                     return;
                 }
 
+                SsdLog.Debug("gate {Gate} at={GateDistance} replaces hit={Hit} object={Object} at={Distance}", gate.name, hits[i].distance, Fsm.GetFsmBool(SsdVars.DidHit).Value, Fsm.GetFsmGameObject(SsdVars.HitObject).Value, Fsm.GetFsmFloat(SsdVars.Distance).Value);
+
                 Fsm.GetFsmBool(SsdVars.DidHit).Value = true;
                 Fsm.GetFsmBool(SsdVars.IsGate).Value = true;
                 Fsm.GetFsmGameObject(SsdVars.HitObject).Value = hits[i].collider.gameObject;

@@ -3412,6 +3412,53 @@ Freeze Needle  KeepWorldPosition.SetStay(true) on the needle, SetParent null
 Positive hero scale sends L, which matches `FaceRight` setting scale -1.
 The harpoon needle never flies. It is placed at its end point and shown there.
 
+## Live runs of vanilla Silk Soar across rooms
+
+Captured with a state spy on `superJumpFSM`, 2026-09-27.
+
+### Multi room soar
+
+```
+Tut_01       Get Distance -> Throw Needle        target top1 (gate)
+             Position Stick Needle Pre --TRANSITION GATE--> Hit Transition Gate
+             Throw Wait -> Jump Antic -> Dash Start -> Dashing -> Cancelable
+             Leaving Scene --LEVEL LOADED--> Cancel -> ... -> Reset Effects -> Inactive
+Bonetown     Pre Entered Jumping --ENTER SUPERJUMPING--> Entered Jumping -> Begin Jumping
+             Position Stick Needle Pre 2 --TRANSITION GATE--> Hit Transition Gate 2
+             Dash Start Quick -> Dashing -> Cancelable -> Leaving Scene -> Cancel ... Inactive
+Aspid_01     same as Bonetown, target top4
+Coral_19     same as Bonetown, target top6
+Coral_03     Position Stick Needle Pre 2 runs to completion, target Roof Collider_Basic
+             Dash Start Quick -> Dashing -> Cancelable --HIT ROOF--> Hit Roof Hard -> Hit Roof
+             Regain Control To Idle -> Reset Effects -> Inactive
+```
+
+Every room leaves through `Leaving Scene` and a full `Cancel` chain. The soar is not carried
+over as FSM state. The game restarts it in the next room with `PRE ENTER SUPERJUMPING`, then
+`ENTER SUPERJUMPING`, and `Position Stick Needle Pre 2` raycasts again there.
+
+Hornet keeps her X across rooms (50.57, 186.50, 42.14, 381.30, 33.50 are each room's entry
+points under the gate she left through).
+
+`Queue Cancel` did not occur. Every room in this run had a gate or a roof above.
+
+### Refused soar under a thorn ceiling (Mosstown_03)
+
+```
+Get Distance -> Throw Needle              target top1 (gate) 4.6 above Hornet
+Position Stick Needle Pre --CANCEL-->     Test = True
+Catch Wait -> Fall Needle -> Fall Catch Needle -> Regain Control To Idle -> Reset Effects
+```
+
+`Test` is the result of `NoSuperJumpCollider.IsInside(Ray Hit Point)`. The refusal is a
+designer placed zone around the gate, decided in the first room before any launch. The
+needle is thrown, falls back and is caught.
+
+### Idle noise
+
+`FSM CANCEL` and `LEAVING SCENE` reach the FSM while `Inactive` on most scene changes and
+often in between. They run the full `Cancel` chain back to `Inactive`.
+
 ## Runtime facts from our own FSM
 
 `Super Jump Needle Throw` rigidbody: Dynamic, simulated, linearDamping 0, gravityScale 0,

@@ -31,26 +31,17 @@ namespace SilkSoarDash.CustomFsm.Actions
             var damager = Hero.transform.Find(SsdObjects.Damager);
             
             var stickNeedle = Fsm.GetFsmGameObject(SsdVars.StickNeedle).Value;
-            var needleChild = Hero.transform.Find(SsdObjects.RetractNeedleChild);
-            
-            var needleX = needle.position.x;
 
-            // TODO the Move To marker offset is unmeasured. The throw needle's is local (0, 9, 0),
-            // so this one is probably Y only and needleChildX - needleX would be 0.
-            var needleChildX = needleChild.position.x;
+            var direction = Fsm.GetFsmFloat(SsdVars.Direction).Value;
+            var distance = -SsdVars.RetractNeedleDistance * direction;
 
-            var distance = needleChildX - needleX;
             Fsm.GetFsmFloat(SsdVars.Distance).Value = distance;
-
-            SsdLog.Debug("retracting distance={Distance}", distance);
-            
-            needle.gameObject.SetActive(true);
-            
-            stickNeedle.SetActive(false);
-            
-           
             Fsm.GetFsmVector3(SsdVars.MoveBy).Value = new Vector3(distance, 0f, 0f);
-            
+
+            SsdLog.Debug("retracting distance={Distance} direction={Direction}", distance, direction);
+
+            needle.gameObject.SetActive(true);
+            stickNeedle.SetActive(false);
             damager.gameObject.SetActive(false);
         }
     }

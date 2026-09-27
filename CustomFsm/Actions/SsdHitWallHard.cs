@@ -24,7 +24,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             // audio   Grunt Hornet Voice
             // shake   Average Shake
 
-            Hero.PlayAnim(SsdAnims.HitRoof);
+            Hero.PlayAnim(SsdAnims.WallCatch);
 
             // CameraTarget.SetSuperJump is vertical only. Skipped until custom implementation
 
@@ -38,7 +38,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnUpdate()
         {
-            if (Hero.IsAnimPlaying(SsdAnims.HitRoof))
+            if (Hero.IsAnimPlaying(SsdAnims.WallCatch))
             {
                 return;
             }

@@ -1,5 +1,6 @@
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Extensions;
 using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm.Actions
@@ -21,7 +22,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             Hero.SetCState(SsdCStates.SuperDashing, false);
             Hero.AffectedByGravity(false);
 
-            Hero.AnimCtrl.SetPlaySuperJumpFall();
+            Hero.PlayAnim(SsdAnims.WallCatch);
 
             Hero.Body.linearVelocity = Vector2.zero;
         }

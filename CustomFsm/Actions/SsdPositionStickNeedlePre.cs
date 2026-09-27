@@ -36,6 +36,16 @@ namespace SilkSoarDash.CustomFsm.Actions
             }
 
             var hitPoint = Fsm.GetFsmVector2(SsdVars.HitPoint).Value;
+
+            // the needle can be stopped by something the ray missed, and sticking it at the ray's wall would be a lie
+            var shortBy = Mathf.Abs(hitPoint.x - _needle.position.x);
+            if (shortBy > SsdVars.NeedleStoppedShortDistance)
+            {
+                SsdLog.Debug("needle stopped short by={ShortBy}", shortBy);
+                Fsm.Event(SsdEvents.Cancelled);
+                return;
+            }
+
             var isColliding = NoSuperJumpCollider.IsInside(hitPoint);
 
             if (isColliding)

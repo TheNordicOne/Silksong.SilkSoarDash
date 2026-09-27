@@ -52,7 +52,6 @@ namespace SilkSoarDash.CustomFsm.Actions
             if (threadEffect != null)
             {
                 var local = threadEffect.localPosition;
-                threadEffect.gameObject.SetActive(true);
                 threadEffect.localEulerAngles = new Vector3(0f, 0f, 0f);
                 threadEffect.localPosition = new Vector3(-local.y, local.x, local.z);
             }

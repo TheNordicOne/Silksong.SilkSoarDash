@@ -3459,6 +3459,28 @@ needle is thrown, falls back and is caught.
 `FSM CANCEL` and `LEAVING SCENE` reach the FSM while `Inactive` on most scene changes and
 often in between. They run the full `Cancel` chain back to `Inactive`.
 
+## Scene bundles read offline
+
+Tested 2026-09-27 with UnityPy, Unity version `6000.0.50f1` (the bundles carry no version,
+it must be set as the fallback).
+
+Rooms ship as 590 `UnityFS` bundles in
+`StreamingAssets/aa/StandaloneWindows64/scenes_scenes_scenes`, 2.4 GB total. All 590 open
+without errors and without running anything.
+
+Type trees are embedded, so `TransitionPoint` fields read directly: `targetScene`,
+`entryPoint`, `isADoor`, `alwaysEnterLeft`, `alwaysEnterRight`, `nonHazardGate`,
+`hardLandOnExit`. Example, `Tut_01`: `right1 -> Tut_01b entry left1`, `top1 -> Bonetown
+entry bot2`. The `m_Script` reference points into another bundle, so the script name is
+not readable without dependencies. Gates are recognised by the `targetScene` field.
+
+Totals: 1506 gates, 1051 of them named `left*` or `right*`, about 29,000 terrain colliders
+on layer 8. Terrain collider types seen: `EdgeCollider2D` (the tilemap `Chunk` objects, with
+their points), `PolygonCollider2D`, `BoxCollider2D`.
+
+A full pass reading every gate and terrain collider took 113 s in single threaded Python.
+One bundle loads and indexes in about 0.25 s.
+
 ## Runtime facts from our own FSM
 
 `Super Jump Needle Throw` rigidbody: Dynamic, simulated, linearDamping 0, gravityScale 0,

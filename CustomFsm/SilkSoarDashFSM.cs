@@ -71,7 +71,6 @@ namespace SilkSoarDash.CustomFsm
                 SsdStateFactory.RelinquishControl(fsm),
                 SsdStateFactory.Charge(fsm),
                 SsdStateFactory.Charged(fsm),
-                SsdStateFactory.Cancelled(fsm),
                 SsdStateFactory.GetDistance(fsm),
                 SsdStateFactory.ThrowNeedle(fsm),
                 SsdStateFactory.ResetEffects(fsm),
@@ -89,6 +88,7 @@ namespace SilkSoarDash.CustomFsm
                 SsdStateFactory.HitWall(fsm),
                 SsdStateFactory.RegainControlToIdle(fsm),
                 SsdStateFactory.AirCancel(fsm),
+                SsdStateFactory.ChargeCancelGround(fsm),
             };
 
             fsm.StartState = SsdStates.Inactive;

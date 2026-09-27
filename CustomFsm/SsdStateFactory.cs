@@ -54,7 +54,7 @@ namespace SilkSoarDash.CustomFsm
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.Charged),
-                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.Cancelled)
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ChargeCancelGround)
                 });
         }
 
@@ -68,15 +68,6 @@ namespace SilkSoarDash.CustomFsm
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.GetDistance, SsdStates.GetDistance)
-                });
-        }
-
-        public static FsmState Cancelled(Fsm fsm)
-        {
-            return FsmBuilder.State(fsm, SsdStates.Cancelled,
-                new[]
-                {
-                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.RegainControlToIdle)
                 });
         }
 
@@ -320,6 +311,19 @@ namespace SilkSoarDash.CustomFsm
                 {
                     new SsdAirCancel(),
                     FsmBuilder.Decelerate(SsdVars.CancelDeceleration)
+                },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.RegainControlToIdle),
+                });
+        }
+        
+        public static FsmState ChargeCancelGround(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.ChargeCancelGround,
+                new FsmStateAction[]
+                {
+                    new SsdChargeCancelGround(),
                 },
                 new[]
                 {

@@ -177,8 +177,13 @@ namespace SilkSoarDash.CustomFsm
                 {
                     Value = false
                 },
-                lookAtObject = new FsmGameObject(),
-                lookAtVector = new FsmVector3(),
+                lookAtObject = new FsmGameObject
+                {
+                    UseVariable = true
+                },
+                lookAtVector = new FsmVector3{
+                    UseVariable = true
+                },
                 lookTime = new FsmFloat
                 {
                     Value = 0f

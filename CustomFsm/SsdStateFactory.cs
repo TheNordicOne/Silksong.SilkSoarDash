@@ -103,7 +103,7 @@ namespace SilkSoarDash.CustomFsm
                 new FsmStateAction[]
                 {
                     new SsdThrowNeedle(),
-                    FsmBuilder.CheckSideHits(SsdObjects.ThrowNeedle, SsdEvents.Finished),
+                    FsmBuilder.CheckSideHits(SsdClones.ThrowNeedle, SsdEvents.Finished),
                     FsmBuilder.WaitFor(SsdVars.NeedleThrowTimeout, SsdEvents.Finished)
                 },
                 new[]
@@ -220,7 +220,7 @@ namespace SilkSoarDash.CustomFsm
                     new SsdDashing(),
                     new SsdApplyVelocity(),
                     FsmBuilder.WaitFor(fsm, SsdVars.CancelableTime, SsdEvents.Finished),
-                    FsmBuilder.ActivateAfter(SsdObjects.ThreadLoop, SsdVars.ThreadLoopDelay),
+                    FsmBuilder.ActivateAfter(SsdClones.ThreadLoop, SsdVars.ThreadLoopDelay),
                     new SsdThreadLoop(),
                     new SsdHitWallCheck()
                 },
@@ -239,7 +239,7 @@ namespace SilkSoarDash.CustomFsm
                     FsmBuilder.CheckSides(fsm, SsdVars.WallHitLeft, SsdVars.WallHitRight),
                     new SsdCancelable(),
                     new SsdApplyVelocity(),
-                    FsmBuilder.Activate(SsdObjects.ThreadLoop),
+                    FsmBuilder.Activate(SsdClones.ThreadLoop),
                     new SsdThreadLoop(),
                     new SsdHitWallCheck(),
                     new SsdCancelOnAction()
@@ -270,7 +270,7 @@ namespace SilkSoarDash.CustomFsm
                 new FsmStateAction[]
                 {
                     new SsdRetractNeedleCancel(),
-                    FsmBuilder.MoveBy(fsm, SsdObjects.RetractNeedle, SsdVars.MoveBy, SsdVars.RetractNeedleSpeed, SsdEvents.Finished),
+                    FsmBuilder.MoveBy(fsm, SsdClones.RetractNeedle, SsdVars.MoveBy, SsdVars.RetractNeedleSpeed, SsdEvents.Finished),
                     FsmBuilder.Decelerate(SsdVars.CancelDeceleration)
                 },
                 new[]

@@ -15,7 +15,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             // CreateNoiseV2 at Normal intensity
             
             var stickNeedle = Fsm.GetFsmGameObject(SsdVars.StickNeedle).Value;
-            var damager = Hero.transform.Find(SsdObjects.Damager);
+            var damager = SsdClones.Damager;
             stickNeedle.SetActive(false);
             damager.gameObject.SetActive(false);
 

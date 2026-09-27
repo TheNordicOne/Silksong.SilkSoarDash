@@ -20,9 +20,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             // audio      hornet_superjump_pt_7_hornet_jump_big_2d
             // vibration  super_jump_dash_burst
             
-            var damager = Hero.transform.Find(SsdObjects.Damager);
-            damager.gameObject.SetActive(true);
-            damager.TurnForward();
+            SsdClones.Damager.gameObject.SetActive(true);
             
             // anim  Super Jump Loop
             

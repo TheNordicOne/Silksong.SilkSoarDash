@@ -13,7 +13,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             // effect  Effects/Super Jump Catch Effect
             // audio   Grunt Hornet Voice
             
-            var needle = Hero.transform.Find(SsdObjects.RetractNeedle);
+            var needle = SsdClones.RetractNeedle;
             needle.gameObject.SetActive(false);
             needle.localPosition = new Vector3(0,SsdVars.NeedleStartHeight,0);
  

@@ -1,6 +1,5 @@
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
-using SilkSoarDash.Extensions;
 using UnityEngine;
 
 
@@ -13,14 +12,13 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnEnter()
         {
-            var threadLoop = Hero.transform.Find(SsdObjects.ThreadLoop);
+            var threadLoop = SsdClones.ThreadLoop;
             if (threadLoop == null)
             {
                 _threadLoop = null;
                 return;
             }
 
-            threadLoop.PointForward();
             _threadLoop = threadLoop.GetComponent<MeshRenderer>();
         }
 

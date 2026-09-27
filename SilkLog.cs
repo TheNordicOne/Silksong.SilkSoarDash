@@ -12,8 +12,11 @@ namespace SilkSoarDash
 
         public static ManualLogSource For<T>()
         {
-            var type = typeof(T);
+            return For(typeof(T));
+        }
 
+        public static ManualLogSource For(Type type)
+        {
             if (Sources.TryGetValue(type, out var source))
             {
                 return source;

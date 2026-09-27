@@ -1,7 +1,7 @@
 using GlobalEnums;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
-using SilkSoarDash.Extensions;
+using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -9,32 +9,6 @@ namespace SilkSoarDash.CustomFsm.Actions
     {
         private static HeroController Hero => HeroController.instance;
         
-        private static readonly string[] EffectPaths =
-        {
-            SsdObjects.AnticEffectL,
-            SsdObjects.AnticEffectR,
-            SsdObjects.ChargedEffect,
-            SsdObjects.ChargingFader,
-            SsdObjects.Thread,
-            SsdObjects.ThrowNeedle,
-            SsdObjects.RetractNeedle,
-            SsdObjects.StickNeedle
-        };
-
-        private static readonly string[] ThreadPaths =
-        {
-            SsdObjects.Thread,
-            SsdObjects.ThreadLoop
-        };
-
-        private static readonly string[] TurnedPaths =
-        {
-            SsdObjects.ThrowNeedle,
-            SsdObjects.RetractNeedle,
-            SsdObjects.StickNeedle,
-            SsdObjects.Damager
-        };
-
         public override void OnEnter()
         {
             var hero = HeroController.instance;
@@ -52,41 +26,25 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             ReattachStickNeedle();
 
-            foreach (var path in EffectPaths)
-            {
-                var effect = hero.transform.Find(path);
-                if (effect != null)
-                {
-                    effect.gameObject.SetActive(false);
-                }
-            }
+            Deactivate(SsdClones.AnticEffectL);
+            Deactivate(SsdClones.AnticEffectR);
+            Deactivate(SsdClones.ChargedEffect);
+            Deactivate(SsdClones.ChargingFader);
+            Deactivate(SsdClones.Thread);
+            Deactivate(SsdClones.ThrowNeedle);
+            Deactivate(SsdClones.RetractNeedle);
+            Deactivate(SsdClones.StickNeedle);
 
             EventRegister.SendEvent(SsdRegisterEvents.SuperJumpEnded);
 
-            
-            
-            PointThreadsUp();
             Finish();
         }
 
-        private static void PointThreadsUp()
+        private static void Deactivate(Transform effect)
         {
-            foreach (var path in ThreadPaths)
+            if (effect != null)
             {
-                var thread = Hero.transform.Find(path);
-                if (thread != null)
-                {
-                    thread.PointUp();
-                }
-            }
-
-            foreach (var path in TurnedPaths)
-            {
-                var turned = Hero.transform.Find(path);
-                if (turned != null)
-                {
-                    turned.TurnUp();
-                }
+                effect.gameObject.SetActive(false);
             }
         }
 

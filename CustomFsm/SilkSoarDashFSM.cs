@@ -22,6 +22,8 @@ namespace SilkSoarDash.CustomFsm
                 return;
             }
 
+            SsdClones.Build(hero);
+
             var fsm = new Fsm
             {
                 Name = FsmName,

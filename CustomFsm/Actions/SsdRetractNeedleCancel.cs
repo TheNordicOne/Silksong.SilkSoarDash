@@ -1,7 +1,6 @@
 using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
-using SilkSoarDash.Extensions;
 using UnityEngine;
 using SilkSoarDash.Logging;
 
@@ -28,8 +27,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         private void RetractNeedle()
         {
-            var needle = Hero.transform.Find(SsdObjects.RetractNeedle);
-            var damager = Hero.transform.Find(SsdObjects.Damager);
+            var needle = SsdClones.RetractNeedle;
+            var damager = SsdClones.Damager;
             
             var stickNeedle = Fsm.GetFsmGameObject(SsdVars.StickNeedle).Value;
 
@@ -42,7 +41,6 @@ namespace SilkSoarDash.CustomFsm.Actions
             SsdLog.Debug("retracting distance={Distance} direction={Direction}", distance, direction);
 
             needle.gameObject.SetActive(true);
-            needle.TurnForward();
             stickNeedle.SetActive(false);
             damager.gameObject.SetActive(false);
         }

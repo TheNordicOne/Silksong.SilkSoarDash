@@ -2,7 +2,6 @@ using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using UnityEngine;
 using SilkSoarDash.CustomFsm.Constants;
-using SilkSoarDash.Extensions;
 using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
@@ -59,13 +58,12 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         private void SetThreadEffect()
         {
-            var threadEffect = Hero.transform.Find(SsdObjects.Thread);
+            var threadEffect = SsdClones.Thread;
             if (threadEffect == null || !(Fsm.GetFsmFloat(SsdVars.Distance).Value > SsdVars.ShortThrowThreshold))
             {
                 return;
             }
             threadEffect.gameObject.SetActive(true);
-            threadEffect.PointForward();
         }
 
         private static void PreThrowEffects()
@@ -75,7 +73,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             // - audio      hornet_superjump_pt_4_throw
             // - vibration  hornet_need_throw_superjump
 
-            var chargedEffect = Hero.transform.Find(SsdObjects.ChargedEffect);
+            var chargedEffect = SsdClones.ChargedEffect;
             if (chargedEffect != null)
             {
                 chargedEffect.gameObject.SetActive(false);
@@ -86,18 +84,17 @@ namespace SilkSoarDash.CustomFsm.Actions
         {
             _dir = Fsm.GetFsmFloat(SsdVars.Direction).Value;
 
-            _needle = Hero.transform.Find(SsdObjects.ThrowNeedle);
+            _needle = SsdClones.ThrowNeedle;
 
             if (_needle == null)
             {
-                SsdLog.Warning("needle not found, cancelling path={Path}", SsdObjects.ThrowNeedle);
+                SsdLog.Warning("needle clone missing, cancelling");
                 return false;
             }
 
             _damager = _needle.Find(SsdObjects.NeedleDamagerChild);
             _needle.localPosition = new Vector3(0f, SsdVars.NeedleStartHeight, 0f);
             _needle.gameObject.SetActive(true);
-            _needle.TurnForward();
             _needle.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(SsdVars.NeedleThrowSpeed * _dir, 0f);
             _startX = _needle.position.x;
 

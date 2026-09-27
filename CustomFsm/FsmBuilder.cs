@@ -64,10 +64,8 @@ namespace SilkSoarDash.CustomFsm
             };
         }
 
-        public static ActivateGameObject Activate(string heroPath)
+        public static ActivateGameObject Activate(Transform target)
         {
-            var target = HeroController.instance.transform.Find(heroPath);
-
             return new ActivateGameObject
             {
                 gameObject = new FsmOwnerDefault
@@ -91,10 +89,8 @@ namespace SilkSoarDash.CustomFsm
             };
         }
 
-        public static ActivateGameObjectDelay ActivateAfter(string heroPath, float delay)
+        public static ActivateGameObjectDelay ActivateAfter(Transform target, float delay)
         {
-            var target = HeroController.instance.transform.Find(heroPath);
-
             return new ActivateGameObjectDelay
             {
                 gameObject = new FsmOwnerDefault
@@ -142,10 +138,8 @@ namespace SilkSoarDash.CustomFsm
             };
         }
 
-        public static CheckCollisionSideV2 CheckSideHits(string heroPath, string hitEvent)
+        public static CheckCollisionSideV2 CheckSideHits(Transform target, string hitEvent)
         {
-            var target = HeroController.instance.transform.Find(heroPath);
-
             return new CheckCollisionSideV2
             {
                 collidingObject = new FsmOwnerDefault
@@ -177,10 +171,8 @@ namespace SilkSoarDash.CustomFsm
             };
         }
 
-        public static iTweenMoveBy MoveBy(Fsm fsm, string heroPath, string vectorVariable, float speed, string finishEvent)
+        public static iTweenMoveBy MoveBy(Fsm fsm, Transform target, string vectorVariable, float speed, string finishEvent)
         {
-            var target = HeroController.instance.transform.Find(heroPath);
-
             return new iTweenMoveBy
             {
                 gameObject = new FsmOwnerDefault

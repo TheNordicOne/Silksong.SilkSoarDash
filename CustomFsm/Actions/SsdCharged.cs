@@ -24,7 +24,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             // - audio   Sounds/Nail Art Ready
             // - audio   hornet_dramatic_stance_crazy_cloak_loop
 
-            var chargedEffect = HeroController.instance.transform.Find(SsdObjects.ChargedEffect);
+            var chargedEffect = SsdClones.ChargedEffect;
             if (chargedEffect != null)
             {
                 chargedEffect.gameObject.SetActive(true);

@@ -2,6 +2,7 @@ using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Logging;
+using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -11,14 +12,6 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         private static HeroController Hero => HeroController.instance;
         private static SilkSpool Spool => SilkSpool.Instance;
-
-        private static readonly string[] EffectPaths =
-        {
-            SsdObjects.ExtraGroundEffect,
-            SsdObjects.ExtraThrowEffect,
-            SsdObjects.Thread,
-            SsdObjects.Damager
-        };
 
         public override void OnEnter()
         {
@@ -39,14 +32,10 @@ namespace SilkSoarDash.CustomFsm.Actions
                 Spool.RemoveUsing(SilkSpool.SilkUsingFlags.Normal, SsdVars.SilkCost);
             }
 
-            foreach (var path in EffectPaths)
-            {
-                var effect = Hero.transform.Find(path);
-                if (effect != null)
-                {
-                    effect.gameObject.SetActive(false);
-                }
-            }
+            Deactivate(SsdClones.ExtraGroundEffect);
+            Deactivate(SsdClones.ExtraThrowEffect);
+            Deactivate(SsdClones.Thread);
+            Deactivate(SsdClones.Damager);
 
             // audio  stop the charge loop
             // audio  stop Sounds/Superjump Loop
@@ -65,6 +54,14 @@ namespace SilkSoarDash.CustomFsm.Actions
             // flash  cancel the sprite flash by its stored id
 
             Finish();
+        }
+
+        private static void Deactivate(Transform effect)
+        {
+            if (effect != null)
+            {
+                effect.gameObject.SetActive(false);
+            }
         }
     }
 }

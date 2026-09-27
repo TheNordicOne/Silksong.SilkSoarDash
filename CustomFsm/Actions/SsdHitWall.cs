@@ -11,7 +11,7 @@ namespace SilkSoarDash.CustomFsm.Actions
         public override void OnEnter()
         {
             var stickNeedle = Fsm.GetFsmGameObject(SsdVars.StickNeedle).Value;
-            var damager = Hero.transform.Find(SsdObjects.Damager);
+            var damager = SsdClones.Damager;
             stickNeedle.SetActive(false);
             damager.gameObject.SetActive(false);
 

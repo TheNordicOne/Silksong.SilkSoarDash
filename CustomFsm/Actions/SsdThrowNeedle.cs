@@ -29,6 +29,7 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
 
+            SetThreadEffect();
 
             PreThrowEffects();
 
@@ -62,6 +63,16 @@ namespace SilkSoarDash.CustomFsm.Actions
             Fsm.Event(SsdEvents.Finished);
         }
 
+
+        private void SetThreadEffect()
+        {
+            var threadEffect = SsdClones.Thread;
+            if (threadEffect == null || !(Fsm.GetFsmFloat(SsdVars.Distance).Value > SsdVars.ShortThrowThreshold))
+            {
+                return;
+            }
+            threadEffect.gameObject.SetActive(true);
+        }
 
         private static void PreThrowEffects()
         {
@@ -106,13 +117,19 @@ namespace SilkSoarDash.CustomFsm.Actions
         // the sprite trails far behind its pivot, so placing the pivot ahead of Hornet still draws the needle through her
         private void PutTailAhead()
         {
-            var sprite = _needle.GetComponent<Renderer>();
-            if (sprite == null)
+            var sprites = _needle.GetComponentsInChildren<Renderer>();
+            if (sprites.Length == 0)
             {
+                SsdLog.Warning("needle has no renderer, start not adjusted");
                 return;
             }
 
-            var bounds = sprite.bounds;
+            var bounds = sprites[0].bounds;
+            foreach (var sprite in sprites)
+            {
+                bounds.Encapsulate(sprite.bounds);
+            }
+
             var tail = _dir > 0f ? bounds.min.x : bounds.max.x;
             var wantedTail = Hero.transform.position.x + SsdVars.NeedleStartForward * _dir;
             _needle.position += new Vector3(wantedTail - tail, 0f, 0f);

@@ -11,7 +11,21 @@ namespace SilkSoarDash.CustomFsm
             return FsmBuilder.State(fsm, SsdStates.Inactive,
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.Start, SsdStates.RelinquishControl)
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ActivationCheck)
+                });
+        }
+        
+        public static FsmState ActivationCheck(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.ActivationCheck,
+                new FsmStateAction[]
+                {
+                    new SsdActivationCheck()
+                },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.RelinquishControl),
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.Inactive)
                 });
         }
 

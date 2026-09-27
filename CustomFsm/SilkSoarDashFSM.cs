@@ -59,6 +59,7 @@ namespace SilkSoarDash.CustomFsm
                         new FsmBool(SsdVars.QueuedCancel),
                         new FsmBool(SsdVars.WallHitLeft),
                         new FsmBool(SsdVars.WallHitRight),
+                        new FsmBool(SsdVars.DidAddUsingSilk),
                     }
                 }
             };
@@ -66,6 +67,7 @@ namespace SilkSoarDash.CustomFsm
             fsm.States = new[]
             {
                 SsdStateFactory.Inactive(fsm),
+                SsdStateFactory.ActivationCheck(fsm),
                 SsdStateFactory.RelinquishControl(fsm),
                 SsdStateFactory.Charge(fsm),
                 SsdStateFactory.Charged(fsm),

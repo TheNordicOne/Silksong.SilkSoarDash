@@ -5,8 +5,15 @@ namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdCharged : FsmStateAction
     {
+        private static HeroController Hero => HeroController.instance;
+        private static SilkSpool Spool => SilkSpool.Instance;
+
         public override void OnEnter()
         {
+            
+            Spool.RemoveUsing(SilkSpool.SilkUsingFlags.Normal, SsdVars.SilkCost);
+            Hero.TakeSilk(SsdVars.SilkCost);
+
             // - effect  Hornet_Super_Jump_Ready_Burst
             // - audio   hornet_superjump_pt_3_charge_ready
             // - audio   Sounds/Nail Art Ready
@@ -20,6 +27,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             // - flash  FlashingSuperDash
             // - event  AverageShake
+
+            // turn the camera's RumblingFocus off and RumblingFocus2 on
         }
 
         public override void OnUpdate()
@@ -34,7 +43,9 @@ namespace SilkSoarDash.CustomFsm.Actions
             {
                 return;
             }
-            
+
+            // leaving the ground -> cancel
+
             Fsm.Event(SsdEvents.GetDistance);
             Finish();
         }

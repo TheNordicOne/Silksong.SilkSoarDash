@@ -20,6 +20,7 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string ThrowWaitTime = "ThrowWaitTime";
         public const string WallHitLeft = "WallHitLeft";
         public const string WallHitRight = "WallHitRight";
+        public const string DidAddUsingSilk = "DidAddUsingSilk";
         
         public const int DefaultThrowDistance = 9;
         public const float DefaultJumpSpeed = 33f;
@@ -41,5 +42,7 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const float NeedleReturnedDistance = -0.1f;
         public const float NeedleRayDistance = 350f;
         public const float DistantImpactRange = 15f;
+        
+        public const int SilkCost = 1;
     }
 }

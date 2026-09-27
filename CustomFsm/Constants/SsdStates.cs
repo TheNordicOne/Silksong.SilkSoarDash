@@ -3,6 +3,7 @@ namespace SilkSoarDash.CustomFsm.Constants
     public static class SsdStates
     {
         public const string Inactive = "Inactive";
+        public const string ActivationCheck = "ActivationCheck";
         public const string RelinquishControl = "RelinquishControl";
         public const string Charge = "SsdCharge";
         public const string Charged = "Charged";

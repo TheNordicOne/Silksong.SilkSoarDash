@@ -4,15 +4,13 @@ namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdRelinquishControl : FsmStateAction
     {
+        private static HeroController Hero => HeroController.instance;
+
         public override void OnEnter()
         {
-            var hero = HeroController.instance;
-            if (hero != null)
-            {
-                hero.RelinquishControl();
-                hero.StopAnimationControl();
-            }
-
+            Hero.RelinquishControl();
+            Hero.StopAnimationControl();
+            
             Finish();
         }
     }

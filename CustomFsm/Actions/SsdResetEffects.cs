@@ -26,9 +26,6 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
 
-            hero.RegainControl();
-            hero.StartAnimationControlToIdle();
-
             ReattachStickNeedle();
 
             foreach (var path in EffectPaths)

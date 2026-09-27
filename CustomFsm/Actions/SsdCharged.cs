@@ -1,5 +1,6 @@
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Extensions;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -38,16 +39,20 @@ namespace SilkSoarDash.CustomFsm.Actions
             {
                 return;
             }
+            
+            if (Hero.IsFalling())
+            {
+                Fsm.Event(SsdEvents.GetDistance);
+                return;
+            }
 
             if (ia.SuperDash.IsPressed)
             {
                 return;
             }
 
-            // leaving the ground -> cancel
 
             Fsm.Event(SsdEvents.GetDistance);
-            Finish();
         }
     }
 }

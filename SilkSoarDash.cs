@@ -12,6 +12,7 @@ namespace SilkSoarDash
         private static readonly ManualLogSource Log = SilkLog.For<SilkSoarDash>();
 
         private static HeroActions InputActions => GameManager.instance?.inputHandler?.inputActions;
+        private static HeroController Hero => HeroController.instance;
 
         private void Awake()
         {
@@ -53,7 +54,7 @@ namespace SilkSoarDash
                 return false;
             }
 
-            return InputActions.SuperDash.WasPressed && SilkSoarDashDirectionPressed();
+            return InputActions.SuperDash.WasPressed && SilkSoarDashDirectionPressed() && Hero.CanSuperJump();
         }
 
         private static bool SilkSoarDashDirectionPressed()
@@ -63,7 +64,7 @@ namespace SilkSoarDash
                 return false;
             }
 
-            return InputActions.Up;
+            return InputActions.Up.IsPressed;
         }
     }
 }

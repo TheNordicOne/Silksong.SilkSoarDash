@@ -3476,10 +3476,7 @@ Totals: 1506 gates, 1051 of them named `left*` or `right*`, about 29,000 terrain
 on layer 8. Terrain collider types seen: `EdgeCollider2D` (the tilemap `Chunk` objects, with
 their points), `PolygonCollider2D`, `BoxCollider2D`.
 
-## Runtime facts from our own FSM
+## Super Jump Needle Throw rigidbody
 
-`Super Jump Needle Throw` rigidbody: Dynamic, simulated, linearDamping 0, gravityScale 0,
-mass 1. Nothing damps it, so it only stops on collision.
-
-`CheckCollisionSideV2` with left and right events on the thrown needle never fired in
-testing. The throw state always ran its full 0.8s `Wait`.
+Dynamic, simulated, linearDamping 0, gravityScale 0, mass 1. Nothing damps it, so it only
+stops on collision.

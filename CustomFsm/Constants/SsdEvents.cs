@@ -10,5 +10,7 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string DamagerHitSpikes = "DAMAGER HIT SPIKES";
         public const string TransitionGate = "TransitionGate";
         public const string HitWall = "HIT_WALL";
+        public const string HeroDamaged = "HERO DAMAGED";
+        public const string FsmCancel = "FSM CANCEL";
     }
 }

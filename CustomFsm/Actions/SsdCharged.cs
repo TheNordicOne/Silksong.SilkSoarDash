@@ -26,10 +26,10 @@ namespace SilkSoarDash.CustomFsm.Actions
                 chargedEffect.gameObject.SetActive(true);
             }
 
-            // - flash  FlashingSuperDash
+            // - flash  FlashingSuperDash, keeping its id and setting DidStartFlash
             // - event  AverageShake
 
-            // turn the camera's RumblingFocus off and RumblingFocus2 on
+            // turn the camera's RumblingFocus off and RumblingFocus2 on, clearing StartedRumblingFocus and setting StartedRumblingFocus2
         }
 
         public override void OnUpdate()

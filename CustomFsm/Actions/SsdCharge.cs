@@ -28,7 +28,7 @@ namespace SilkSoarDash.CustomFsm.Actions
            
            Hero.SetCState(SsdCStates.FreezeCharge, true);
            
-           // turn the camera's RumblingFocus on
+           // turn the camera's RumblingFocus on, and set StartedRumblingFocus
         }
 
         public override void OnUpdate()

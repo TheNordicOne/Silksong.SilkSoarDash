@@ -25,5 +25,8 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string RetractNeedleCancel = "RetractNeedleCancel";
         public const string RegainControlToIdle = "RegainControlToIdle";
         public const string AirCancel = "AirCancel";
+        public const string Cancel = "Cancel";
+        public const string CancelRumblingFocus = "CancelRumblingFocus";
+        public const string CancelRumblingFocus2 = "CancelRumblingFocus2";
     }
 }

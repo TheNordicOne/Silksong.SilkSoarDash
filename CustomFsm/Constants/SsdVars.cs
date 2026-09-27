@@ -21,6 +21,9 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string WallHitLeft = "WallHitLeft";
         public const string WallHitRight = "WallHitRight";
         public const string DidAddUsingSilk = "DidAddUsingSilk";
+        public const string DidStartFlash = "DidStartFlash";
+        public const string StartedRumblingFocus = "StartedRumblingFocus";
+        public const string StartedRumblingFocus2 = "StartedRumblingFocus2";
         
         public const int DefaultThrowDistance = 9;
         public const float DefaultJumpSpeed = 33f;

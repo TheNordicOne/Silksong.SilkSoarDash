@@ -18,6 +18,9 @@ namespace SilkSoarDash.CustomFsm.Actions
             // TODO DefaultThrowDistance is the throw needle's Move To Y offset. No horizontal
             // equivalent exists in the game, so this fallback distance needs deciding.
             Fsm.GetFsmFloat(SsdVars.Distance).Value = SsdVars.DefaultThrowDistance;
+           
+            StoreHitAhead(dir);
+            
             rc.OnEnter();
             
             var dist = Fsm.GetFsmFloat(SsdVars.Distance).Value;
@@ -25,6 +28,32 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             Fsm.Event(SsdEvents.ThrowNeedle);
             Finish();
+        }
+
+        // SuperJumpRaycast skips triggers, so this measures terrain triggers it would miss
+        private void StoreHitAhead(Vector2 dir)
+        {
+            var filter = new ContactFilter2D
+            {
+                useTriggers = true,
+                useLayerMask = true,
+                layerMask = 1 << SsdVars.TerrainLayer
+            };
+
+            var hits = new RaycastHit2D[1];
+            var origin = HeroController.instance.transform.position;
+            var hitCount = Physics2D.Raycast(origin, dir, filter, hits, SsdVars.NeedleRayDistance);
+
+            Fsm.GetFsmBool(SsdVars.DidHit).Value = hitCount > 0;
+
+            if (hitCount == 0)
+            {
+                return;
+            }
+
+            Fsm.GetFsmGameObject(SsdVars.HitObject).Value = hits[0].collider.gameObject;
+            Fsm.GetFsmVector2(SsdVars.HitPoint).Value = hits[0].point;
+            Fsm.GetFsmFloat(SsdVars.Distance).Value = hits[0].distance;
         }
 
         private SuperJumpRaycast BuildRayCaster(Vector2 dir)

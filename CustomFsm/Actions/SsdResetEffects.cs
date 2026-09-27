@@ -5,6 +5,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdResetEffects : FsmStateAction
     {
+        private static HeroController Hero => HeroController.instance;
+        
         private static readonly string[] EffectPaths =
         {
             SsdObjects.AnticEffectL,
@@ -25,6 +27,10 @@ namespace SilkSoarDash.CustomFsm.Actions
                 Finish();
                 return;
             }
+            
+            Hero.SetCState(SsdCStates.SuperDashOnWall, false);
+            
+            // clear the sprite flash tracker
 
             ReattachStickNeedle();
 
@@ -36,6 +42,8 @@ namespace SilkSoarDash.CustomFsm.Actions
                     effect.gameObject.SetActive(false);
                 }
             }
+
+            EventRegister.SendEvent(SsdRegisterEvents.SuperJumpEnded);
 
             Finish();
         }

@@ -22,5 +22,6 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string HitWallHard = "HitWallHard";
         public const string HitWall = "HitWall";
         public const string RetractNeedleCancel = "RetractNeedleCancel";
+        public const string RegainControlToIdle = "RegainControlToIdle";
     }
 }

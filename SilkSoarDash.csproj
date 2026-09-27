@@ -105,6 +105,7 @@
         <Compile Include="CustomFsm\Actions\SsdHitWallHard.cs" />
         <Compile Include="CustomFsm\Actions\SsdPositionStickNeedle.cs" />
         <Compile Include="CustomFsm\Actions\SsdPositionStickNeedlePre.cs" />
+        <Compile Include="CustomFsm\Actions\SsdRegainControlToIdle.cs" />
         <Compile Include="CustomFsm\Actions\SsdRetractNeedleCancel.cs" />
         <Compile Include="CustomFsm\Actions\SsdThreadLoop.cs" />
         <Compile Include="CustomFsm\Actions\SsdThrowNeedle.cs" />

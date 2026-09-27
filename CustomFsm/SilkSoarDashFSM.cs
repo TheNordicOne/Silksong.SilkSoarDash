@@ -85,6 +85,7 @@ namespace SilkSoarDash.CustomFsm
                 SsdStateFactory.HitWallHard(fsm),
                 SsdStateFactory.RetractNeedleCancel(fsm),
                 SsdStateFactory.HitWall(fsm),
+                SsdStateFactory.RegainControlToIdle(fsm),
             };
 
             fsm.StartState = SsdStates.Inactive;

@@ -15,6 +15,12 @@ namespace SilkSoarDash.Extensions
             effect.TurnForward();
         }
 
+        // for an object that left the hero, whose mirrored rotation does not survive unparenting
+        public static void TurnForwardInWorld(this Transform effect, float direction)
+        {
+            effect.rotation = Quaternion.Euler(0f, 0f, direction > 0f ? -ForwardAngle : ForwardAngle);
+        }
+
         public static void TurnForward(this Transform effect)
         {
             effect.localEulerAngles = new Vector3(0f, 0f, ForwardAngle);

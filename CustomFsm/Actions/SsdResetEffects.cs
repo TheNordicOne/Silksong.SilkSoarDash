@@ -1,12 +1,16 @@
+using BepInEx.Logging;
 using GlobalEnums;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Logging;
 using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdResetEffects : FsmStateAction
     {
+        private static readonly ManualLogSource SsdLog = SilkLog.For<SsdResetEffects>();
+
         private static HeroController Hero => HeroController.instance;
         
         public override void OnEnter()
@@ -23,6 +27,12 @@ namespace SilkSoarDash.CustomFsm.Actions
             Hero.hero_state = ActorStates.idle;
             
             Fsm.GetFsmBool(SsdVars.DidStartFlash).Value = false;
+
+            var stick = SsdClones.StickNeedle;
+            if (stick != null)
+            {
+                SsdLog.Debug("resetting stick angle={Angle} active={Active}", stick.eulerAngles.z, stick.gameObject.activeInHierarchy);
+            }
 
             ReattachStickNeedle();
 

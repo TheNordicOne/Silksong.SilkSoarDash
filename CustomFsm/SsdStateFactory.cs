@@ -360,8 +360,7 @@ namespace SilkSoarDash.CustomFsm
             return FsmBuilder.State(fsm, SsdStates.AirCancel,
                 new FsmStateAction[]
                 {
-                    new SsdAirCancel(),
-                    FsmBuilder.Decelerate(SsdVars.CancelDeceleration)
+                    new SsdAirCancel()
                 },
                 new[]
                 {

@@ -32,7 +32,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             
             // vanilla plays Super Jump Loop Cancel and sets an updraft exit, both are for an upward soar
             // the game's own fall animation takes over once control is back
-            Finish();
+            // vanilla leaves this state by the clip's complete event, not by finishing its actions
+            Fsm.Event(SsdEvents.Finished);
         }
     }
 }

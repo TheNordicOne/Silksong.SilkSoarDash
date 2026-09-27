@@ -37,6 +37,7 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const float DefaultCancelableTime = 0.2f;
         public const float StoppedSpeed = 0.1f;
         public const float CatchFallSpeed = 5f;
+        public const float KickUpHeight = 0.3f;
         public const float FallDetectionSpeed = -0.1f;
 
         public const float NeedleStartHeight = 0f;

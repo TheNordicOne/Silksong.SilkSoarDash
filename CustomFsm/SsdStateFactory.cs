@@ -61,7 +61,7 @@ namespace SilkSoarDash.CustomFsm
             return FsmBuilder.State(fsm, SsdStates.Cancelled,
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects)
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.RegainControlToIdle)
                 });
         }
 
@@ -103,7 +103,7 @@ namespace SilkSoarDash.CustomFsm
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.PositionStickNeedlePre),
                     FsmBuilder.Transition(SsdEvents.DamagerHitSpikes, SsdStates.HitSpikes),
-                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ResetEffects),
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.RegainControlToIdle),
                 });
         }
 
@@ -116,7 +116,7 @@ namespace SilkSoarDash.CustomFsm
                 },
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.RegainControlToIdle),
                 });
         }
 
@@ -130,7 +130,7 @@ namespace SilkSoarDash.CustomFsm
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.PositionStickNeedle),
-                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ResetEffects),
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.RegainControlToIdle),
                     FsmBuilder.Transition(SsdEvents.TransitionGate, SsdStates.HitTransitionGate),
                 });
         }
@@ -146,7 +146,7 @@ namespace SilkSoarDash.CustomFsm
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ThrowWait),
-                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ResetEffects),
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.RegainControlToIdle),
                 });
         }
 
@@ -159,8 +159,8 @@ namespace SilkSoarDash.CustomFsm
                 },
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
-                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ResetEffects),
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.RegainControlToIdle),
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.RegainControlToIdle),
                 });
         }
 
@@ -220,7 +220,7 @@ namespace SilkSoarDash.CustomFsm
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.Cancelable),
-                    FsmBuilder.Transition(SsdEvents.HitWall, SsdStates.ResetEffects),
+                    FsmBuilder.Transition(SsdEvents.HitWall, SsdStates.RegainControlToIdle),
                 });
         }
 
@@ -268,7 +268,7 @@ namespace SilkSoarDash.CustomFsm
                 },
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.RegainControlToIdle),
                 });
         }
 

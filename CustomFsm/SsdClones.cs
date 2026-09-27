@@ -47,10 +47,11 @@ namespace SilkSoarDash.CustomFsm
             AnticEffectR = Clone(hero, SsdObjects.AnticEffectR);
             ChargedEffect = Clone(hero, SsdObjects.ChargedEffect);
             ChargingFader = Clone(hero, SsdObjects.ChargingFader);
-            ExtraThrowEffect = Clone(hero, SsdObjects.ExtraThrowEffect);
+
             ExtraGroundEffect = Clone(hero, SsdObjects.ExtraGroundEffect);
             CatchEffect = Clone(hero, SsdObjects.CatchEffect);
 
+            ExtraThrowEffect = ClonePointed(hero, SsdObjects.ExtraThrowEffect);
             Thread = ClonePointed(hero, SsdObjects.Thread);
             ThreadLoop = ClonePointed(hero, SsdObjects.ThreadLoop);
 

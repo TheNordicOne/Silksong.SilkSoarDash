@@ -178,7 +178,7 @@ namespace SilkSoarDash.CustomFsm
                 },
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.RegainControlToIdle),
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ThrowWait),
                     FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.RegainControlToIdle),
                 });
         }

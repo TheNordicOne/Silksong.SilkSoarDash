@@ -15,6 +15,7 @@ namespace SilkSoarDash.CustomFsm.Actions
         private Transform _damager;
         private float _dir;
         private float _startX;
+        private float _startTime;
 
         private static HeroController Hero => HeroController.instance;
 
@@ -39,6 +40,11 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             Fsm.Event(SsdEvents.Cancelled);
             Finish();
+        }
+
+        public override void OnExit()
+        {
+            SsdLog.Debug("throw ended after={Seconds} travelled={Travelled}", Time.time - _startTime, Travelled());
         }
 
         public override void OnUpdate()
@@ -95,10 +101,11 @@ namespace SilkSoarDash.CustomFsm.Actions
             }
 
             _damager = _needle.Find(SsdObjects.NeedleDamagerChild);
-            _needle.localPosition = new Vector3(0f, SsdVars.NeedleStartHeight, 0f);
+            _needle.position = Hero.transform.position + new Vector3(0f, SsdVars.NeedleStartHeight, 0f);
             _needle.gameObject.SetActive(true);
             _needle.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(SsdVars.NeedleThrowSpeed * _dir, 0f);
             _startX = _needle.position.x;
+            _startTime = Time.time;
 
             return true;
         }

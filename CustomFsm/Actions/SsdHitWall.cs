@@ -23,7 +23,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             // anim  HeroAnimationController.SetPlaySuperJumpFall()
 
-            Hero.Body.linearVelocity = new Vector2(0, 0);
+            Hero.Body.linearVelocity = Vector2.zero;
         }
 
         public override void OnUpdate()

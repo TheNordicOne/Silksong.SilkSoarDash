@@ -31,7 +31,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             // audio      hornet_land_hard new
             // vibration  hornet_land_hard
 
-            Hero.Body.linearVelocity = new Vector2(0, 0);
+            Hero.Body.linearVelocity =  Vector2.zero;
         }
 
         public override void OnUpdate()

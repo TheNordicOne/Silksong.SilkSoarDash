@@ -15,6 +15,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             var rc = BuildRayCaster(dir);
 
             rc.Init(State);
+            // TODO DefaultThrowDistance is the throw needle's Move To Y offset. No horizontal
+            // equivalent exists in the game, so this fallback distance needs deciding.
             Fsm.GetFsmFloat(SsdVars.Distance).Value = SsdVars.DefaultThrowDistance;
             rc.OnEnter();
             

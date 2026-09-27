@@ -20,6 +20,7 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string Dashing = "Dashing";
         public const string Cancelable = "Cancelable";
         public const string HitWallHard = "HitWallHard";
+        public const string HitWall = "HitWall";
         public const string RetractNeedleCancel = "RetractNeedleCancel";
     }
 }

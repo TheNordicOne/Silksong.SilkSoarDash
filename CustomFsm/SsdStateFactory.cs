@@ -220,7 +220,7 @@ namespace SilkSoarDash.CustomFsm
                 new FsmStateAction[] { new SsdHitWallHard() },
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.HitWall),
                 });
         }
 
@@ -233,6 +233,16 @@ namespace SilkSoarDash.CustomFsm
                     FsmBuilder.MoveBy(fsm, SsdObjects.RetractNeedle, SsdVars.MoveBy, SsdVars.RetractNeedleSpeed, SsdEvents.Finished),
                     FsmBuilder.Decelerate(SsdVars.CancelDeceleration)
                 },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),
+                });
+        }
+        
+        public static FsmState HitWall(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.HitWall,
+                new FsmStateAction[] { new SsdHitWall() },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects),

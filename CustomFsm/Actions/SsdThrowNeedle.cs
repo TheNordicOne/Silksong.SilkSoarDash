@@ -92,7 +92,9 @@ namespace SilkSoarDash.CustomFsm.Actions
             _damager = _needle.Find(SsdObjects.NeedleDamagerChild);
             _needle.position = Hero.transform.position + new Vector3(SsdVars.NeedleStartForward * _dir, SsdVars.NeedleStartHeight, 0f);
             _needle.gameObject.SetActive(true);
+            PutTailAhead();
             _body = _needle.GetComponent<Rigidbody2D>();
+            _body.position = _needle.position;
             _body.linearVelocity = new Vector2(SsdVars.NeedleThrowSpeed * _dir, 0f);
             _startX = _needle.position.x;
             _startTime = Time.time;
@@ -100,6 +102,22 @@ namespace SilkSoarDash.CustomFsm.Actions
             return true;
         }
 
+
+        // the sprite trails far behind its pivot, so placing the pivot ahead of Hornet still draws the needle through her
+        private void PutTailAhead()
+        {
+            var sprite = _needle.GetComponent<Renderer>();
+            if (sprite == null)
+            {
+                return;
+            }
+
+            var bounds = sprite.bounds;
+            var tail = _dir > 0f ? bounds.min.x : bounds.max.x;
+            var wantedTail = Hero.transform.position.x + SsdVars.NeedleStartForward * _dir;
+            _needle.position += new Vector3(wantedTail - tail, 0f, 0f);
+            SsdLog.Debug("needle start pivot={Pivot} tail={Tail} wanted={Wanted} hero={Hero}", _needle.position.x, tail, wantedTail, Hero.transform.position.x);
+        }
 
         private void SetDamager()
         {

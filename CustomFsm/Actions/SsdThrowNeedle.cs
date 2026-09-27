@@ -29,7 +29,6 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
 
-            SetThreadEffect();
 
             PreThrowEffects();
 
@@ -63,16 +62,6 @@ namespace SilkSoarDash.CustomFsm.Actions
             Fsm.Event(SsdEvents.Finished);
         }
 
-
-        private void SetThreadEffect()
-        {
-            var threadEffect = SsdClones.Thread;
-            if (threadEffect == null || !(Fsm.GetFsmFloat(SsdVars.Distance).Value > SsdVars.ShortThrowThreshold))
-            {
-                return;
-            }
-            threadEffect.gameObject.SetActive(true);
-        }
 
         private static void PreThrowEffects()
         {

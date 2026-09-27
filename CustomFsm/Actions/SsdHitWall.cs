@@ -23,6 +23,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             Hero.AffectedByGravity(true);
 
             Hero.PlayAnim(SsdAnims.WallCatch);
+            SsdClones.GrabEffect.gameObject.SetActive(true);
 
             Hero.Body.linearVelocity = Vector2.zero;
         }

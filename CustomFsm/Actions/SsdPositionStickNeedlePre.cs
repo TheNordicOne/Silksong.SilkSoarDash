@@ -25,8 +25,6 @@ namespace SilkSoarDash.CustomFsm.Actions
             _needleStick = SsdClones.StickNeedle;
             _needleStick.gameObject.SetActive(true);
 
-            // it comes back from being unparented with a world rotation, so Hornet turning around flips it
-            _needleStick.TurnForward();
             Fsm.GetFsmGameObject(SsdVars.StickNeedle).Value = _needleStick.gameObject;
             
             var didHit = Fsm.GetFsmBool(SsdVars.DidHit).Value;
@@ -58,9 +56,10 @@ namespace SilkSoarDash.CustomFsm.Actions
             // store the stick needle's current parent
             Fsm.GetFsmGameObject(SsdVars.StickNeedleParent).Value = _needleStick.parent.gameObject;
             
-            _needleStick.TurnForward();
             _needleStick.position = new Vector3(hitPoint.x, _needle.position.y, _needleStick.position.z);
             _needleStick.SetParent(null, true);
+            _needleStick.PlayAnim(SsdAnims.NeedleWallHit);
+            ShowThread();
 
             SsdLog.Debug("stuck needle={Needle} hit={Hit} stick={Stick} hero={Hero}", _needle.position, hitPoint, _needleStick.position, Hero.transform.position);
             SsdLog.Debug("stuck name={Name} angle={Angle} scale={Scale} throwActive={ThrowActive}", _needleStick.name, _needleStick.eulerAngles.z, _needleStick.lossyScale, _needle.gameObject.activeInHierarchy);
@@ -84,6 +83,17 @@ namespace SilkSoarDash.CustomFsm.Actions
             // effect  Nail Terrain Hit Effect
 
             Finish();
+        }
+
+        private void ShowThread()
+        {
+            var thread = SsdClones.Thread;
+            if (thread == null || !(Fsm.GetFsmFloat(SsdVars.Distance).Value > SsdVars.ShortThrowThreshold))
+            {
+                return;
+            }
+
+            thread.gameObject.SetActive(true);
         }
 
         private bool IsOutsideCamera()

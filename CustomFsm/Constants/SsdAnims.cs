@@ -10,5 +10,6 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string Loop = "Harpoon Dash";
         public const string LoopCancel = "Harpoon Catch";
         public const string WallCatch = "Harpoon Catch";
+        public const string NeedleWallHit = "Harpoon Needle Wall Hit";
     }
 }

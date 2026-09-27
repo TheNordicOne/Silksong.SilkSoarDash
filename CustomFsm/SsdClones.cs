@@ -24,6 +24,8 @@ namespace SilkSoarDash.CustomFsm
         public static Transform ChargingFader { get; private set; }
         public static Transform ExtraThrowEffect { get; private set; }
         public static Transform ExtraGroundEffect { get; private set; }
+        public static Transform DashEffect { get; private set; }
+        public static Transform GrabEffect { get; private set; }
         public static Transform CatchEffect { get; private set; }
         public static Transform Thread { get; private set; }
         public static Transform ThreadLoop { get; private set; }
@@ -51,13 +53,17 @@ namespace SilkSoarDash.CustomFsm
             ExtraGroundEffect = Clone(hero, SsdObjects.ExtraGroundEffect);
             CatchEffect = Clone(hero, SsdObjects.CatchEffect);
 
-            ExtraThrowEffect = ClonePointed(hero, SsdObjects.ExtraThrowEffect);
-            Thread = ClonePointed(hero, SsdObjects.Thread);
+            // the harpoon dash objects are drawn sideways already
+            ExtraThrowEffect = Clone(hero, SsdObjects.ExtraThrowEffect);
+            DashEffect = Clone(hero, SsdObjects.DashEffect);
+            GrabEffect = Clone(hero, SsdObjects.GrabEffect);
+            StickNeedle = Clone(hero, SsdObjects.StickNeedle);
+            Thread = StickNeedle != null ? StickNeedle.Find(SsdObjects.NeedleThreadChild) : null;
+
             ThreadLoop = ClonePointed(hero, SsdObjects.ThreadLoop);
 
             ThrowNeedle = CloneTurned(hero, SsdObjects.ThrowNeedle);
             RetractNeedle = CloneTurned(hero, SsdObjects.RetractNeedle);
-            StickNeedle = CloneTurned(hero, SsdObjects.StickNeedle);
             Damager = CloneTurned(hero, SsdObjects.Damager);
 
             hero.gameObject.AddComponent<Keeper>();

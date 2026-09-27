@@ -68,7 +68,9 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
 
+            // unparented it took Hornet's facing into its own scale, so the harpoon catch resets it
             needleStick.transform.SetParent(parent.transform, true);
+            needleStick.transform.localScale = Vector3.one;
         }
     }
 }

@@ -25,6 +25,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             // vibration  super_jump_dash_burst
             
             SsdClones.Damager.gameObject.SetActive(true);
+            SsdClones.DashEffect.gameObject.SetActive(true);
             
             Hero.PlayAnim(SsdAnims.Loop);
             

@@ -1,14 +1,10 @@
-using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
-using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdRegainControlToIdle : FsmStateAction
     {
-        private static readonly ManualLogSource SsdLog = SilkLog.For<SsdRegainControlToIdle>();
-
         private static HeroController Hero => HeroController.instance;
         
         public override void OnEnter()
@@ -24,13 +20,11 @@ namespace SilkSoarDash.CustomFsm.Actions
             // like the harpoon dash, a wall arrival hands over to wall sliding when the game allows it
             if (onWall && StartWallSlide())
             {
-                SsdLog.Debug("regained into={Into}", "wall slide");
                 Finish();
                 return;
             }
 
             Hero.StartAnimationControlToIdle();
-            SsdLog.Debug("regained into={Into} onWall={OnWall}", "idle", onWall);
 
             Finish();
         }

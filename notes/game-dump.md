@@ -107,8 +107,15 @@ logging action injected into every state of the live `superJumpFSM`.
 ### Default throw distance = 9
 
 `Move To` is a child of `Super Jump Needle Throw` at local `(0, 9, 0)`. Constant across
-all runs. `Get Distance` subtracts the needle's world Y from the marker's world Y, which
-always yields 9, then both raycasts overwrite it when they hit something.
+all runs.
+
+`Super Jump Needle Throw Fall` has its own `Move To` child at local `(0, -9, 0)`, with
+`deltaWorld` `(0, -11.70, 0)`. Also constant, across 3291 captures. Neither marker has any
+X component. The world delta on the fall needle is 1.3 times its local offset, while the
+throw needle's world delta equals its local offset.
+
+`Get Distance` subtracts the needle's world Y from the marker's world Y, which always yields
+9, then both raycasts overwrite it when they hit something.
 
 One captured `Get Distance`:
 
@@ -608,6 +615,128 @@ FSM variable name on the left, path on the right.
 
 `Init` also deactivates `Thread`, `Thread Loop`, `Extra Throw Effect` and
 `Extra Ground Effect` right after finding them.
+
+## Raycast action behaviour
+
+Read from `Assembly-CSharp`, not from a runtime capture.
+
+`SuperJumpRaycast.OnEnter` resets `StoreDidHit`, `StoreHitObject`, `StoreIsTransitionGate`
+and `StoreHitSpikes`, then calls `DoRaycast`. It does not reset `StoreHitPoint` or
+`StoreDistance`.
+
+`DoRaycast`:
+
+```
+layer mask is hardcoded to 0x2100, layers 8 and 13
+trigger colliders are skipped unless the collider has a TransitionPoint
+  whose GetGatePosition() is falsy, which sets StoreIsTransitionGate
+StoreDidHit is written either way
+on a hit:
+  a second Physics2D.Raycast looks for a DamageHero with a hazardType,
+    which sets StoreHitSpikes
+  StoreHitObject, StoreHitPoint and StoreDistance are written
+  HitEvent is sent
+on a miss:
+  NoHitEvent is sent and the method returns, leaving StoreHitObject,
+    StoreHitPoint and StoreDistance untouched
+```
+
+`RayCast2dV2.DoRaycast` has the same shape. It writes its did-hit bool unconditionally and
+every other store only inside the hit branch.
+
+That is why `Get Distance` runs three things into the same variables in order. The
+`Move To` subtraction seeds `Throw Needle Distance`, the plain `RayCast2dV2` overwrites it
+if it hits, and `SuperJumpRaycast` overwrites it again if it hits. The plain one differs by
+being layer 8 only with `ignoreTriggers = false`, so it measures trigger geometry that
+`SuperJumpRaycast` skips.
+
+## PlayMaker action lifecycle
+
+Read from `PlayMaker.dll`.
+
+`FsmState.ActivateActions` walks `Actions` in array order. For each it calls `Init(state)`,
+then `OnEnter()`. An action whose `Finished` is true after `OnEnter` is not added to
+`ActiveActions`.
+
+`FsmState.OnUpdate` iterates `ActiveActions`, not `Actions`, so an action that finishes
+stops receiving `OnUpdate`.
+
+`FsmState.CheckAllActionsFinished` calls `RemoveFinishedActions`, and when `ActiveActions`
+is empty it sets `finished` and sends `FsmEvent.Finished` to itself. Nothing outside reads
+`FsmState.Finished`.
+
+So a state leaves by one of two routes. Every action finishing, which always sends
+`FINISHED`. Or any single action sending an event, which switches immediately regardless of
+the others.
+
+`Actions.Wait.OnUpdate` calls `Finish()` and then, if `finishEvent` is not null, sends it.
+So it takes the second route.
+
+`Fsm.PreviousActiveState` is an `FsmState`, which has no `ToString` override. There is no
+`PreviousActiveStateName`. `Fsm.LastTransition` is an `FsmTransition` and exposes
+`EventName`.
+
+## Verified game API
+
+Signatures read from `Assembly-CSharp`.
+
+| Member | Notes |
+|---|---|
+| `NoSuperJumpCollider.IsInside(Vector2)` | public static bool |
+| `HeroController.Body` | public `Rigidbody2D` property |
+| `HeroController.TakeSilk(int)` | forwards to `TakeSilk(int, SilkSpool.SilkTakeSource)` with 0, and `SilkTakeSource.Normal` is 0 |
+| `HeroController.SetStartWithUpdraftExit()` | no arguments, sets `startWithUpdraftExit`, which is consumed once to set `useUpdraftExitJumpSpeed` |
+| `HeroAnimationController.SetPlaySuperJumpFall()` | no arguments |
+| `DeliveryQuestItem.TakeHit()` | public static, no arguments |
+| `SilkSpool.AddUsing(SilkUsingFlags, int)` | returns bool, which is the `DidAddTracker` |
+| `EventRegister.SendEvent(string, GameObject)` | public static, second argument optional |
+| `EventRegisterEvents.FsmCancel` | an `int` event hash for the register, not an FSM event name |
+| `GameCameras.cameraParent` | `Transform`, which is how `CameraParent` is reachable |
+| `CameraTarget.SetSuperJump(bool, float)` | writes `superJumping` and `superJumpDestinationY` |
+
+`CameraTarget.Update` uses those two like this:
+
+```
+if (superJumping) {
+    cameraCtrl.isRising = true;
+    wallSprintOffset = superJumpLookahead;
+    if (currentY + wallSprintOffset > superJumpDestinationY)
+        wallSprintOffset = superJumpDestinationY - currentY;
+}
+```
+
+`wallSprintOffset` is a vertical offset, shared with the updraft and rising branches. There
+is no horizontal equivalent in that method.
+
+`Camera Target` is found by tag, `FindGameObject withTag = CameraTarget`. `CameraParent` is
+never resolved in `Init`, so the FSM holds it as a serialized reference.
+
+## Stock action fields
+
+Public fields of the actions this FSM uses, read from `Assembly-CSharp`.
+
+```
+Wait                       time, finishEvent, realTime
+ActivateGameObject         gameObject, activate, recursive, resetOnExit, everyFrame
+ActivateGameObjectDelay    gameObject, activate, resetOnExit, delay
+CheckCollisionSide         collidingObject, topHit, rightHit, bottomHit, leftHit,
+                           topHitEvent, rightHitEvent, bottomHitEvent, leftHitEvent,
+                           otherLayer, otherLayerNumber, ignoreTriggers
+                           RAYCAST_LENGTH is a const 0.08, runs in OnFixedUpdate
+CheckOutOfCamera           gameObject, margin, outsideEvent, insideEvent,
+                           insideBool, outsideBool, everyFrame
+iTweenMoveBy               gameObject, id, vector, time, delay, speed, easeType,
+                           loopType, space, orientToPath, lookAtObject, lookAtVector,
+                           lookTime, axis, and from iTweenFsmAction: startEvent,
+                           finishEvent, realTime, stopOnExit, loopDontFinish
+DecelerateV2               gameObject, deceleration, brakeOnExit. OnFixedUpdate
+DecelerateXY               gameObject, decelerationX, decelerationY, brakeOnExit. OnFixedUpdate
+DoCameraShakeV4            Target, MaxCameraDistance, Camera, Profile, DoFreeze, Delay,
+                           CancelOnExit, vibrate. Profile is a CameraShakeProfile asset
+SendEventToRegister        eventName
+SetVelocity2d              runs in OnFixedUpdate
+GetVelocity2d              runs in OnUpdate and OnFixedUpdate
+```
 
 ## Full state listing
 

@@ -314,7 +314,8 @@ namespace SilkSoarDash.CustomFsm
                 },
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.CancelRumblingFocus)
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.CancelRumblingFocus),
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.Inactive)
                 });
         }
 

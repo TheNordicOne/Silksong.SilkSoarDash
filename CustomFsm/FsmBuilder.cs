@@ -86,7 +86,7 @@ namespace SilkSoarDash.CustomFsm
                 {
                     Value = false
                 },
-                resetOnExit = false,
+                resetOnExit = true,
                 everyFrame = false
             };
         }

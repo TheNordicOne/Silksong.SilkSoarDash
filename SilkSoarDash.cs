@@ -1,4 +1,5 @@
 using BepInEx;
+using BepInEx.Logging;
 using HarmonyLib;
 using SilkSoarDash.CustomFsm;
 
@@ -7,12 +8,13 @@ namespace SilkSoarDash
     [BepInPlugin("com.thenoridcone.silksoardash", "Silk Soar Dash", "1.0.0 ")]
     public class SilkSoarDash : BaseUnityPlugin
     {
-        private static readonly BepInEx.Logging.ManualLogSource SsdLog = BepInEx.Logging.Logger.CreateLogSource("SilkSoarDash");
+        private static readonly ManualLogSource Log = SilkLog.For<SilkSoarDash>();
+
         private static HeroActions InputActions => GameManager.instance?.inputHandler?.inputActions;
 
         private void Awake()
         {
-            SsdLog.LogInfo("Plugin loaded and initialized.");
+            Log.LogInfo("Plugin loaded and initialized.");
 
             Harmony.CreateAndPatchAll(typeof(SilkSoarDash));
         }

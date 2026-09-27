@@ -76,7 +76,6 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         private static void PreThrowEffects()
         {
-            Hero.PlayAnim(SsdAnims.ThrowWait);
 
             // - audio      Attack Heavy Hornet Voice
             // - audio      hornet_superjump_pt_4_throw

@@ -1,4 +1,5 @@
 using BepInEx.Logging;
+using GlobalEnums;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Logging;
@@ -19,10 +20,13 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
 
-            SsdHeroState.ExitedDashing = SsdHeroState.Dashing;
+            // the game only continues a sprint through a side gate, so the pose and the hand-off stop at any other exit
+            var exitGate = GameManager.instance.LastSceneLoad.SceneLoadInfo.HeroLeaveDirection;
+            var sideExit = exitGate == GatePosition.left || exitGate == GatePosition.right;
+            SsdHeroState.ExitedDashing = SsdHeroState.Dashing && sideExit;
 
             // makes the next room skip its walk-in and send ENTER SPRINTING, which SendEventSafePrefix turns into our EnterDashing
-            if (SsdHeroState.Dashing)
+            if (SsdHeroState.ExitedDashing)
             {
                 HeroController.instance.exitedSprinting = true;
             }

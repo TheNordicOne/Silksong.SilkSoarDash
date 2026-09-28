@@ -42,7 +42,10 @@ namespace SilkSoarDash.CustomFsm.Actions
             SsdEffects.StopLoop();
 
             SsdHeroState.Dashing = false;
-            Hero.ExitDashPose();
+            if (!(previous.Name == SsdStates.LeavingScene && SsdHeroState.ExitedDashing))
+            {
+                Hero.ExitDashPose();
+            }
             Hero.SetCState(SsdCStates.FreezeCharge, false);
 
             // CameraTarget.SetSuperJump is vertical only. Skipped

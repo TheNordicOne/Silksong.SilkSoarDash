@@ -13,7 +13,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             var heroX = Hero.transform.position.x;
             
             var hitPoint = Fsm.GetFsmVector2(SsdVars.HitPoint).Value;
-            var isDistant = hitPoint.x > (heroX + SsdVars.DistantImpactRange);
+            var isDistant = hitPoint.x > heroX + SsdVars.DistantImpactRange;
 
             var audioClip = isDistant ? SsdAudio.NeedleImpactDistant : SsdAudio.NeedleImpact;
             SsdEffects.PlayOneShot2D(audioClip, SsdAudio.WidePitchMin, SsdAudio.WidePitchMax);

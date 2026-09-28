@@ -85,12 +85,13 @@ namespace SilkSoarDash.CustomFsm.Actions
             var released = !ia.SuperDash.IsPressed;
             var falling = Hero.IsFalling();
 
-            if (released || falling)
+            if (!released && !falling)
             {
-                SsdLog.Debug("cancelled released={Released} falling={Falling}", released, falling);
-                Fsm.Event(SsdEvents.Cancelled);
+                return;
             }
-            
+
+            SsdLog.Debug("cancelled released={Released} falling={Falling}", released, falling);
+            Fsm.Event(SsdEvents.Cancelled);
         }
     }
 }

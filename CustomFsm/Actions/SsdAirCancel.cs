@@ -1,14 +1,11 @@
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
-using SilkSoarDash.Extensions;
 using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdAirCancel : FsmStateAction
     {
-        private static HeroController Hero => HeroController.instance;
-        
         public override void OnEnter()
         {
             var catchEffect = SsdClones.CatchEffect;

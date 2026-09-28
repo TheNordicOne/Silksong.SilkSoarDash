@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using BepInEx.Logging;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Extensions;
@@ -80,12 +81,9 @@ namespace SilkSoarDash.CustomFsm
         // The stuck needle spends the dash unparented, so it would outlive a hero that dies mid soar.
         private static void Release()
         {
-            foreach (var clone in Created)
+            foreach (var clone in Created.Where(clone => clone != null))
             {
-                if (clone != null)
-                {
-                    Object.Destroy(clone.gameObject);
-                }
+                Object.Destroy(clone.gameObject);
             }
 
             Created.Clear();

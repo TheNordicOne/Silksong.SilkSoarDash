@@ -2,7 +2,6 @@ using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using UnityEngine;
 using SilkSoarDash.CustomFsm.Constants;
-using SilkSoarDash.Extensions;
 using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions

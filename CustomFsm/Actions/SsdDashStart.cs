@@ -16,8 +16,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             
             Hero.DoHardLandingEffectNoHit();
 
-            // audio      hornet_superjump_pt_7_hornet_jump_big_2d
-            // vibration  super_jump_dash_burst
+            SsdEffects.PlayOneShot2D(SsdAudio.JumpBig, SsdAudio.WidePitchMin, SsdAudio.WidePitchMax);
+            SsdEffects.Vibrate(SsdVibration.DashBurst);
             
             SsdClones.Damager.gameObject.SetActive(true);
             SsdClones.DashEffect.gameObject.SetActive(true);

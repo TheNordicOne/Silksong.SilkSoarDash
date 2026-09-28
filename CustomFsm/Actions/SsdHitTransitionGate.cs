@@ -11,7 +11,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             var needleStick = Fsm.GetFsmGameObject(SsdVars.StickNeedle).Value;
             needleStick.SetActive(false);
             
-            // audio  hornet_superjump_pt_5_needle_impact_2d_distant
+            SsdEffects.PlayOneShot2D(SsdAudio.NeedleImpactDistant, SsdAudio.WidePitchMin, SsdAudio.WidePitchMax);
             // PlayedThrowWait true -> finish here
         }
 

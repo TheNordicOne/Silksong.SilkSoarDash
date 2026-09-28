@@ -10,9 +10,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnEnter()
         {
-            // stop the charge loop audio
-            //    - audio  Sounds/Superjump Loop
-            //    - audio  hornet_superjump_pt_6_hornet_jump_antic
+            SsdEffects.StopLoop();
+            SsdEffects.PlayOneShot(SsdAudio.JumpAntic, SsdAudio.WidePitchMin, SsdAudio.WidePitchMax);
 
             // the harpoon dash lifts her off the ground first, so she flies instead of sliding along it
             if (Hero.cState.onGround)

@@ -20,9 +20,10 @@ namespace SilkSoarDash.CustomFsm.Actions
             Hero.TakeSilk(SsdVars.SilkCost);
 
             // - effect  Hornet_Super_Jump_Ready_Burst
-            // - audio   hornet_superjump_pt_3_charge_ready
-            // - audio   Sounds/Nail Art Ready
-            // - audio   hornet_dramatic_stance_crazy_cloak_loop
+            SsdEffects.StopChargeLoop();
+            SsdEffects.PlayOneShot(SsdAudio.ChargeReady, SsdAudio.WidePitchMin, SsdAudio.WidePitchMax);
+            SsdEffects.PlayReady();
+            SsdEffects.StartLoop(SsdAudio.CrazyCloakLoop);
 
             var chargedEffect = SsdClones.ChargedEffect;
             if (chargedEffect != null)
@@ -39,6 +40,11 @@ namespace SilkSoarDash.CustomFsm.Actions
             SsdShake.SetFocus(false);
             SsdShake.SetFocus2(true);
             SsdShake.Send(SsdCamera.AverageShake);
+        }
+
+        public override void OnExit()
+        {
+            SsdEffects.StopReady();
         }
 
         public override void OnUpdate()

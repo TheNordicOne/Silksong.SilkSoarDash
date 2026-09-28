@@ -15,8 +15,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             SsdLog.Debug("spikes object={Object}", Fsm.GetFsmGameObject(SsdVars.HitObject).Value);
             Fsm.GetFsmBool(SsdVars.DidHit).Value = false;
 
-            // - shake  Small Shake
-            // - audio  tink_effect
+            SsdEffects.Shake(SsdCamera.SmallShake);
+            SsdEffects.PlayTableAt(SsdAudio.TinkEffect, SsdClones.ThrowNeedle.position);
 
             Finish();
         }

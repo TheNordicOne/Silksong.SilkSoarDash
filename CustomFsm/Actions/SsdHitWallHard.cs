@@ -21,8 +21,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             damager.gameObject.SetActive(false);
 
             // effect  Roof Slam Effect R
-            // audio   Grunt Hornet Voice
-            // shake   Average Shake
+            SsdEffects.PlayVoice(SsdAudio.GruntVoice);
+            SsdShake.Send(SsdCamera.AverageShake);
 
             Hero.PlayAnim(SsdAnims.WallCatch);
 
@@ -30,8 +30,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             EventRegister.SendEvent(SsdRegisterEvents.SuperJumpEnded);
 
-            // audio      hornet_land_hard new
-            // vibration  hornet_land_hard
+            SsdEffects.PlayOneShot(SsdAudio.LandHard, SsdAudio.FlatPitch, SsdAudio.FlatPitch);
+            SsdEffects.Vibrate(SsdVibration.LandHard);
 
             Hero.Body.linearVelocity =  Vector2.zero;
         }

@@ -71,9 +71,9 @@ namespace SilkSoarDash.CustomFsm.Actions
         private static void PreThrowEffects()
         {
 
-            // - audio      Attack Heavy Hornet Voice
-            // - audio      hornet_superjump_pt_4_throw
-            // - vibration  hornet_need_throw_superjump
+            SsdEffects.PlayVoice(SsdAudio.AttackHeavyVoice);
+            SsdEffects.PlayOneShot(SsdAudio.Throw, SsdAudio.FlatPitch, SsdAudio.FlatPitch);
+            SsdEffects.Vibrate(SsdVibration.NeedleThrow);
 
             var chargedEffect = SsdClones.ChargedEffect;
             if (chargedEffect != null)

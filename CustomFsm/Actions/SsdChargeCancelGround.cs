@@ -19,7 +19,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             Deactivate(SsdClones.ExtraGroundEffect);
 
-            // audio   stop the charge loop
+            SsdEffects.StopChargeLoop();
 
             Deactivate(SsdClones.AnticEffectL);
             Deactivate(SsdClones.AnticEffectR);

@@ -8,8 +8,8 @@ namespace SilkSoarDash.CustomFsm.Actions
         
         public override void OnEnter()
         {
-            // audio      Sounds/Superjump Loop
-            // vibration  Sounds/Superjump Loop
+            SsdEffects.StartLoop(SsdAudio.FlyingLoop);
+            SsdEffects.StartLoopVibration();
 
             // QueuedCancel true -> cancel.
             var queuedCancel = Fsm.GetFsmBool(SsdVars.QueuedCancel).Value;
@@ -19,7 +19,13 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
 
-            // shake  Tiny Rumble
+            SsdEffects.StartRumble();
+        }
+
+        public override void OnExit()
+        {
+            SsdEffects.StopLoop();
+            SsdEffects.StopRumble();
         }
     }
 }

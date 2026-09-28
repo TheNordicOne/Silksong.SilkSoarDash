@@ -19,7 +19,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             // vanilla soars upward so gravity ends the cancel by itself, sideways she would glide on without it
             Hero.AffectedByGravity(true);
 
-            // audio  hornet_superjump_cancel
+            SsdEffects.PlayOneShot(SsdAudio.Cancel, SsdAudio.NarrowPitchMin, SsdAudio.NarrowPitchMax);
             
             RetractNeedle();
 

@@ -30,8 +30,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 
            Hero.GetComponent<tk2dSpriteAnimator>().Play(SsdAnims.Antic);
 
-           // - audio   hornet_superjump_pt_1_into_position
-           // - audio   hornet_superjump_pt_2_charge_2d
+           SsdEffects.PlayOneShot(SsdAudio.IntoPosition, SsdAudio.WidePitchMin, SsdAudio.WidePitchMax);
+           SsdEffects.StartChargeLoop();
 
            PlayAnticEffect(SsdClones.AnticEffectL);
            PlayAnticEffect(SsdClones.AnticEffectR);

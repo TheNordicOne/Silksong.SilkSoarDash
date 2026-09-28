@@ -37,8 +37,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             Deactivate(SsdClones.Thread);
             Deactivate(SsdClones.Damager);
 
-            // audio  stop the charge loop
-            // audio  stop Sounds/Superjump Loop
+            SsdEffects.StopChargeLoop();
+            SsdEffects.StopLoop();
 
             SsdHeroState.Dashing = false;
             Hero.SetCState(SsdCStates.FreezeCharge, false);

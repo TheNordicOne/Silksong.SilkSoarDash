@@ -17,7 +17,7 @@ namespace SilkSoarDash.CustomFsm.Actions
                 catchEffect.gameObject.SetActive(true);
             }
 
-            // audio   Grunt Hornet Voice
+            SsdEffects.PlayVoice(SsdAudio.GruntVoice);
             
             var needle = SsdClones.RetractNeedle;
             needle.gameObject.SetActive(false);

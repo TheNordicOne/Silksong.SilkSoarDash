@@ -11,5 +11,7 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string AverageShake = "AverageShake";
         public const string SuperDashShake = "SuperDashShake";
         public const string EnemyKillShake = "EnemyKillShake";
+        public const string TinyRumble = "Tiny Rumble";
+        public const string SmallShake = "Small Shake";
     }
 }

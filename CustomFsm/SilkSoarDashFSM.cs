@@ -23,6 +23,7 @@ namespace SilkSoarDash.CustomFsm
             }
 
             SsdClones.Build(hero);
+            SsdEffects.Build(hero);
 
             var fsm = new Fsm
             {

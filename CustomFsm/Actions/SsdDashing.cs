@@ -1,4 +1,5 @@
 using HutongGames.PlayMaker;
+using SilkSoarDash.CustomFsm.Constants;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -9,14 +10,20 @@ namespace SilkSoarDash.CustomFsm.Actions
         
         public override void OnEnter()
         {
-            // audio      hornet_flying_through_air_fast_loop
-            // vibration  Sounds/Superjump Loop
-            
+            SsdEffects.StartLoop(SsdAudio.FlyingLoop);
+            SsdEffects.StartLoopVibration();
+
             Hero.AffectedByGravity(false);
 
             Hero.Body.gravityScale = 0;
             
-            // shake  Tiny Rumble
+            SsdEffects.StartRumble();
+        }
+
+        public override void OnExit()
+        {
+            SsdEffects.StopLoop();
+            SsdEffects.StopRumble();
         }
     }
 }

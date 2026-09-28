@@ -34,6 +34,8 @@ namespace SilkSoarDash.CustomFsm
         public static Transform RetractNeedle { get; private set; }
         public static Transform StickNeedle { get; private set; }
         public static Transform Damager { get; private set; }
+        public static Transform SuperjumpLoop { get; private set; }
+        public static Transform NailArtReady { get; private set; }
 
         public static void Build(HeroController hero)
         {
@@ -68,6 +70,9 @@ namespace SilkSoarDash.CustomFsm
             ThrowNeedle = CloneTurned(hero, SsdObjects.ThrowNeedle);
             RetractNeedle = CloneTurned(hero, SsdObjects.RetractNeedle);
             Damager = CloneTurned(hero, SsdObjects.Damager);
+
+            SuperjumpLoop = Clone(hero, SsdObjects.SuperjumpLoop);
+            NailArtReady = Clone(hero, SsdObjects.NailArtReady);
 
             hero.gameObject.AddComponent<Keeper>();
         }

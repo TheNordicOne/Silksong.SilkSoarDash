@@ -15,14 +15,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             var hitPoint = Fsm.GetFsmVector2(SsdVars.HitPoint).Value;
             var isDistant = hitPoint.x > (heroX + SsdVars.DistantImpactRange);
 
-            // audio  hornet_superjump_pt_5_needle_impact_2d_distant if isDistant
-            // audio  hornet_superjump_pt_5_needle_impact_2d
-            
-            var audioClip = isDistant 
-                ? SsdAudio.NeedleImpactDistant
-                : SsdAudio.NeedleImpact;
-
-            //  play the clip
+            var audioClip = isDistant ? SsdAudio.NeedleImpactDistant : SsdAudio.NeedleImpact;
+            SsdEffects.PlayOneShot2D(audioClip, SsdAudio.WidePitchMin, SsdAudio.WidePitchMax);
             // PlayedThrowWait true -> finish here
         }
 

@@ -42,7 +42,7 @@ namespace SilkSoarDash.CustomFsm
                         {
                             Value = SsdVars.DefaultChargeTime
                         },
-                        new FsmFloat(SsdVars.ThrowWaitTime),
+                        new FsmFloat(SsdVars.ThrowWaitTime)
                     },
                     Vector2Variables = new[] { new FsmVector2(SsdVars.HitPoint) },
                     Vector3Variables = new[] { new FsmVector3(SsdVars.MoveBy) },
@@ -62,7 +62,7 @@ namespace SilkSoarDash.CustomFsm
                         new FsmBool(SsdVars.DidAddUsingSilk),
                         new FsmBool(SsdVars.DidStartFlash),
                         new FsmBool(SsdVars.StartedRumblingFocus),
-                        new FsmBool(SsdVars.StartedRumblingFocus2),
+                        new FsmBool(SsdVars.StartedRumblingFocus2)
                     }
                 }
             };
@@ -96,12 +96,17 @@ namespace SilkSoarDash.CustomFsm
                 SsdStateFactory.CancelRumblingFocus(fsm),
                 SsdStateFactory.CancelRumblingFocus2(fsm),
                 SsdStateFactory.ChargeCancelGround(fsm),
+                SsdStateFactory.PreEnteredJumping(fsm),
+                SsdStateFactory.EnteredJumping(fsm),
+                SsdStateFactory.BeginJumping(fsm)
             };
 
             fsm.GlobalTransitions = new[]
             {
                 FsmBuilder.Transition(SsdEvents.HeroDamaged, SsdStates.Cancel),
-                FsmBuilder.Transition(SsdEvents.FsmCancel, SsdStates.Cancel)
+                FsmBuilder.Transition(SsdEvents.FsmCancel, SsdStates.Cancel),
+                FsmBuilder.Transition(SsdEvents.HeroLeavingScene, SsdStates.Cancel),
+                FsmBuilder.Transition(SsdEvents.PreEnterSilkSoarDashing, SsdStates.PreEnteredJumping)
             };
 
             fsm.StartState = SsdStates.Inactive;

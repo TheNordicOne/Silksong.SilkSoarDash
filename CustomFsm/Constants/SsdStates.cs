@@ -29,5 +29,8 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string Cancel = "Cancel";
         public const string CancelRumblingFocus = "CancelRumblingFocus";
         public const string CancelRumblingFocus2 = "CancelRumblingFocus2";
+        public const string PreEnteredJumping = "PreEnteredJumping";
+        public const string EnteredJumping = "EnteredJumping";
+        public const string BeginJumping = "BeginJumping";
     }
 }

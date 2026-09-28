@@ -34,121 +34,123 @@
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="0Harmony">
-          <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\BepInEx\core\0Harmony.dll</HintPath>
+            <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\BepInEx\core\0Harmony.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp">
-          <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\Assembly-CSharp.dll</HintPath>
+            <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\Assembly-CSharp.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp-firstpass">
-          <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+            <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
         </Reference>
         <Reference Include="BepInEx">
-          <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\BepInEx\core\BepInEx.dll</HintPath>
+            <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\BepInEx\core\BepInEx.dll</HintPath>
         </Reference>
         <Reference Include="PlayMaker">
-          <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\PlayMaker.dll</HintPath>
+            <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\PlayMaker.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.Physics2DModule">
-          <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\UnityEngine.Physics2DModule.dll</HintPath>
+            <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\UnityEngine.Physics2DModule.dll</HintPath>
         </Reference>
         <Reference Include="System"/>
         <Reference Include="System.Core"/>
         <Reference Include="System.Data"/>
         <Reference Include="System.Xml"/>
         <Reference Include="TeamCherry.BuildBot">
-          <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\TeamCherry.BuildBot.dll</HintPath>
+            <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\TeamCherry.BuildBot.dll</HintPath>
         </Reference>
         <Reference Include="TeamCherry.Cinematics">
-          <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\TeamCherry.Cinematics.dll</HintPath>
+            <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\TeamCherry.Cinematics.dll</HintPath>
         </Reference>
         <Reference Include="TeamCherry.Localization">
-          <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\TeamCherry.Localization.dll</HintPath>
+            <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\TeamCherry.Localization.dll</HintPath>
         </Reference>
         <Reference Include="TeamCherry.NestedFadeGroup">
-          <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\TeamCherry.NestedFadeGroup.dll</HintPath>
+            <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\TeamCherry.NestedFadeGroup.dll</HintPath>
         </Reference>
         <Reference Include="TeamCherry.SharedUtils">
-          <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\TeamCherry.SharedUtils.dll</HintPath>
+            <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\TeamCherry.SharedUtils.dll</HintPath>
         </Reference>
         <Reference Include="TeamCherry.Splines">
-          <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\TeamCherry.Splines.dll</HintPath>
+            <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\TeamCherry.Splines.dll</HintPath>
         </Reference>
         <Reference Include="TeamCherry.TK2D">
-          <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\TeamCherry.TK2D.dll</HintPath>
+            <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\TeamCherry.TK2D.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine">
-          <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\UnityEngine.dll</HintPath>
+            <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\UnityEngine.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.CoreModule">
-          <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+            <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.InputLegacyModule">
-          <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+            <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.UI">
-          <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\UnityEngine.UI.dll</HintPath>
+            <HintPath>..\..\SteamLibrary\steamapps\common\Hollow Knight Silksong\Hollow Knight Silksong_Data\Managed\UnityEngine.UI.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="CustomFsm\Actions\SsdActivationCheck.cs" />
-        <Compile Include="CustomFsm\Actions\SsdAirCancel.cs" />
-        <Compile Include="CustomFsm\Actions\SsdApplyVelocity.cs" />
-        <Compile Include="CustomFsm\Actions\SsdCancelable.cs" />
-        <Compile Include="CustomFsm\Actions\SsdCancelOnAction.cs" />
-        <Compile Include="CustomFsm\Actions\SsdChargeCancelGround.cs" />
-        <Compile Include="CustomFsm\Actions\SsdCharged.cs" />
-        <Compile Include="CustomFsm\Actions\SsdDashAntic.cs" />
-        <Compile Include="CustomFsm\Actions\SsdDashing.cs" />
-        <Compile Include="CustomFsm\Actions\SsdDashStart.cs" />
-        <Compile Include="CustomFsm\Actions\SsdGetDistance.cs" />
-        <Compile Include="CustomFsm\Actions\SsdHitSpikes.cs" />
-        <Compile Include="CustomFsm\Actions\SsdHitTransitionGate.cs" />
-        <Compile Include="CustomFsm\Actions\SsdHitWall.cs" />
-        <Compile Include="CustomFsm\Actions\SsdHitWallCheck.cs" />
-        <Compile Include="CustomFsm\Actions\SsdHitWallHard.cs" />
-        <Compile Include="CustomFsm\Actions\SsdPositionStickNeedle.cs" />
-        <Compile Include="CustomFsm\Actions\SsdPositionStickNeedlePre.cs" />
-        <Compile Include="CustomFsm\Actions\SsdRegainControlToIdle.cs" />
-        <Compile Include="CustomFsm\Actions\SsdRetractNeedleCancel.cs" />
-        <Compile Include="CustomFsm\Actions\SsdThreadLoop.cs" />
-        <Compile Include="CustomFsm\Actions\SsdThrowNeedle.cs" />
-        <Compile Include="CustomFsm\Actions\SsdThrowNeedleStart.cs" />
-        <Compile Include="CustomFsm\Actions\SsdThrowWait.cs" />
-        <Compile Include="CustomFsm\SsdHeroState.cs" />
-        <Compile Include="CustomFsm\SilkSoarDashFSM.cs" />
-        <Compile Include="Extensions\HeroController.cs" />
-        <Compile Include="Extensions\Transform.cs" />
-        <Compile Include="SilkLog.cs" />
-        <Compile Include="Logging\SilkLogEvent.cs" />
-        <Compile Include="Logging\SilkLogSourceExtensions.cs" />
-        <Compile Include="SilkSoarDash.cs" />
+        <Compile Include="CustomFsm\Actions\SsdActivationCheck.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdAirCancel.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdApplyVelocity.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdBeginJumping.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdCancelable.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdCancelOnAction.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdChargeCancelGround.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdCharged.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdDashAntic.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdDashing.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdDashStart.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdGetDistance.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdHitSpikes.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdHitTransitionGate.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdHitWall.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdHitWallCheck.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdHitWallHard.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdPositionStickNeedle.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdPositionStickNeedlePre.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdPreEnteredJumping.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdRegainControlToIdle.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdRetractNeedleCancel.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdThreadLoop.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdThrowNeedle.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdThrowNeedleStart.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdThrowWait.cs"/>
+        <Compile Include="CustomFsm\SsdHeroState.cs"/>
+        <Compile Include="CustomFsm\SilkSoarDashFSM.cs"/>
+        <Compile Include="Extensions\HeroController.cs"/>
+        <Compile Include="Extensions\Transform.cs"/>
+        <Compile Include="SilkLog.cs"/>
+        <Compile Include="Logging\SilkLogEvent.cs"/>
+        <Compile Include="Logging\SilkLogSourceExtensions.cs"/>
+        <Compile Include="SilkSoarDash.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
-        <Compile Include="CustomFsm\Actions\SsdRelinquishControl.cs" />
-        <Compile Include="CustomFsm\Actions\SsdResetEffects.cs" />
-        <Compile Include="CustomFsm\Actions\SsdCancel.cs" />
-        <Compile Include="CustomFsm\Actions\SsdCancelRumblingFocus.cs" />
-        <Compile Include="CustomFsm\Actions\SsdCancelRumblingFocus2.cs" />
-        <Compile Include="CustomFsm\Actions\SsdCharge.cs" />
-        <Compile Include="CustomFsm\FsmBuilder.cs" />
-        <Compile Include="CustomFsm\SsdClones.cs" />
-        <Compile Include="CustomFsm\SsdFlash.cs" />
-        <Compile Include="CustomFsm\SsdShake.cs" />
-        <Compile Include="CustomFsm\Constants\SsdAnims.cs" />
-        <Compile Include="CustomFsm\Constants\SsdCamera.cs" />
-        <Compile Include="CustomFsm\SsdStateFactory.cs" />
-        <Compile Include="CustomFsm\Constants\SsdVars.cs" />
-        <Compile Include="CustomFsm\Constants\SsdEvents.cs" />
-        <Compile Include="CustomFsm\Constants\SsdStates.cs" />
-        <Compile Include="CustomFsm\Constants\SsdObjects.cs" />
-        <Compile Include="CustomFsm\Constants\SsdCStates.cs" />
-        <Compile Include="CustomFsm\Constants\SsdRegisterEvents.cs" />
-        <Compile Include="CustomFsm\Constants\SsdAudio.cs" />
+        <Compile Include="CustomFsm\Actions\SsdRelinquishControl.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdResetEffects.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdCancel.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdCancelRumblingFocus.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdCancelRumblingFocus2.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdCharge.cs"/>
+        <Compile Include="CustomFsm\FsmBuilder.cs"/>
+        <Compile Include="CustomFsm\SsdClones.cs"/>
+        <Compile Include="CustomFsm\SsdFlash.cs"/>
+        <Compile Include="CustomFsm\SsdShake.cs"/>
+        <Compile Include="CustomFsm\Constants\SsdAnims.cs"/>
+        <Compile Include="CustomFsm\Constants\SsdCamera.cs"/>
+        <Compile Include="CustomFsm\SsdStateFactory.cs"/>
+        <Compile Include="CustomFsm\Constants\SsdVars.cs"/>
+        <Compile Include="CustomFsm\Constants\SsdEvents.cs"/>
+        <Compile Include="CustomFsm\Constants\SsdStates.cs"/>
+        <Compile Include="CustomFsm\Constants\SsdObjects.cs"/>
+        <Compile Include="CustomFsm\Constants\SsdCStates.cs"/>
+        <Compile Include="CustomFsm\Constants\SsdRegisterEvents.cs"/>
+        <Compile Include="CustomFsm\Constants\SsdAudio.cs"/>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all"/>
     </ItemGroup>
     <ItemGroup>
-      <Content Include="notes\game-dump.md" />
+        <Content Include="notes\game-dump.md"/>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <Target Name="DeployToGame" AfterTargets="Build">

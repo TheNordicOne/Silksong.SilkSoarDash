@@ -24,7 +24,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             SsdEffects.PlayVoice(SsdAudio.GruntVoice);
             SsdShake.Send(SsdCamera.AverageShake);
 
-            Hero.ExitDashPose();
+            Hero.ExitDashPoseAtWall(Fsm.GetFsmFloat(SsdVars.Direction).Value);
             Hero.PlayAnim(SsdAnims.WallCatch);
 
             // CameraTarget.SetSuperJump is vertical only. Skipped until custom implementation

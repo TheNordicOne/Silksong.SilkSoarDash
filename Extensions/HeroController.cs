@@ -62,6 +62,20 @@ namespace SilkSoarDash.Extensions
             Physics2D.SyncTransforms();
         }
 
+        public static void ExitDashPoseAtWall(this HeroController hero, float direction)
+        {
+            var edge = hero.LeadingEdge(direction);
+            hero.ExitDashPose();
+            hero.transform.position += new Vector3(edge - hero.LeadingEdge(direction), 0f, 0f);
+            Physics2D.SyncTransforms();
+        }
+
+        private static float LeadingEdge(this HeroController hero, float direction)
+        {
+            var bounds = hero.GetComponent<Collider2D>().bounds;
+            return direction > 0f ? bounds.max.x : bounds.min.x;
+        }
+
         public static float AnimSeconds(this HeroController hero, string clip)
         {
             var animationClip = hero.GetComponent<tk2dSpriteAnimator>().GetClipByName(clip);

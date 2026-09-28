@@ -94,37 +94,44 @@ namespace SilkSoarDash.CustomFsm
         // SuperJumpRaycast only accepts a gate at the top of the room, so a sideways soar needs the side gates added
         private static void StoreSideGateAhead(Fsm fsm, Vector2 dir)
         {
-            var filter = new ContactFilter2D
-            {
-                useTriggers = true,
-                useLayerMask = true,
-                layerMask = 1 << SsdVars.GateLayer
-            };
-
-            var hits = new RaycastHit2D[SsdVars.GateHitCapacity];
             var origin = HeroController.instance.transform.position;
-            var hitCount = Physics2D.Raycast(origin, dir, filter, hits, SsdVars.NeedleRayDistance);
             var wantedSide = dir.x > 0f ? GatePosition.right : GatePosition.left;
+            TransitionPoint nearestGate = null;
+            var nearestDistance = SsdVars.NeedleRayDistance;
 
-            for (var i = 0; i < hitCount; i++)
+            foreach (var gate in TransitionPoint.TransitionPoints)
             {
-                var gate = hits[i].collider.GetComponent<TransitionPoint>();
-                if (gate == null || gate.GetGatePosition() != wantedSide)
+                if (gate.GetGatePosition() != wantedSide)
                 {
                     continue;
                 }
 
-                if (!IsNearestSoFar(fsm, hits[i].distance))
+                var bounds = gate.GetComponent<Collider2D>().bounds;
+                if (origin.y < bounds.min.y || origin.y > bounds.max.y)
                 {
-                    return;
+                    continue;
                 }
 
-                SsdLog.Debug("gate {Gate} at={GateDistance} replaces hit={Hit} object={Object} at={Distance}", gate.name, hits[i].distance, fsm.GetFsmBool(SsdVars.DidHit).Value, fsm.GetFsmGameObject(SsdVars.HitObject).Value, fsm.GetFsmFloat(SsdVars.Distance).Value);
+                var distance = dir.x > 0f ? bounds.min.x - origin.x : origin.x - bounds.max.x;
+                if (distance < 0f || distance >= nearestDistance)
+                {
+                    continue;
+                }
 
-                StoreHit(fsm, hits[i]);
-                fsm.GetFsmBool(SsdVars.IsGate).Value = true;
+                nearestGate = gate;
+                nearestDistance = distance;
+            }
+
+            if (nearestGate == null || !IsNearestSoFar(fsm, nearestDistance))
+            {
                 return;
             }
+
+            SsdLog.Debug("gate {Gate} at={GateDistance} replaces hit={Hit} object={Object} at={Distance}", nearestGate.name, nearestDistance, fsm.GetFsmBool(SsdVars.DidHit).Value, fsm.GetFsmGameObject(SsdVars.HitObject).Value, fsm.GetFsmFloat(SsdVars.Distance).Value);
+
+            var point = new Vector2(origin.x + nearestDistance * dir.x, origin.y);
+            StoreHit(fsm, nearestGate.gameObject, point, nearestDistance);
+            fsm.GetFsmBool(SsdVars.IsGate).Value = true;
         }
 
         private static bool IsNearestSoFar(Fsm fsm, float distance)
@@ -141,11 +148,16 @@ namespace SilkSoarDash.CustomFsm
 
         private static void StoreHit(Fsm fsm, RaycastHit2D hit)
         {
+            StoreHit(fsm, hit.collider.gameObject, hit.point, hit.distance);
+        }
+
+        private static void StoreHit(Fsm fsm, GameObject hitObject, Vector2 point, float distance)
+        {
             fsm.GetFsmBool(SsdVars.DidHit).Value = true;
             fsm.GetFsmBool(SsdVars.IsGate).Value = false;
-            fsm.GetFsmGameObject(SsdVars.HitObject).Value = hit.collider.gameObject;
-            fsm.GetFsmVector2(SsdVars.HitPoint).Value = hit.point;
-            fsm.GetFsmFloat(SsdVars.Distance).Value = hit.distance;
+            fsm.GetFsmGameObject(SsdVars.HitObject).Value = hitObject;
+            fsm.GetFsmVector2(SsdVars.HitPoint).Value = point;
+            fsm.GetFsmFloat(SsdVars.Distance).Value = distance;
         }
     }
 }

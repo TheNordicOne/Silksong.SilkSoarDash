@@ -57,6 +57,14 @@ namespace SilkSoarDash
                 return;
             }
             
+            // a sprint passes CanSuperJump as a cancelable FSM move, so the game's own start cancels it and takes control back first
+            if (Hero.controlReqlinquished)
+            {
+                EventRegister.SendEvent(EventRegisterEvents.FsmCancel);
+                Hero.RegainControl();
+                Hero.StartAnimationControlToIdle();
+            }
+
             SilkSoarDashFsm.Build();
             SilkSoarDashFsm.Trigger();
         }

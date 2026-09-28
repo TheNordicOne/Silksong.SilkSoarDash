@@ -14,6 +14,6 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string HeroDamaged = "HERO DAMAGED";
         public const string FsmCancel = "FSM CANCEL";
         public const string LeavingScene = "LEAVING SCENE";
-        public const string PreEnterSilkSoarDashing = "HERO IN POSITION";
+        public const string HeroEnteredScene = "HERO ENTERED SCENE";
     }
 }

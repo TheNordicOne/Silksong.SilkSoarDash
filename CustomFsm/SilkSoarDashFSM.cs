@@ -107,7 +107,7 @@ namespace SilkSoarDash.CustomFsm
                 FsmBuilder.Transition(SsdEvents.HeroDamaged, SsdStates.Cancel),
                 FsmBuilder.Transition(SsdEvents.FsmCancel, SsdStates.Cancel),
                 FsmBuilder.Transition(SsdEvents.LeavingScene, SsdStates.LeavingScene),
-                FsmBuilder.Transition(SsdEvents.PreEnterSilkSoarDashing, SsdStates.PreEnteredJumping)
+                FsmBuilder.Transition(SsdEvents.HeroEnteredScene, SsdStates.PreEnteredJumping)
             };
 
             fsm.StartState = SsdStates.Inactive;
@@ -116,6 +116,8 @@ namespace SilkSoarDash.CustomFsm
             _host.Fsm = fsm;
             fsm.Init(_host);
             fsm.Start();
+
+            EventRegister.GetRegisterGuaranteed(hero.gameObject, SsdEvents.HeroEnteredScene);
         }
 
         public static void Trigger()

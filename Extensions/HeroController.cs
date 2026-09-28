@@ -42,13 +42,24 @@ namespace SilkSoarDash.Extensions
         // the mirror scale is applied before the rotation, so the turn flips with the facing
         public static void EnterDashPose(this HeroController hero, float direction)
         {
-            hero.transform.localEulerAngles = new Vector3(0f, 0f, -SsdVars.DashPoseAngle * direction);
+            hero.TurnAboutBody(-SsdVars.DashPoseAngle * direction);
             hero.PlayAnim(SsdAnims.Loop);
         }
 
         public static void ExitDashPose(this HeroController hero)
         {
-            hero.transform.localEulerAngles = Vector3.zero;
+            hero.TurnAboutBody(0f);
+        }
+
+        // the transform pivot sits low on her, so a plain rotation would swing the hitbox into the floor
+        private static void TurnAboutBody(this HeroController hero, float angle)
+        {
+            var collider = hero.GetComponent<Collider2D>();
+            var centre = collider.bounds.center;
+            hero.transform.localEulerAngles = new Vector3(0f, 0f, angle);
+            Physics2D.SyncTransforms();
+            hero.transform.position += centre - collider.bounds.center;
+            Physics2D.SyncTransforms();
         }
 
         public static float AnimSeconds(this HeroController hero, string clip)

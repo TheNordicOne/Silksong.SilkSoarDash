@@ -26,7 +26,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             // CameraTarget.SetSuperJump is vertical only. Skipped until custom implementation
             
-            Hero.SetCState(SsdCStates.SuperDashing, false);
+            SsdHeroState.Dashing = false;
 
             SsdShake.Send(SsdCamera.EnemyKillShake);
             

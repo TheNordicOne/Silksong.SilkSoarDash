@@ -9,10 +9,10 @@ namespace SilkSoarDash.CustomFsm.Actions
         
         public override void OnEnter()
         {
-            var onWall = Hero.cState.superDashOnWall;
+            var onWall = SsdHeroState.OnWall;
 
-            Hero.SetCState(SsdCStates.SuperDashOnWall, false);
-            Hero.SetCState(SsdCStates.SuperDashing, false);
+            SsdHeroState.OnWall = false;
+            SsdHeroState.Dashing = false;
             
             Hero.RegainControl();
             Hero.AffectedByGravity(true);

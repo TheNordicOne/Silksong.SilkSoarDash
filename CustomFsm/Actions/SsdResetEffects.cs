@@ -18,7 +18,8 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
             
-            Hero.SetCState(SsdCStates.SuperDashOnWall, false);
+            SsdHeroState.Dashing = false;
+            SsdHeroState.OnWall = false;
             
             Hero.hero_state = ActorStates.idle;
             

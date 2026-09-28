@@ -40,7 +40,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             // audio  stop the charge loop
             // audio  stop Sounds/Superjump Loop
 
-            Hero.SetCState(SsdCStates.SuperDashing, false);
+            SsdHeroState.Dashing = false;
             Hero.SetCState(SsdCStates.FreezeCharge, false);
 
             // CameraTarget.SetSuperJump is vertical only. Skipped

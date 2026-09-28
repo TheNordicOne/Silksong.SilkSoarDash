@@ -18,8 +18,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             // CameraTarget.SetSuperJump is vertical only. Skipped until custom implementation
 
-            Hero.SetCState(SsdCStates.SuperDashOnWall, true);
-            Hero.SetCState(SsdCStates.SuperDashing, false);
+            SsdHeroState.OnWall = true;
+            SsdHeroState.Dashing = false;
             Hero.AffectedByGravity(true);
 
             Hero.PlayAnim(SsdAnims.WallCatch);

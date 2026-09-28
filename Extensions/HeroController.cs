@@ -38,6 +38,12 @@ namespace SilkSoarDash.Extensions
             return animator != null && animator.IsPlaying(clip);
         }
 
+        public static float AnimSeconds(this HeroController hero, string clip)
+        {
+            var animationClip = hero.GetComponent<tk2dSpriteAnimator>().GetClipByName(clip);
+            return animationClip == null ? 0f : animationClip.frames.Length / animationClip.fps;
+        }
+
         private static float GetForwardSpeed(this HeroController hero, float direction)
         {
             return hero.Body.linearVelocity.x * direction;

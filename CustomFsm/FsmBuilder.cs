@@ -2,6 +2,7 @@ using System;
 using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
 using JetBrains.Annotations;
+using SilkSoarDash.CustomFsm.Actions;
 using SilkSoarDash.CustomFsm.Constants;
 using UnityEngine;
 
@@ -11,12 +12,7 @@ namespace SilkSoarDash.CustomFsm
     {
         public static FsmState State(Fsm fsm, string name, [CanBeNull] FsmTransition[] transitions)
         {
-            return new FsmState(fsm)
-            {
-                Name = name,
-                Actions = Array.Empty<FsmStateAction>(),
-                Transitions = transitions ?? Array.Empty<FsmTransition>()
-            };
+            return State(fsm, name, Array.Empty<FsmStateAction>(), transitions);
         }
 
         public static FsmState State(Fsm fsm, string name, FsmStateAction[] actions, [CanBeNull] FsmTransition[] transitions)
@@ -24,12 +20,20 @@ namespace SilkSoarDash.CustomFsm
             var state = new FsmState(fsm)
             {
                 Name = name,
-                Actions = actions,
+                Actions = WithTrace(actions),
                 Transitions = transitions ?? Array.Empty<FsmTransition>(),
             };
 
             state.SaveActions();
             return state;
+        }
+
+        private static FsmStateAction[] WithTrace(FsmStateAction[] actions)
+        {
+            var traced = new FsmStateAction[actions.Length + 1];
+            traced[0] = new SsdStateTrace();
+            Array.Copy(actions, 0, traced, 1, actions.Length);
+            return traced;
         }
 
         public static FsmTransition Transition(string eventName, string toState)

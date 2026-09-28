@@ -110,6 +110,7 @@
         <Compile Include="CustomFsm\Actions\SsdPositionStickNeedle.cs"/>
         <Compile Include="CustomFsm\Actions\SsdPositionStickNeedlePre.cs"/>
         <Compile Include="CustomFsm\Actions\SsdLeavingScene.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdStateTrace.cs"/>
         <Compile Include="CustomFsm\Actions\SsdPreEnteredJumping.cs"/>
         <Compile Include="CustomFsm\Actions\SsdRegainControlToIdle.cs"/>
         <Compile Include="CustomFsm\Actions\SsdRetractNeedleCancel.cs"/>

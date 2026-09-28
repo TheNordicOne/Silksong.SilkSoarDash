@@ -1,10 +1,14 @@
+using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdLeavingScene : FsmStateAction
     {
+        private static readonly ManualLogSource SsdLog = SilkLog.For<SsdLeavingScene>();
+
         public override void OnEnter()
         {
             // the game sends this on every room change, so ignore it while the ability is not running
@@ -16,6 +20,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             }
 
             SsdHeroState.ExitedDashing = SsdHeroState.Dashing;
+            SsdLog.Debug("leaving from={State} dashing={Dashing}", previous.Name, SsdHeroState.Dashing);
             Finish();
         }
     }

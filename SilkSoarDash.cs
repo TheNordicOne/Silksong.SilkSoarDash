@@ -1,6 +1,7 @@
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.CustomFsm;
 using SilkSoarDash.Logging;
 
@@ -33,6 +34,19 @@ namespace SilkSoarDash
             }
 
             __result = false;
+            return false;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(global::Extensions), nameof(global::Extensions.SendEventSafe), typeof(PlayMakerFSM), typeof(string))]
+        private static bool SendEventSafePrefix(PlayMakerFSM fsm, string eventName)
+        {
+            if (eventName != SsdEvents.EnterSprinting || !SsdHeroState.ExitedDashing || fsm != Hero.sprintFSM)
+            {
+                return true;
+            }
+
+            SilkSoarDashFsm.EnterDashing();
             return false;
         }
 

@@ -20,6 +20,13 @@ namespace SilkSoarDash.CustomFsm.Actions
             }
 
             SsdHeroState.ExitedDashing = SsdHeroState.Dashing;
+
+            // makes the next room skip its walk-in and send ENTER SPRINTING, which SendEventSafePrefix turns into our EnterDashing
+            if (SsdHeroState.Dashing)
+            {
+                HeroController.instance.exitedSprinting = true;
+            }
+
             SsdLog.Debug("leaving from={State} dashing={Dashing}", previous.Name, SsdHeroState.Dashing);
             Finish();
         }

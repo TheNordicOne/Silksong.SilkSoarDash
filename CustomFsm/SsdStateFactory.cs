@@ -381,6 +381,20 @@ namespace SilkSoarDash.CustomFsm
                 });
         }
 
+        public static FsmState LeavingScene(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.LeavingScene,
+                new FsmStateAction[]
+                {
+                    new SsdLeavingScene()
+                },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.Cancel),
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.Inactive)
+                });
+        }
+
         public static FsmState PreEnteredJumping(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.PreEnteredJumping,
@@ -390,7 +404,8 @@ namespace SilkSoarDash.CustomFsm
                 },
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.EnteredJumping)
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.EnteredJumping),
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.Inactive)
                 });
         }
 

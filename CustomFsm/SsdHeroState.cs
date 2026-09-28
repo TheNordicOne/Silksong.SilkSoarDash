@@ -4,5 +4,6 @@ namespace SilkSoarDash.CustomFsm
     {
         public static bool Dashing { get; set; }
         public static bool OnWall { get; set; }
+        public static bool ExitedDashing { get; set; }
     }
 }

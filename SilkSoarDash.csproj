@@ -109,6 +109,7 @@
         <Compile Include="CustomFsm\Actions\SsdHitWallHard.cs"/>
         <Compile Include="CustomFsm\Actions\SsdPositionStickNeedle.cs"/>
         <Compile Include="CustomFsm\Actions\SsdPositionStickNeedlePre.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdLeavingScene.cs"/>
         <Compile Include="CustomFsm\Actions\SsdPreEnteredJumping.cs"/>
         <Compile Include="CustomFsm\Actions\SsdRegainControlToIdle.cs"/>
         <Compile Include="CustomFsm\Actions\SsdRetractNeedleCancel.cs"/>
@@ -118,6 +119,7 @@
         <Compile Include="CustomFsm\Actions\SsdThrowWait.cs"/>
         <Compile Include="CustomFsm\SsdHeroState.cs"/>
         <Compile Include="CustomFsm\SilkSoarDashFSM.cs"/>
+        <Compile Include="CustomFsm\SsdRayCast.cs"/>
         <Compile Include="Extensions\HeroController.cs"/>
         <Compile Include="Extensions\Transform.cs"/>
         <Compile Include="SilkLog.cs"/>

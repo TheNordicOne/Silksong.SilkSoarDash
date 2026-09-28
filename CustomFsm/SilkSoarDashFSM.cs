@@ -96,6 +96,7 @@ namespace SilkSoarDash.CustomFsm
                 SsdStateFactory.CancelRumblingFocus(fsm),
                 SsdStateFactory.CancelRumblingFocus2(fsm),
                 SsdStateFactory.ChargeCancelGround(fsm),
+                SsdStateFactory.LeavingScene(fsm),
                 SsdStateFactory.PreEnteredJumping(fsm),
                 SsdStateFactory.EnteredJumping(fsm),
                 SsdStateFactory.BeginJumping(fsm)
@@ -105,7 +106,7 @@ namespace SilkSoarDash.CustomFsm
             {
                 FsmBuilder.Transition(SsdEvents.HeroDamaged, SsdStates.Cancel),
                 FsmBuilder.Transition(SsdEvents.FsmCancel, SsdStates.Cancel),
-                FsmBuilder.Transition(SsdEvents.HeroLeavingScene, SsdStates.Cancel),
+                FsmBuilder.Transition(SsdEvents.LeavingScene, SsdStates.LeavingScene),
                 FsmBuilder.Transition(SsdEvents.PreEnterSilkSoarDashing, SsdStates.PreEnteredJumping)
             };
 

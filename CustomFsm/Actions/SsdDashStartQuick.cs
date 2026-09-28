@@ -17,13 +17,13 @@ namespace SilkSoarDash.CustomFsm.Actions
                 Hero.transform.Translate(0f, SsdVars.KickUpHeight, 0f, Space.World);
             }
 
+            Hero.EnterDashPose(Fsm.GetFsmFloat(SsdVars.Direction).Value);
+            Physics2D.SyncTransforms();
             LeaveEntryGate(Fsm.GetFsmFloat(SsdVars.Direction).Value);
 
             SsdClones.Damager.gameObject.SetActive(true);
             SsdClones.DashEffect.gameObject.SetActive(true);
-            
-            Hero.PlayAnim(SsdAnims.Loop);
-            
+
             Hero.SetCState(SsdCStates.FreezeCharge, false);
 
             SsdHeroState.Dashing = true;

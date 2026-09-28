@@ -15,6 +15,14 @@ namespace SilkSoarDash.Extensions
             effect.TurnForward();
         }
 
+        public static void PointUp(this Transform effect)
+        {
+            var local = effect.localPosition;
+
+            effect.localPosition = new Vector3(local.y, -local.x, local.z);
+            effect.localEulerAngles = new Vector3(0f, 0f, -ForwardAngle);
+        }
+
         public static void TurnForward(this Transform effect)
         {
             effect.localEulerAngles = new Vector3(0f, 0f, ForwardAngle);

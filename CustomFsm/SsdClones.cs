@@ -60,17 +60,17 @@ namespace SilkSoarDash.CustomFsm
             ExtraThrowEffect = ClonePointed(hero, SsdObjects.ExtraThrowEffect);
             Thread = ClonePointed(hero, SsdObjects.Thread);
 
-            // the harpoon dash objects are drawn sideways already
             HarpoonThrowEffect = Clone(hero, SsdObjects.HarpoonThrowEffect);
-            DashEffect = Clone(hero, SsdObjects.DashEffect);
+            // Hornet flies turned sideways, so the upright soar effects fit her and the harpoon's sideways dash effect is turned back
+            DashEffect = ClonePointedUp(hero, SsdObjects.DashEffect);
             GrabEffect = Clone(hero, SsdObjects.GrabEffect);
             StickNeedle = Clone(hero, SsdObjects.StickNeedle);
 
-            ThreadLoop = ClonePointed(hero, SsdObjects.ThreadLoop);
+            ThreadLoop = Clone(hero, SsdObjects.ThreadLoop);
 
             ThrowNeedle = CloneTurned(hero, SsdObjects.ThrowNeedle);
             RetractNeedle = CloneTurned(hero, SsdObjects.RetractNeedle);
-            Damager = CloneTurned(hero, SsdObjects.Damager);
+            Damager = Clone(hero, SsdObjects.Damager);
 
             SuperjumpLoop = Clone(hero, SsdObjects.SuperjumpLoop);
             NailArtReady = Clone(hero, SsdObjects.NailArtReady);
@@ -96,6 +96,17 @@ namespace SilkSoarDash.CustomFsm
             if (clone != null)
             {
                 clone.PointForward();
+            }
+
+            return clone;
+        }
+
+        private static Transform ClonePointedUp(HeroController hero, string path)
+        {
+            var clone = Clone(hero, path);
+            if (clone != null)
+            {
+                clone.PointUp();
             }
 
             return clone;

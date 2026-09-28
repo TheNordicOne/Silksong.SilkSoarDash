@@ -38,6 +38,19 @@ namespace SilkSoarDash.Extensions
             return animator != null && animator.IsPlaying(clip);
         }
 
+        // the soar clip flies upward, so Hornet is turned toward the dash, hitbox included, and plays it sideways
+        // the mirror scale is applied before the rotation, so the turn flips with the facing
+        public static void EnterDashPose(this HeroController hero, float direction)
+        {
+            hero.transform.localEulerAngles = new Vector3(0f, 0f, -SsdVars.DashPoseAngle * direction);
+            hero.PlayAnim(SsdAnims.Loop);
+        }
+
+        public static void ExitDashPose(this HeroController hero)
+        {
+            hero.transform.localEulerAngles = Vector3.zero;
+        }
+
         public static float AnimSeconds(this HeroController hero, string clip)
         {
             var animationClip = hero.GetComponent<tk2dSpriteAnimator>().GetClipByName(clip);

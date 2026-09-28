@@ -22,7 +22,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             SsdClones.Damager.gameObject.SetActive(true);
             SsdClones.DashEffect.gameObject.SetActive(true);
             
-            Hero.PlayAnim(SsdAnims.Loop);
+            Hero.EnterDashPose(Fsm.GetFsmFloat(SsdVars.Direction).Value);
             
             Hero.SetCState(SsdCStates.FreezeCharge, false);
 

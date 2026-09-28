@@ -1,6 +1,7 @@
 using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Extensions;
 using SilkSoarDash.Logging;
 using UnityEngine;
 
@@ -41,6 +42,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             SsdEffects.StopLoop();
 
             SsdHeroState.Dashing = false;
+            Hero.ExitDashPose();
             Hero.SetCState(SsdCStates.FreezeCharge, false);
 
             // CameraTarget.SetSuperJump is vertical only. Skipped

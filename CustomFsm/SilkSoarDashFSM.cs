@@ -99,7 +99,11 @@ namespace SilkSoarDash.CustomFsm
                 SsdStateFactory.LeavingScene(fsm),
                 SsdStateFactory.PreEnteredJumping(fsm),
                 SsdStateFactory.EnteredJumping(fsm),
-                SsdStateFactory.BeginJumping(fsm)
+                SsdStateFactory.BeginJumping(fsm),
+                SsdStateFactory.PositionStickNeedlePre2(fsm),
+                SsdStateFactory.HitTransitionGate2(fsm),
+                SsdStateFactory.QueueCancel(fsm),
+                SsdStateFactory.DashStartQuick(fsm)
             };
 
             fsm.GlobalTransitions = new[]

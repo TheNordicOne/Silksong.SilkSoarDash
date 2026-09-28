@@ -435,7 +435,61 @@ namespace SilkSoarDash.CustomFsm
                 },
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.RegainControlToIdle)
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.PositionStickNeedlePre2)
+                });
+        }
+
+        public static FsmState PositionStickNeedlePre2(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.PositionStickNeedlePre2,
+                new FsmStateAction[]
+                {
+                    new SsdPositionStickNeedlePre2()
+                },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.DashStartQuick),
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.QueueCancel),
+                    FsmBuilder.Transition(SsdEvents.TransitionGate, SsdStates.HitTransitionGate2)
+                });
+        }
+
+        public static FsmState HitTransitionGate2(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.HitTransitionGate2,
+                new FsmStateAction[]
+                {
+                    new SsdHitTransitionGate2()
+                },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.DashStartQuick)
+                });
+        }
+
+        public static FsmState QueueCancel(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.QueueCancel,
+                new FsmStateAction[]
+                {
+                    new SsdQueueCancel()
+                },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.DashStartQuick)
+                });
+        }
+
+        public static FsmState DashStartQuick(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.DashStartQuick,
+                new FsmStateAction[]
+                {
+                    new SsdDashStartQuick()
+                },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.Dashing)
                 });
         }
     }

@@ -33,5 +33,9 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string PreEnteredJumping = "PreEnteredJumping";
         public const string EnteredJumping = "EnteredJumping";
         public const string BeginJumping = "BeginJumping";
+        public const string PositionStickNeedlePre2 = "PositionStickNeedlePre2";
+        public const string HitTransitionGate2 = "HitTransitionGate2";
+        public const string QueueCancel = "QueueCancel";
+        public const string DashStartQuick = "DashStartQuick";
     }
 }

@@ -1,3 +1,6 @@
+using System;
+using GlobalEnums;
+using HarmonyLib;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using UnityEngine;
@@ -7,6 +10,34 @@ namespace SilkSoarDash.Extensions
 {
     public static class SsdHeroController
     {
+        private static readonly Func<HeroController, bool> IsAttackLocked = AccessTools.MethodDelegate<Func<HeroController, bool>>(AccessTools.Method(typeof(HeroController), "IsAttackLocked"));
+
+        public static bool CanStartSoar(this HeroController hero)
+        {
+            if (GameManager.instance.isPaused)
+            {
+                return false;
+            }
+
+            if (hero.hero_state == ActorStates.hard_landing || hero.hero_state == ActorStates.dash_landing)
+            {
+                return false;
+            }
+
+            var state = hero.cState;
+            if (!state.onGround || state.dashing || state.hazardDeath || state.hazardRespawning || state.backDashing)
+            {
+                return false;
+            }
+
+            if (IsAttackLocked(hero) || !hero.CanDoFSMCancelMove())
+            {
+                return false;
+            }
+
+            return !state.recoilFrozen && !state.recoiling && !state.transitioning;
+        }
+
         public static void ApplySsdVelocity(this HeroController hero, Fsm fsm)
         {
             var jumpSpeed = fsm.GetFsmFloat(SsdVars.JumpSpeed).Value;

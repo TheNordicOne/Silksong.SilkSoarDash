@@ -1,6 +1,8 @@
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using SilkSoarDash.Config;
+using SilkSoarDash.Extensions;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.CustomFsm;
 using SilkSoarDash.Logging;
@@ -19,7 +21,10 @@ namespace SilkSoarDash
         {
             Log.Info("loaded");
 
+            SsdConfig.Bind(Config);
+
             Harmony.CreateAndPatchAll(typeof(SilkSoarDash));
+            Harmony.CreateAndPatchAll(typeof(SsdSilkReserve));
         }
 
 
@@ -76,7 +81,25 @@ namespace SilkSoarDash
                 return false;
             }
 
-            return InputActions.SuperDash.WasPressed && SilkSoarDashDirectionPressed() && Hero.CanSuperJump();
+            return InputActions.SuperDash.WasPressed && SilkSoarDashDirectionPressed() && CanSilkSoarDash();
+        }
+
+        private static bool CanSilkSoarDash()
+        {
+            return HasUnlockingAbility(Hero.playerData) && Hero.CanStartSoar();
+        }
+
+        private static bool HasUnlockingAbility(PlayerData playerData)
+        {
+            switch (SsdConfig.Availability)
+            {
+                case SsdAvailability.Clawline:
+                    return playerData.hasHarpoonDash;
+                case SsdAvailability.Always:
+                    return true;
+                default:
+                    return playerData.hasSuperJump;
+            }
         }
 
         private static bool SilkSoarDashDirectionPressed()

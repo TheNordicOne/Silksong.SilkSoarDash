@@ -8,13 +8,12 @@ namespace SilkSoarDash.CustomFsm.Actions
     public class SsdChargeCancelGround : FsmStateAction
     {
         private static HeroController Hero => HeroController.instance;
-        private static SilkSpool Spool => SilkSpool.Instance;
 
         public override void OnEnter()
         {
             if (Fsm.GetFsmBool(SsdVars.DidAddUsingSilk).Value)
             {
-                Spool.RemoveUsing(SilkSpool.SilkUsingFlags.Normal, SsdVars.SilkCost);
+                SsdSilkReserve.Release(SsdHeroState.SilkCost);
             }
 
             Deactivate(SsdClones.ExtraGroundEffect);

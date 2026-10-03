@@ -11,13 +11,12 @@ namespace SilkSoarDash.CustomFsm.Actions
         private static readonly ManualLogSource SsdLog = SilkLog.For<SsdCharged>();
 
         private static HeroController Hero => HeroController.instance;
-        private static SilkSpool Spool => SilkSpool.Instance;
 
         public override void OnEnter()
         {
             
-            Spool.RemoveUsing(SilkSpool.SilkUsingFlags.Normal, SsdVars.SilkCost);
-            Hero.TakeSilk(SsdVars.SilkCost);
+            SsdSilkReserve.Release(SsdHeroState.SilkCost);
+            Hero.TakeSilk(SsdHeroState.SilkCost);
 
             // - effect  Hornet_Super_Jump_Ready_Burst
             SsdEffects.StopChargeLoop();

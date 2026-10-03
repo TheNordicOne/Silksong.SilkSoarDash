@@ -58,7 +58,5 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const float NeedleCatchDistance = 1f;
         public const float CatchDeceleration = 0.75f;
         public const float DistantImpactRange = 15f;
-        
-        public const int SilkCost = 1;
     }
 }

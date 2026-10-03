@@ -12,14 +12,13 @@ namespace SilkSoarDash.CustomFsm.Actions
         private static readonly ManualLogSource SsdLog = SilkLog.For<SsdCharge>();
 
         private static HeroController Hero => HeroController.instance;
-        private static SilkSpool Spool =>  SilkSpool.Instance;
 
         
         public override void OnEnter()
         {
             Hero.StopAnimationControl();
          
-           var didAddUsingSilk =  Spool.AddUsing(SilkSpool.SilkUsingFlags.Normal, SsdVars.SilkCost);
+           var didAddUsingSilk =  SsdSilkReserve.Reserve(SsdHeroState.SilkCost);
            Fsm.GetFsmBool(SsdVars.DidAddUsingSilk).Value = didAddUsingSilk;
 
            var groundEffect = SsdClones.ExtraGroundEffect;

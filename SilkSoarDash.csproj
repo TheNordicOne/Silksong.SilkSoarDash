@@ -129,6 +129,7 @@
         <Compile Include="CustomFsm\Actions\SsdThrowNeedleStart.cs"/>
         <Compile Include="CustomFsm\Actions\SsdThrowWait.cs"/>
         <Compile Include="CustomFsm\SsdHeroState.cs"/>
+        <Compile Include="CustomFsm\SsdSilkReserve.cs"/>
         <Compile Include="CustomFsm\SilkSoarDashFSM.cs"/>
         <Compile Include="CustomFsm\SsdRayCast.cs"/>
         <Compile Include="Extensions\HeroController.cs"/>
@@ -152,6 +153,8 @@
         <Compile Include="CustomFsm\Constants\SsdAnims.cs"/>
         <Compile Include="CustomFsm\Constants\SsdCamera.cs"/>
         <Compile Include="CustomFsm\SsdStateFactory.cs"/>
+        <Compile Include="Config\SsdAvailability.cs"/>
+        <Compile Include="Config\SsdConfig.cs"/>
         <Compile Include="CustomFsm\Constants\SsdVars.cs"/>
         <Compile Include="CustomFsm\Constants\SsdEvents.cs"/>
         <Compile Include="CustomFsm\Constants\SsdStates.cs"/>

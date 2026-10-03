@@ -12,7 +12,6 @@ namespace SilkSoarDash.CustomFsm.Actions
         private static readonly ManualLogSource SsdLog = SilkLog.For<SsdCancel>();
 
         private static HeroController Hero => HeroController.instance;
-        private static SilkSpool Spool => SilkSpool.Instance;
 
         public override void OnEnter()
         {
@@ -30,7 +29,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             if (Fsm.GetFsmBool(SsdVars.DidAddUsingSilk).Value)
             {
-                Spool.RemoveUsing(SilkSpool.SilkUsingFlags.Normal, SsdVars.SilkCost);
+                SsdSilkReserve.Release(SsdHeroState.SilkCost);
             }
 
             Deactivate(SsdClones.ExtraGroundEffect);

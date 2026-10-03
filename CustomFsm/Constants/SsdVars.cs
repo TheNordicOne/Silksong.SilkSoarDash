@@ -23,7 +23,7 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string StartedRumblingFocus = "StartedRumblingFocus";
         public const string StartedRumblingFocus2 = "StartedRumblingFocus2";
         public const string AirTarget = "AirTarget";
-        
+
         public const int DefaultThrowDistance = 9;
         public const float DefaultJumpSpeed = 33f;
         public const float DefaultChargeTime = 0.8f;

@@ -8,7 +8,6 @@ namespace SilkSoarDash.CustomFsm.Actions
     {
         private static HeroController Hero => HeroController.instance;
 
-        // like the harpoon dash end, regaining control clears these, so this has to come after it
         public override void OnEnter()
         {
             if (!Hero.cState.onGround)

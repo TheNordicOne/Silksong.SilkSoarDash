@@ -21,7 +21,7 @@ namespace SilkSoarDash.CustomFsm
             {
                 Name = name,
                 Actions = WithTrace(actions),
-                Transitions = transitions ?? Array.Empty<FsmTransition>(),
+                Transitions = transitions ?? Array.Empty<FsmTransition>()
             };
 
             state.SaveActions();

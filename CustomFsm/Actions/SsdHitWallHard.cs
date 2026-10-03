@@ -8,13 +8,13 @@ namespace SilkSoarDash.CustomFsm.Actions
     public class SsdHitWallHard : FsmStateAction
     {
         private static HeroController Hero => HeroController.instance;
-        
+
         public override void OnEnter()
         {
             DeliveryQuestItem.TakeHit();
-            
-            // CreateNoiseV2 at Normal intensity
-            
+
+            // noise  Normal
+
             var stickNeedle = Fsm.GetFsmGameObject(SsdVars.StickNeedle).Value;
             var damager = SsdClones.Damager;
             stickNeedle.SetActive(false);
@@ -24,10 +24,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             SsdEffects.PlayVoice(SsdAudio.GruntVoice);
             SsdShake.Send(SsdCamera.AverageShake);
 
-            Hero.ExitDashPoseAtWall(Fsm.GetFsmFloat(SsdVars.Direction).Value);
-            Hero.PlayAnim(SsdAnims.WallCatch);
-
-            // CameraTarget.SetSuperJump is vertical only. Skipped until custom implementation
+            Hero.ExitDashPoseKeepingFront(Fsm.GetFsmFloat(SsdVars.Direction).Value);
+            Hero.PlayAnim(SsdAnims.Catch);
 
             EventRegister.SendEvent(SsdRegisterEvents.SuperJumpEnded);
 
@@ -39,7 +37,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnUpdate()
         {
-            if (Hero.IsAnimPlaying(SsdAnims.WallCatch))
+            if (Hero.IsAnimPlaying(SsdAnims.Catch))
             {
                 return;
             }

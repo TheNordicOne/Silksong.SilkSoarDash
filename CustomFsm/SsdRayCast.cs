@@ -12,6 +12,18 @@ namespace SilkSoarDash.CustomFsm
     {
         private static readonly ManualLogSource SsdLog = SilkLog.For(typeof(SsdRayCast));
 
+        public static bool HitNoSuperJumpZone(Fsm fsm)
+        {
+            var hitPoint = fsm.GetFsmVector2(SsdVars.HitPoint).Value;
+            if (NoSuperJumpCollider.IsInside(hitPoint))
+            {
+                return true;
+            }
+
+            var hitObject = fsm.GetFsmGameObject(SsdVars.HitObject).Value;
+            return hitObject.GetComponent<NoSuperJumpCollider>();
+        }
+
         public static void CastAndStore(Fsm fsm, Vector2 dir, FsmState state)
         {
             fsm.GetFsmFloat(SsdVars.Direction).Value = dir.x;
@@ -20,7 +32,6 @@ namespace SilkSoarDash.CustomFsm
             rc.Init(state);
 
             fsm.GetFsmBool(SsdVars.IsGate).Value = false;
-
 
             rc.OnEnter();
 

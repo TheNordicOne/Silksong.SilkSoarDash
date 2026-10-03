@@ -66,6 +66,5 @@ namespace SilkSoarDash.CustomFsm.Actions
                 anticEffect.PlayAnim(SsdAnims.AnticEffectEnd);
             }
         }
-
     }
 }

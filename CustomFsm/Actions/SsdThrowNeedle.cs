@@ -18,7 +18,6 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         private static HeroController Hero => HeroController.instance;
 
-
         public override void OnEnter()
         {
             if (Hero == null)
@@ -44,7 +43,7 @@ namespace SilkSoarDash.CustomFsm.Actions
         public override void OnUpdate()
         {
             SetDamager();
-            
+
             var travelled = Travelled();
 
             if (!ShouldFinish(travelled))
@@ -55,7 +54,6 @@ namespace SilkSoarDash.CustomFsm.Actions
             SsdLog.Debug("needle done travelled={Travelled} target={Target}", travelled, Fsm.GetFsmFloat(SsdVars.Distance).Value);
             Fsm.Event(SsdEvents.Finished);
         }
-
 
         private void SetThreadEffect()
         {
@@ -69,7 +67,6 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         private static void PreThrowEffects()
         {
-
             SsdEffects.PlayVoice(SsdAudio.AttackHeavyVoice);
             SsdEffects.PlayOneShot(SsdAudio.Throw, SsdAudio.FlatPitch, SsdAudio.FlatPitch);
             SsdEffects.Vibrate(SsdVibration.NeedleThrow);
@@ -104,7 +101,6 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             return true;
         }
-
 
         // the sprite trails far behind its pivot, so placing the pivot ahead of Hornet still draws the needle through her
         private void PutTailAhead()

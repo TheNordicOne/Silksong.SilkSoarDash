@@ -5,7 +5,6 @@ using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using UnityEngine;
 
-
 namespace SilkSoarDash.Extensions
 {
     public static class SsdHeroController
@@ -48,7 +47,7 @@ namespace SilkSoarDash.Extensions
         {
             return hero.GetForwardSpeed(direction) <= SsdVars.StoppedSpeed;
         }
-        
+
         public static bool IsFalling(this HeroController hero)
         {
             return hero.Body.linearVelocityY < SsdVars.FallDetectionSpeed;
@@ -109,7 +108,7 @@ namespace SilkSoarDash.Extensions
             return gate.GetComponent<Collider2D>().bounds.min.y;
         }
 
-        public static void ExitDashPoseAtWall(this HeroController hero, float direction)
+        public static void ExitDashPoseKeepingFront(this HeroController hero, float direction)
         {
             var edge = hero.LeadingEdge(direction);
             hero.ExitDashPose();
@@ -139,6 +138,5 @@ namespace SilkSoarDash.Extensions
         {
             return hero.Body.linearVelocity.x * direction;
         }
-
     }
 }

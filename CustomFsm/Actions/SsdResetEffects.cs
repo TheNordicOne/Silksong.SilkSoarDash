@@ -8,7 +8,7 @@ namespace SilkSoarDash.CustomFsm.Actions
     public class SsdResetEffects : FsmStateAction
     {
         private static HeroController Hero => HeroController.instance;
-        
+
         public override void OnEnter()
         {
             var hero = HeroController.instance;
@@ -17,12 +17,12 @@ namespace SilkSoarDash.CustomFsm.Actions
                 Finish();
                 return;
             }
-            
+
             SsdHeroState.Dashing = false;
             SsdHeroState.OnWall = false;
-            
+
             Hero.hero_state = ActorStates.idle;
-            
+
             Fsm.GetFsmBool(SsdVars.DidStartFlash).Value = false;
             Fsm.GetFsmBool(SsdVars.AirTarget).Value = false;
 

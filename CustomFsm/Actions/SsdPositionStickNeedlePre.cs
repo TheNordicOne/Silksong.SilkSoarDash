@@ -1,21 +1,15 @@
-using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
 using UnityEngine;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Extensions;
-using SilkSoarDash.Logging;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdPositionStickNeedlePre : FsmStateAction
     {
-        private static readonly ManualLogSource SsdLog = SilkLog.For<SsdPositionStickNeedlePre>();
-
         private Transform _needle;
         private Transform _needleStick;
-
-        private static HeroController Hero => HeroController.instance;
 
         public override void OnEnter()
         {
@@ -26,41 +20,22 @@ namespace SilkSoarDash.CustomFsm.Actions
             _needleStick.gameObject.SetActive(true);
 
             Fsm.GetFsmGameObject(SsdVars.StickNeedle).Value = _needleStick.gameObject;
-            
-            var didHit = Fsm.GetFsmBool(SsdVars.DidHit).Value;
 
-            if (!didHit)
+            var didHit = Fsm.GetFsmBool(SsdVars.DidHit).Value;
+            if (!didHit || SsdRayCast.HitNoSuperJumpZone(Fsm))
             {
                 Fsm.Event(SsdEvents.Cancelled);
                 return;
             }
 
             var hitPoint = Fsm.GetFsmVector2(SsdVars.HitPoint).Value;
-            var isColliding = NoSuperJumpCollider.IsInside(hitPoint);
 
-            if (isColliding)
-            {
-                Fsm.Event(SsdEvents.Cancelled);
-                return;
-            }
-
-            var hitObject = Fsm.GetFsmGameObject(SsdVars.HitObject).Value;
-            var hasNoSuperJumpCollider = hitObject.GetComponent<NoSuperJumpCollider>();
-
-            if (hasNoSuperJumpCollider)
-            {
-                Fsm.Event(SsdEvents.Cancelled);
-                return;
-            }
-
-            // store the stick needle's current parent
             Fsm.GetFsmGameObject(SsdVars.StickNeedleParent).Value = _needleStick.parent.gameObject;
-            
+
             _needleStick.position = new Vector3(hitPoint.x, _needle.position.y, _needleStick.position.z);
             _needleStick.SetParent(null, true);
             _needleStick.PlayAnim(SsdAnims.NeedleWallHit);
 
-            
             var isGate = Fsm.GetFsmBool(SsdVars.IsGate).Value;
             if (isGate)
             {
@@ -70,13 +45,13 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             var isNeedleOffScreen = IsOutsideCamera();
             Fsm.GetFsmBool(SsdVars.NeedleOffScreen).Value = isNeedleOffScreen;
-            
+
             if (isNeedleOffScreen)
             {
                 Finish();
                 return;
             }
-            
+
             // effect  Nail Terrain Hit Effect
 
             Finish();

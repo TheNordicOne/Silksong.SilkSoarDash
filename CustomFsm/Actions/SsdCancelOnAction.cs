@@ -1,5 +1,6 @@
 using BepInEx.Logging;
 using HutongGames.PlayMaker;
+using SilkSoarDash.Controls;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Logging;
 
@@ -9,32 +10,31 @@ namespace SilkSoarDash.CustomFsm.Actions
     {
         private static readonly ManualLogSource SsdLog = SilkLog.For<SsdCancelOnAction>();
 
-        private static HeroActions InputAction => GameManager.instance?.inputHandler?.inputActions;
-        
         public override void OnUpdate()
         {
-            if (InputAction == null)
-            {
-                return;
-            }
-            
-            if (!InputAction.Jump.WasPressed && !InputAction.Attack.WasPressed && !InputAction.SuperDash.WasPressed)
+            var actions = SsdInput.Actions;
+            if (actions == null)
             {
                 return;
             }
 
-            SsdLog.Debug("cancelled button={Button}", PressedButton());
+            if (!actions.Jump.WasPressed && !actions.Attack.WasPressed && !actions.SuperDash.WasPressed)
+            {
+                return;
+            }
+
+            SsdLog.Debug("cancelled button={Button}", PressedButton(actions));
             Fsm.Event(SsdEvents.Cancelled);
         }
 
-        private static string PressedButton()
+        private static string PressedButton(HeroActions actions)
         {
-            if (InputAction.Jump.WasPressed)
+            if (actions.Jump.WasPressed)
             {
                 return "jump";
             }
 
-            return InputAction.Attack.WasPressed ? "attack" : "superdash";
+            return actions.Attack.WasPressed ? "attack" : "superdash";
         }
     }
 }

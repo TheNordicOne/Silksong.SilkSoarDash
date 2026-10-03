@@ -13,14 +13,11 @@ namespace SilkSoarDash.CustomFsm.Actions
             Fsm.GetFsmGameObject(SsdVars.StickNeedle).Value.SetActive(false);
             SsdClones.Damager.gameObject.SetActive(false);
 
-            // CameraTarget.SetSuperJump is vertical only. Skipped until custom implementation
-
             SsdHeroState.Dashing = false;
 
-            // keeping the leading edge in place stops the pose reset from pulling her back
-            Hero.ExitDashPoseAtWall(Fsm.GetFsmFloat(SsdVars.Direction).Value);
+            Hero.ExitDashPoseKeepingFront(Fsm.GetFsmFloat(SsdVars.Direction).Value);
             Hero.AffectedByGravity(true);
-            Hero.PlayAnim(SsdAnims.WallCatch);
+            Hero.PlayAnim(SsdAnims.Catch);
             SsdClones.GrabEffect.gameObject.SetActive(true);
 
             SsdShake.Send(SsdCamera.EnemyKillShake);
@@ -31,7 +28,7 @@ namespace SilkSoarDash.CustomFsm.Actions
         {
             Hero.ClampFall();
 
-            if (Hero.IsAnimPlaying(SsdAnims.WallCatch))
+            if (Hero.IsAnimPlaying(SsdAnims.Catch))
             {
                 return;
             }

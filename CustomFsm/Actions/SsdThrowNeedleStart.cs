@@ -30,7 +30,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             SsdShake.SetFocus2(false);
             Fsm.GetFsmBool(SsdVars.StartedRumblingFocus2).Value = false;
 
-            // message  SendMessageV2 to the hero, contents not in the dump
+            // message  SendMessageV2 to the hero
 
             Hero.PlayAnim(SsdAnims.Throw);
 

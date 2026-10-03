@@ -9,7 +9,6 @@ namespace SilkSoarDash.CustomFsm.Actions
     {
         private static readonly ManualLogSource SsdLog = SilkLog.For<SsdHitSpikes>();
 
-        
         public override void OnEnter()
         {
             SsdLog.Debug("spikes object={Object}", Fsm.GetFsmGameObject(SsdVars.HitObject).Value);

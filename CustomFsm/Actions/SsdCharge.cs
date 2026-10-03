@@ -1,5 +1,6 @@
 using BepInEx.Logging;
 using HutongGames.PlayMaker;
+using SilkSoarDash.Controls;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Extensions;
 using SilkSoarDash.Logging;
@@ -13,11 +14,10 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         private static HeroController Hero => HeroController.instance;
 
-        
         public override void OnEnter()
         {
             Hero.StopAnimationControl();
-         
+
            var didAddUsingSilk =  SsdSilkReserve.Reserve(SsdHeroState.SilkCost);
            Fsm.GetFsmBool(SsdVars.DidAddUsingSilk).Value = didAddUsingSilk;
 
@@ -75,7 +75,7 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnUpdate()
         {
-            var ia = GameManager.instance?.inputHandler?.inputActions;
+            var ia = SsdInput.Actions;
             if (ia == null)
             {
                 return;

@@ -154,7 +154,6 @@ namespace SilkSoarDash.CustomFsm
                 });
         }
 
-
         public static FsmState PositionStickNeedle(Fsm fsm)
         {
             return FsmBuilder.State(fsm, SsdStates.PositionStickNeedle,

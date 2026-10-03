@@ -134,7 +134,9 @@
         <Compile Include="CustomFsm\SsdRayCast.cs"/>
         <Compile Include="Extensions\HeroController.cs"/>
         <Compile Include="Extensions\Transform.cs"/>
-        <Compile Include="SilkLog.cs"/>
+        <Compile Include="Logging\SilkLog.cs"/>
+        <Compile Include="Controls\SsdInput.cs"/>
+        <Compile Include="Patches\SsdHeroPatches.cs"/>
         <Compile Include="Logging\SilkLogEvent.cs"/>
         <Compile Include="Logging\SilkLogSourceExtensions.cs"/>
         <Compile Include="SilkSoarDash.cs"/>

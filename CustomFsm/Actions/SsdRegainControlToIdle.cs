@@ -5,14 +5,14 @@ namespace SilkSoarDash.CustomFsm.Actions
     public class SsdRegainControlToIdle : FsmStateAction
     {
         private static HeroController Hero => HeroController.instance;
-        
+
         public override void OnEnter()
         {
             var onWall = SsdHeroState.OnWall;
 
             SsdHeroState.OnWall = false;
             SsdHeroState.Dashing = false;
-            
+
             Hero.RegainControl();
             Hero.AffectedByGravity(true);
 

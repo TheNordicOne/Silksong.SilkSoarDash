@@ -39,7 +39,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             var hitPoint = Fsm.GetFsmVector2(SsdVars.HitPoint).Value;
 
             // the walls behind this room are unknown, so an unusable obstacle gets a needle in the air short of it
-            if (IsUnusable(hitPoint))
+            if (IsUnusable())
             {
                 PlaceAirNeedle(hitPoint);
                 return;
@@ -57,20 +57,9 @@ namespace SilkSoarDash.CustomFsm.Actions
             Finish();
         }
 
-        private bool IsUnusable(Vector2 hitPoint)
+        private bool IsUnusable()
         {
-            if (Fsm.GetFsmBool(SsdVars.HitSpikes).Value)
-            {
-                return true;
-            }
-
-            if (NoSuperJumpCollider.IsInside(hitPoint))
-            {
-                return true;
-            }
-
-            var hitObject = Fsm.GetFsmGameObject(SsdVars.HitObject).Value;
-            return hitObject.GetComponent<NoSuperJumpCollider>();
+            return Fsm.GetFsmBool(SsdVars.HitSpikes).Value || SsdRayCast.HitNoSuperJumpZone(Fsm);
         }
 
         private void PlaceAirNeedle(Vector2 hitPoint)

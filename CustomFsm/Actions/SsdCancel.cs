@@ -47,8 +47,6 @@ namespace SilkSoarDash.CustomFsm.Actions
             }
             Hero.SetCState(SsdCStates.FreezeCharge, false);
 
-            // CameraTarget.SetSuperJump is vertical only. Skipped
-
             if (!Fsm.GetFsmBool(SsdVars.DidStartFlash).Value)
             {
                 Finish();

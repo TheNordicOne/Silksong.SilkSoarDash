@@ -10,7 +10,7 @@ namespace SilkSoarDash.CustomFsm.Actions
         {
             Hero.RelinquishControl();
             Hero.StopAnimationControl();
-            
+
             Finish();
         }
     }

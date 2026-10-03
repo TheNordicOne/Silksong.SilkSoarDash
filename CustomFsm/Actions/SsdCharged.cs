@@ -1,5 +1,6 @@
 using BepInEx.Logging;
 using HutongGames.PlayMaker;
+using SilkSoarDash.Controls;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Extensions;
 using SilkSoarDash.Logging;
@@ -14,11 +15,10 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnEnter()
         {
-            
             SsdSilkReserve.Release(SsdHeroState.SilkCost);
             Hero.TakeSilk(SsdHeroState.SilkCost);
 
-            // - effect  Hornet_Super_Jump_Ready_Burst
+            // effect  Hornet_Super_Jump_Ready_Burst
             SsdEffects.StopChargeLoop();
             SsdEffects.PlayOneShot(SsdAudio.ChargeReady, SsdAudio.WidePitchMin, SsdAudio.WidePitchMax);
             SsdEffects.PlayReady();
@@ -48,12 +48,12 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnUpdate()
         {
-            var ia = GameManager.instance?.inputHandler?.inputActions;
+            var ia = SsdInput.Actions;
             if (ia == null)
             {
                 return;
             }
-            
+
             if (Hero.IsFalling())
             {
                 SsdLog.Debug("throwing reason={Reason}", "falling");

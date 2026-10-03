@@ -11,7 +11,7 @@ namespace SilkSoarDash.CustomFsm.Actions
         private static readonly ManualLogSource SsdLog = SilkLog.For<SsdHitWallCheck>();
 
         private static HeroController Hero => HeroController.instance;
-        
+
         public override void OnUpdate()
         {
             // the side collision check never saw the wall, stopping dead is what tells us she arrived

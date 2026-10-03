@@ -24,8 +24,5 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string NailArtReady = "Sounds/Nail Art Ready";
 
         public const string NeedleDamagerChild = "Damager";
-        public const string MoveToChild = "Move To";
-
-        public const string CameraTargetTag = "CameraTarget";
     }
 }

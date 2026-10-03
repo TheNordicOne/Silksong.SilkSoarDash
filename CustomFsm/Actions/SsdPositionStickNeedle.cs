@@ -9,21 +9,18 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnEnter()
         {
-
             var heroX = Hero.transform.position.x;
-            
+
             var hitPoint = Fsm.GetFsmVector2(SsdVars.HitPoint).Value;
-            var isDistant = hitPoint.x > heroX + SsdVars.DistantImpactRange;
+            var direction = Fsm.GetFsmFloat(SsdVars.Direction).Value;
+            var isDistant = (hitPoint.x - heroX) * direction > SsdVars.DistantImpactRange;
 
             var audioClip = isDistant ? SsdAudio.NeedleImpactDistant : SsdAudio.NeedleImpact;
             SsdEffects.PlayOneShot2D(audioClip, SsdAudio.WidePitchMin, SsdAudio.WidePitchMax);
-            // PlayedThrowWait true -> finish here
         }
 
         public override void OnUpdate()
         {
-            // finish when the Super Jump Throw Wait animation completes
-            
             Finish();
         }
     }

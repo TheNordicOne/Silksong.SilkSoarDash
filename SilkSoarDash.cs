@@ -2,19 +2,19 @@ using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using SilkSoarDash.Config;
-using SilkSoarDash.Extensions;
-using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Controls;
 using SilkSoarDash.CustomFsm;
+using SilkSoarDash.Extensions;
 using SilkSoarDash.Logging;
+using SilkSoarDash.Patches;
 
 namespace SilkSoarDash
 {
-    [BepInPlugin("com.thenoridcone.silksoardash", "Silk Soar Dash", "1.0.0 ")]
+    [BepInPlugin("com.thenoridcone.silksoardash", "Silk Soar Dash", "1.0.0")]
     public class SilkSoarDash : BaseUnityPlugin
     {
         private static readonly ManualLogSource Log = SilkLog.For<SilkSoarDash>();
 
-        private static HeroActions InputActions => GameManager.instance?.inputHandler?.inputActions;
         private static HeroController Hero => HeroController.instance;
 
         private void Awake()
@@ -23,60 +23,17 @@ namespace SilkSoarDash
 
             SsdConfig.Bind(Config);
 
-            Harmony.CreateAndPatchAll(typeof(SilkSoarDash));
+            Harmony.CreateAndPatchAll(typeof(SsdHeroPatches));
             Harmony.CreateAndPatchAll(typeof(SsdSilkReserve));
-        }
-
-
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(HeroController), nameof(HeroController.CanHarpoonDash))]
-        // ReSharper disable once InconsistentNaming - Harmony Prefix Matching
-        private static bool CanHarpoonDashPrefix(ref bool __result)
-        {
-            if (!SilkSoarDashDirectionPressed())
-            {
-                return true;
-            }
-
-            __result = false;
-            return false;
-        }
-
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(HeroController), "IsPressingOnlyDown")]
-        // ReSharper disable once InconsistentNaming - Harmony Prefix Matching
-        private static bool IsPressingOnlyDownPrefix(ref bool __result)
-        {
-            // only the vanilla Silk Soar start reads this
-            if (!SsdConfig.SwapDirections || InputActions == null)
-            {
-                return true;
-            }
-
-            __result = InputActions.Up.IsPressed && !InputActions.Left.IsPressed && !InputActions.Right.IsPressed;
-            return false;
-        }
-
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(global::Extensions), nameof(global::Extensions.SendEventSafe), typeof(PlayMakerFSM), typeof(string))]
-        private static bool SendEventSafePrefix(PlayMakerFSM fsm, string eventName)
-        {
-            if (eventName != SsdEvents.EnterSprinting || !SsdHeroState.ExitedDashing || fsm != Hero.sprintFSM)
-            {
-                return true;
-            }
-
-            SilkSoarDashFsm.EnterDashing();
-            return false;
         }
 
         private void Update()
         {
-            if (!PressedSilkSoarDash())
+            if (!SsdInput.PressedSilkSoarDash() || !CanSilkSoarDash())
             {
                 return;
             }
-            
+
             // a sprint passes CanSuperJump as a cancelable FSM move, so the game's own start cancels it and takes control back first
             if (Hero.controlReqlinquished)
             {
@@ -87,16 +44,6 @@ namespace SilkSoarDash
 
             SilkSoarDashFsm.Build();
             SilkSoarDashFsm.Trigger();
-        }
-
-        private static bool PressedSilkSoarDash()
-        {
-            if (InputActions == null)
-            {
-                return false;
-            }
-
-            return InputActions.SuperDash.WasPressed && SilkSoarDashDirectionPressed() && CanSilkSoarDash();
         }
 
         private static bool CanSilkSoarDash()
@@ -112,20 +59,10 @@ namespace SilkSoarDash
                     return playerData.hasHarpoonDash;
                 case SsdAvailability.Always:
                     return true;
+                case SsdAvailability.SilkSoar:
                 default:
                     return playerData.hasSuperJump;
             }
-        }
-
-        private static bool SilkSoarDashDirectionPressed()
-        {
-            if (InputActions == null)
-            {
-                return false;
-            }
-
-            var direction = SsdConfig.SwapDirections ? InputActions.Down : InputActions.Up;
-            return direction.IsPressed;
         }
     }
 }

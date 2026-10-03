@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using BepInEx.Logging;
 
-namespace SilkSoarDash
+namespace SilkSoarDash.Logging
 {
     public static class SilkLog
     {

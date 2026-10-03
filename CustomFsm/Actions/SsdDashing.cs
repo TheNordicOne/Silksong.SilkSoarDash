@@ -6,8 +6,7 @@ namespace SilkSoarDash.CustomFsm.Actions
     public class SsdDashing : FsmStateAction
     {
         private static HeroController Hero => HeroController.instance;
-        
-        
+
         public override void OnEnter()
         {
             SsdEffects.StartLoop(SsdAudio.FlyingLoop);
@@ -16,7 +15,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             Hero.AffectedByGravity(false);
 
             Hero.Body.gravityScale = 0;
-            
+
             SsdEffects.StartRumble();
         }
 

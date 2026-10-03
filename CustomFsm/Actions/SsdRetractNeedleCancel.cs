@@ -1,7 +1,6 @@
 using BepInEx.Logging;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
-using SilkSoarDash.Extensions;
 using UnityEngine;
 using SilkSoarDash.Logging;
 
@@ -11,18 +10,13 @@ namespace SilkSoarDash.CustomFsm.Actions
     {
         private static readonly ManualLogSource SsdLog = SilkLog.For<SsdRetractNeedleCancel>();
 
-        private static HeroController Hero => HeroController.instance;
-        
         public override void OnEnter()
         {
             Fsm.GetFsmBool(SsdVars.QueuedCancel).Value = false;
 
-
             SsdEffects.PlayOneShot(SsdAudio.Cancel, SsdAudio.NarrowPitchMin, SsdAudio.NarrowPitchMax);
-            
-            RetractNeedle();
 
-            // CameraTarget.SetSuperJump is vertical only. Skipped until custom implementation
+            RetractNeedle();
 
             EventRegister.SendEvent(SsdRegisterEvents.SuperJumpEnded);
         }
@@ -31,7 +25,7 @@ namespace SilkSoarDash.CustomFsm.Actions
         {
             var needle = SsdClones.RetractNeedle;
             var damager = SsdClones.Damager;
-            
+
             var stickNeedle = Fsm.GetFsmGameObject(SsdVars.StickNeedle).Value;
 
             var direction = Fsm.GetFsmFloat(SsdVars.Direction).Value;

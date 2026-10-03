@@ -24,8 +24,6 @@ namespace SilkSoarDash.CustomFsm.Actions
             needle.gameObject.SetActive(false);
             needle.localPosition = new Vector3(0,SsdVars.NeedleStartHeight,0);
 
-            // CameraTarget.SetSuperJump is vertical only. Skipped until custom implementation
-
             SsdHeroState.Dashing = false;
 
             SsdShake.Send(SsdCamera.EnemyKillShake);

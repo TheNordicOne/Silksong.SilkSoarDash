@@ -11,7 +11,6 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnEnter()
         {
-
             var isNeedleVisible = !Fsm.GetFsmBool(SsdVars.NeedleOffScreen).Value;
             var waitTime = isNeedleVisible ? 0f : SsdVars.ThrowWaitTimeOffScreen;
             Fsm.GetFsmFloat(SsdVars.ThrowWaitTime).Value = waitTime;

@@ -11,7 +11,7 @@ namespace SilkSoarDash.CustomFsm.Actions
         private static readonly ManualLogSource SsdLog = SilkLog.For<SsdActivationCheck>();
 
         private static HeroController Hero => HeroController.instance;
-        
+
         public override void OnEnter()
         {
             // fixed for the whole soar, so a config change mid-soar cannot unbalance the silk it reserved

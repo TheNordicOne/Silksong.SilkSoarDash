@@ -8,7 +8,7 @@ namespace SilkSoarDash.CustomFsm.Actions
     public class SsdDashStartQuick : FsmStateAction
     {
         private static HeroController Hero => HeroController.instance;
-        
+
         public override void OnEnter()
         {
             Hero.EnterDashPose(Fsm.GetFsmFloat(SsdVars.Direction).Value);
@@ -20,16 +20,13 @@ namespace SilkSoarDash.CustomFsm.Actions
             Hero.SetCState(SsdCStates.FreezeCharge, false);
 
             SsdHeroState.Dashing = true;
-            
+
             Hero.RelinquishControlNotVelocity();
-            
+
             Hero.AffectedByGravity(false);
 
             Hero.ApplySsdVelocity(Fsm);
 
-            
-            // CameraTarget.SetSuperJump is vertical only. Skipped until custom implementation
-            
             Finish();
         }
 

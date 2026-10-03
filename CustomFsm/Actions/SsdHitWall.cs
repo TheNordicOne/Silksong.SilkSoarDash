@@ -11,18 +11,11 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnEnter()
         {
-            var stickNeedle = Fsm.GetFsmGameObject(SsdVars.StickNeedle).Value;
-            var damager = SsdClones.Damager;
-            stickNeedle.SetActive(false);
-            damager.gameObject.SetActive(false);
-
-            // CameraTarget.SetSuperJump is vertical only. Skipped until custom implementation
-
             SsdHeroState.OnWall = true;
             SsdHeroState.Dashing = false;
             Hero.AffectedByGravity(true);
 
-            Hero.PlayAnim(SsdAnims.WallCatch);
+            Hero.PlayAnim(SsdAnims.Catch);
             SsdClones.GrabEffect.gameObject.SetActive(true);
 
             Hero.Body.linearVelocity = Vector2.zero;
@@ -32,7 +25,7 @@ namespace SilkSoarDash.CustomFsm.Actions
         {
             Hero.ClampFall();
 
-            if (Hero.IsAnimPlaying(SsdAnims.WallCatch))
+            if (Hero.IsAnimPlaying(SsdAnims.Catch))
             {
                 return;
             }

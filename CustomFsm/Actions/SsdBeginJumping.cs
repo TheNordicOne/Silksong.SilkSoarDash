@@ -15,7 +15,6 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnEnter()
         {
-            // the game drops her at the door's floor, but she flies at the height she left with, so measure from there
             var lowest = Hero.transform.position.y + SsdVars.KickUpHeight;
             Hero.SetHeightAboveDoorFloor(Hero.sceneEntryGate, SsdHeroState.ExitHeight, lowest);
 

@@ -5,13 +5,11 @@ namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdCancelable : FsmStateAction
     {
-        
         public override void OnEnter()
         {
             SsdEffects.StartLoop(SsdAudio.FlyingLoop);
             SsdEffects.StartLoopVibration();
 
-            // QueuedCancel true -> cancel.
             var queuedCancel = Fsm.GetFsmBool(SsdVars.QueuedCancel).Value;
             if (queuedCancel)
             {

@@ -2,7 +2,6 @@ using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using UnityEngine;
 
-
 namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdThreadLoop : FsmStateAction

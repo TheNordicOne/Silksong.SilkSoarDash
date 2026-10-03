@@ -17,9 +17,6 @@ namespace SilkSoarDash.CustomFsm.Actions
         {
             Fsm.GetFsmBool(SsdVars.QueuedCancel).Value = false;
 
-            // vanilla soars upward so gravity ends the cancel by itself, sideways she would glide on without it
-            Hero.AffectedByGravity(true);
-            Hero.ExitDashPose();
 
             SsdEffects.PlayOneShot(SsdAudio.Cancel, SsdAudio.NarrowPitchMin, SsdAudio.NarrowPitchMax);
             

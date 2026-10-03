@@ -43,6 +43,21 @@ namespace SilkSoarDash
         }
 
         [HarmonyPrefix]
+        [HarmonyPatch(typeof(HeroController), "IsPressingOnlyDown")]
+        // ReSharper disable once InconsistentNaming - Harmony Prefix Matching
+        private static bool IsPressingOnlyDownPrefix(ref bool __result)
+        {
+            // only the vanilla Silk Soar start reads this
+            if (!SsdConfig.SwapDirections || InputActions == null)
+            {
+                return true;
+            }
+
+            __result = InputActions.Up.IsPressed && !InputActions.Left.IsPressed && !InputActions.Right.IsPressed;
+            return false;
+        }
+
+        [HarmonyPrefix]
         [HarmonyPatch(typeof(global::Extensions), nameof(global::Extensions.SendEventSafe), typeof(PlayMakerFSM), typeof(string))]
         private static bool SendEventSafePrefix(PlayMakerFSM fsm, string eventName)
         {
@@ -109,7 +124,8 @@ namespace SilkSoarDash
                 return false;
             }
 
-            return InputActions.Up.IsPressed;
+            var direction = SsdConfig.SwapDirections ? InputActions.Down : InputActions.Up;
+            return direction.IsPressed;
         }
     }
 }

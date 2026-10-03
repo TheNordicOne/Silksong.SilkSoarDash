@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.x
+
+      - name: Read version
+        id: version
+        run: |
+          VERSION=$(grep -oP 'BepInPlugin\("[^"]*", "[^"]*", "\K[^"]+' SilkSoarDash.cs)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Refuse an existing version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "v${{ steps.version.outputs.version }}" > /dev/null 2>&1; then
+            echo "::error::v${{ steps.version.outputs.version }} is already released, raise the version in SilkSoarDash.cs"
+            exit 1
+          fi
+
+      - name: Build
+        run: dotnet build -c Release -p:Version=${{ steps.version.outputs.version }}
+
+      - name: Package
+        run: |
+          mkdir -p dist/SilkSoarDash
+          cp bin/Release/netstandard2.1/SilkSoarDash.dll dist/SilkSoarDash/
+          cd dist && zip -r "SilkSoarDash-${{ steps.version.outputs.version }}.zip" SilkSoarDash
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "v${{ steps.version.outputs.version }}" "dist/SilkSoarDash-${{ steps.version.outputs.version }}.zip" --target "$GITHUB_SHA" --title "Silk Soar Dash ${{ steps.version.outputs.version }}" --generate-notes

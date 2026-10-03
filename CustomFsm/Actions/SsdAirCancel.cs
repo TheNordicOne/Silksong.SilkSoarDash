@@ -1,3 +1,4 @@
+using GlobalEnums;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
 using SilkSoarDash.Extensions;
@@ -7,16 +8,10 @@ namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdAirCancel : FsmStateAction
     {
-        private bool _stalling;
-        private float _stalled;
-
         private static HeroController Hero => HeroController.instance;
 
         public override void OnEnter()
         {
-            _stalling = false;
-            _stalled = 0f;
-
             var catchEffect = SsdClones.CatchEffect;
             if (catchEffect != null)
             {
@@ -34,42 +29,24 @@ namespace SilkSoarDash.CustomFsm.Actions
             SsdHeroState.Dashing = false;
 
             SsdShake.Send(SsdCamera.EnemyKillShake);
-        }
-
-        public override void OnFixedUpdate()
-        {
-            if (_stalling)
-            {
-                return;
-            }
-
-            var velocity = Hero.Body.linearVelocity * SsdVars.CancelDeceleration;
-            if (Mathf.Abs(velocity.x) > SsdVars.CancelStopSpeed)
-            {
-                Hero.Body.linearVelocity = velocity;
-                return;
-            }
-
-            Hero.Body.linearVelocity = Vector2.zero;
-            Hero.PlayAnim(SsdAnims.LoopCancel);
-            _stalling = true;
-        }
-
-        public override void OnUpdate()
-        {
-            if (!_stalling)
-            {
-                return;
-            }
-
-            _stalled += Time.deltaTime;
-            if (_stalled < SsdVars.CancelStallTime)
-            {
-                return;
-            }
 
             Hero.ExitDashPose();
-            Fsm.Event(SsdEvents.Finished);
+
+            ConsumeCancelPress();
+
+            Finish();
+        }
+
+        // control returns within the 0.1s input buffer, so the cancel press would still fire its own action
+        private static void ConsumeCancelPress()
+        {
+            Hero.ResetInputQueues();
+            Hero.ClearJumpInputState();
+
+            var input = GameManager.instance.inputHandler;
+            input.GetWasButtonPressedQueued(HeroActionButton.JUMP, true);
+            input.GetWasButtonPressedQueued(HeroActionButton.ATTACK, true);
+            input.GetWasButtonPressedQueued(HeroActionButton.SUPER_DASH, true);
         }
     }
 }

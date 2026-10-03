@@ -10,7 +10,6 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string JumpAntic = "Super Jump Jump Antic";
         public const string Loop = "Super Jump Loop";
         public const string WallCatch = "Harpoon Catch";
-        public const string LoopCancel = "Super Jump Loop Cancel";
         public const string NeedleWallHit = "Harpoon Needle Wall Hit";
     }
 }

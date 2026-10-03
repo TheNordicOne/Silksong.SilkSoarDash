@@ -280,8 +280,7 @@ namespace SilkSoarDash.CustomFsm
                 new FsmStateAction[]
                 {
                     new SsdRetractNeedleCancel(),
-                    FsmBuilder.MoveBy(fsm, SsdClones.RetractNeedle, SsdVars.MoveBy, SsdVars.RetractNeedleSpeed, SsdEvents.Finished),
-                    FsmBuilder.Decelerate(SsdVars.CancelDeceleration)
+                    FsmBuilder.MoveBy(fsm, SsdClones.RetractNeedle, SsdVars.MoveBy, SsdVars.RetractNeedleSpeed, SsdEvents.Finished)
                 },
                 new[]
                 {
@@ -360,11 +359,13 @@ namespace SilkSoarDash.CustomFsm
             return FsmBuilder.State(fsm, SsdStates.AirCancel,
                 new FsmStateAction[]
                 {
-                    new SsdAirCancel()
+                    new SsdAirCancel(),
+                    new SsdRegainControlToIdle(),
+                    new SsdCarryMomentum()
                 },
                 new[]
                 {
-                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.RegainControlToIdle)
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects)
                 });
         }
 

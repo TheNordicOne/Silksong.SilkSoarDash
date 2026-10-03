@@ -2,7 +2,9 @@ using BepInEx.Logging;
 using GlobalEnums;
 using HutongGames.PlayMaker;
 using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Extensions;
 using SilkSoarDash.Logging;
+using UnityEngine;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -24,6 +26,10 @@ namespace SilkSoarDash.CustomFsm.Actions
             var exitGate = GameManager.instance.LastSceneLoad.SceneLoadInfo.HeroLeaveDirection;
             var sideExit = exitGate == GatePosition.left || exitGate == GatePosition.right;
             SsdHeroState.ExitedDashing = SsdHeroState.Dashing && sideExit;
+            if (SsdHeroState.ExitedDashing)
+            {
+                SsdHeroState.ExitHeight = HeroController.instance.HeightAboveDoorFloor(TouchedGate());
+            }
 
             // makes the next room skip its walk-in and send ENTER SPRINTING, which SendEventSafePrefix turns into our EnterDashing
             if (SsdHeroState.ExitedDashing)
@@ -31,8 +37,22 @@ namespace SilkSoarDash.CustomFsm.Actions
                 HeroController.instance.exitedSprinting = true;
             }
 
-            SsdLog.Debug("leaving from={State} dashing={Dashing}", previous.Name, SsdHeroState.Dashing);
+            SsdLog.Debug("leaving from={State} dashing={Dashing} height={Height}", previous.Name, SsdHeroState.Dashing, SsdHeroState.ExitHeight);
             Finish();
+        }
+
+        private static TransitionPoint TouchedGate()
+        {
+            var heroCollider = HeroController.instance.GetComponent<Collider2D>();
+            foreach (var gate in TransitionPoint.TransitionPoints)
+            {
+                if (heroCollider.IsTouching(gate.GetComponent<Collider2D>()))
+                {
+                    return gate;
+                }
+            }
+
+            return null;
         }
     }
 }

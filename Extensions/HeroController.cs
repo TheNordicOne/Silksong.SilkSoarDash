@@ -38,7 +38,6 @@ namespace SilkSoarDash.Extensions
             return animator != null && animator.IsPlaying(clip);
         }
 
-        // the soar clip flies upward, so Hornet is turned toward the dash, hitbox included, and plays it sideways
         // the mirror scale is applied before the rotation, so the turn flips with the facing
         public static void EnterDashPose(this HeroController hero, float direction)
         {
@@ -60,6 +59,23 @@ namespace SilkSoarDash.Extensions
             Physics2D.SyncTransforms();
             hero.transform.position += centre - collider.bounds.center;
             Physics2D.SyncTransforms();
+        }
+
+        public static float HeightAboveDoorFloor(this HeroController hero, TransitionPoint gate)
+        {
+            return hero.transform.position.y - DoorFloor(gate);
+        }
+
+        public static void SetHeightAboveDoorFloor(this HeroController hero, TransitionPoint gate, float height, float lowest)
+        {
+            var position = hero.transform.position;
+            var y = Mathf.Max(DoorFloor(gate) + height, lowest);
+            hero.transform.position = new Vector3(position.x, y, position.z);
+        }
+
+        private static float DoorFloor(TransitionPoint gate)
+        {
+            return gate.GetComponent<Collider2D>().bounds.min.y;
         }
 
         public static void ExitDashPoseAtWall(this HeroController hero, float direction)

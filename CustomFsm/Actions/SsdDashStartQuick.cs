@@ -11,14 +11,10 @@ namespace SilkSoarDash.CustomFsm.Actions
         
         public override void OnEnter()
         {
-            // the harpoon dash lifts her off the ground first, so she flies instead of sliding along it
-            if (Hero.cState.onGround)
-            {
-                Hero.transform.Translate(0f, SsdVars.KickUpHeight, 0f, Space.World);
-            }
+            var lowest = Hero.transform.position.y + SsdVars.KickUpHeight;
+            Hero.SetHeightAboveDoorFloor(Hero.sceneEntryGate, SsdHeroState.ExitHeight, lowest);
 
             Hero.EnterDashPose(Fsm.GetFsmFloat(SsdVars.Direction).Value);
-            Physics2D.SyncTransforms();
             LeaveEntryGate(Fsm.GetFsmFloat(SsdVars.Direction).Value);
 
             SsdClones.Damager.gameObject.SetActive(true);

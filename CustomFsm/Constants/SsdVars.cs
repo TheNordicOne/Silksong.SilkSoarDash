@@ -22,6 +22,7 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string DidStartFlash = "DidStartFlash";
         public const string StartedRumblingFocus = "StartedRumblingFocus";
         public const string StartedRumblingFocus2 = "StartedRumblingFocus2";
+        public const string AirTarget = "AirTarget";
         
         public const int DefaultThrowDistance = 9;
         public const float DefaultJumpSpeed = 33f;
@@ -53,6 +54,9 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const float NeedleDamagerRange = 30f;
         public const float NeedleReturnedDistance = -0.1f;
         public const float NeedleRayDistance = 350f;
+        public const float AirNeedleGap = 4.62f;
+        public const float NeedleCatchDistance = 1f;
+        public const float CatchDeceleration = 0.75f;
         public const float DistantImpactRange = 15f;
         
         public const int SilkCost = 1;

@@ -233,12 +233,14 @@ namespace SilkSoarDash.CustomFsm
                     FsmBuilder.WaitFor(fsm, SsdVars.CancelableTime, SsdEvents.Finished),
                     FsmBuilder.ActivateAfter(SsdClones.ThreadLoop, SsdVars.ThreadLoopDelay),
                     new SsdThreadLoop(),
-                    new SsdHitWallCheck()
+                    new SsdHitWallCheck(),
+                    new SsdAirTargetCheck()
                 },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.Cancelable),
-                    FsmBuilder.Transition(SsdEvents.HitWall, SsdStates.HitWallHard)
+                    FsmBuilder.Transition(SsdEvents.HitWall, SsdStates.HitWallHard),
+                    FsmBuilder.Transition(SsdEvents.Catch, SsdStates.AirCatch)
                 });
         }
 
@@ -252,11 +254,13 @@ namespace SilkSoarDash.CustomFsm
                     FsmBuilder.Activate(SsdClones.ThreadLoop),
                     new SsdThreadLoop(),
                     new SsdHitWallCheck(),
+                    new SsdAirTargetCheck(),
                     new SsdCancelOnAction()
                 },
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.HitWall, SsdStates.HitWallHard),
+                    FsmBuilder.Transition(SsdEvents.Catch, SsdStates.AirCatch),
                     FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.RetractNeedleCancel)
                 });
         }
@@ -298,6 +302,34 @@ namespace SilkSoarDash.CustomFsm
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.RegainControlToIdle)
+                });
+        }
+
+        public static FsmState AirCatch(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.AirCatch,
+                new FsmStateAction[]
+                {
+                    new SsdAirCatch(),
+                    FsmBuilder.Decelerate(SsdVars.CatchDeceleration)
+                },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.AirCatchRegainControl)
+                });
+        }
+
+        public static FsmState AirCatchRegainControl(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.AirCatchRegainControl,
+                new FsmStateAction[]
+                {
+                    new SsdRegainControlToIdle(),
+                    new SsdCarryMomentum()
+                },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.ResetEffects)
                 });
         }
 

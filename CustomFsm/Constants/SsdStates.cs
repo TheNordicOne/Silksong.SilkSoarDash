@@ -23,6 +23,8 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string Cancelable = "Cancelable";
         public const string HitWallHard = "HitWallHard";
         public const string HitWall = "HitWall";
+        public const string AirCatch = "AirCatch";
+        public const string AirCatchRegainControl = "AirCatchRegainControl";
         public const string RetractNeedleCancel = "RetractNeedleCancel";
         public const string RegainControlToIdle = "RegainControlToIdle";
         public const string AirCancel = "AirCancel";

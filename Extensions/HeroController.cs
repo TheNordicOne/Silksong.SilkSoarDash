@@ -92,6 +92,12 @@ namespace SilkSoarDash.Extensions
             return direction > 0f ? bounds.max.x : bounds.min.x;
         }
 
+        public static void ClampFall(this HeroController hero)
+        {
+            var velocity = hero.Body.linearVelocity;
+            hero.Body.linearVelocity = new Vector2(velocity.x, Mathf.Clamp(velocity.y, -SsdVars.CatchFallSpeed, SsdVars.CatchFallSpeed));
+        }
+
         public static float AnimSeconds(this HeroController hero, string clip)
         {
             var animationClip = hero.GetComponent<tk2dSpriteAnimator>().GetClipByName(clip);

@@ -11,9 +11,6 @@ namespace SilkSoarDash.CustomFsm.Actions
         
         public override void OnEnter()
         {
-            var lowest = Hero.transform.position.y + SsdVars.KickUpHeight;
-            Hero.SetHeightAboveDoorFloor(Hero.sceneEntryGate, SsdHeroState.ExitHeight, lowest);
-
             Hero.EnterDashPose(Fsm.GetFsmFloat(SsdVars.Direction).Value);
             LeaveEntryGate(Fsm.GetFsmFloat(SsdVars.Direction).Value);
 

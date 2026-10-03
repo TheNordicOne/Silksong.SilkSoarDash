@@ -24,6 +24,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             Hero.hero_state = ActorStates.idle;
             
             Fsm.GetFsmBool(SsdVars.DidStartFlash).Value = false;
+            Fsm.GetFsmBool(SsdVars.AirTarget).Value = false;
 
             ReattachStickNeedle();
 

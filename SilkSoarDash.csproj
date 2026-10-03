@@ -95,6 +95,8 @@
     <ItemGroup>
         <Compile Include="CustomFsm\Actions\SsdActivationCheck.cs"/>
         <Compile Include="CustomFsm\Actions\SsdAirCancel.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdAirCatch.cs"/>
+        <Compile Include="CustomFsm\Actions\SsdAirTargetCheck.cs"/>
         <Compile Include="CustomFsm\Actions\SsdApplyVelocity.cs"/>
         <Compile Include="CustomFsm\Actions\SsdBeginJumping.cs"/>
         <Compile Include="CustomFsm\Actions\SsdCancelable.cs"/>

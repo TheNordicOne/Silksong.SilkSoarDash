@@ -63,7 +63,8 @@ namespace SilkSoarDash.CustomFsm
                         new FsmBool(SsdVars.DidAddUsingSilk),
                         new FsmBool(SsdVars.DidStartFlash),
                         new FsmBool(SsdVars.StartedRumblingFocus),
-                        new FsmBool(SsdVars.StartedRumblingFocus2)
+                        new FsmBool(SsdVars.StartedRumblingFocus2),
+                        new FsmBool(SsdVars.AirTarget)
                     }
                 }
             };
@@ -91,6 +92,8 @@ namespace SilkSoarDash.CustomFsm
                 SsdStateFactory.HitWallHard(fsm),
                 SsdStateFactory.RetractNeedleCancel(fsm),
                 SsdStateFactory.HitWall(fsm),
+                SsdStateFactory.AirCatch(fsm),
+                SsdStateFactory.AirCatchRegainControl(fsm),
                 SsdStateFactory.RegainControlToIdle(fsm),
                 SsdStateFactory.AirCancel(fsm),
                 SsdStateFactory.Cancel(fsm),

@@ -11,5 +11,6 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string Loop = "Super Jump Loop";
         public const string WallCatch = "Harpoon Catch";
         public const string NeedleWallHit = "Harpoon Needle Wall Hit";
+        public const string NeedleAir = "Harpoon Needle";
     }
 }

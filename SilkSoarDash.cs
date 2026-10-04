@@ -10,7 +10,7 @@ using SilkSoarDash.Patches;
 
 namespace SilkSoarDash;
 
-[BepInPlugin("com.thenordicone.silksoardash", "Silk Soar Dash", "1.1.0")]
+[BepInPlugin("com.thenordicone.silksoardash", "Silk Soar Dash", "1.1.1")]
 public class SilkSoarDash : BaseUnityPlugin
 {
     private static readonly ManualLogSource Log = SilkLog.For<SilkSoarDash>();

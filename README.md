@@ -21,6 +21,7 @@ Once you got it installed, download this mod and place its files under
 ## Main features
 
 - Use SSD when standing on the ground
+- Use SSD when on a wall (Cling Grip required)
 - Throw needle to the next wall in the path and dash there
 - Stick to the wall if you have Cling Grip
 - Dash across door transitions
@@ -46,7 +47,7 @@ and stop the dash from starting, just like Silk Soar does it.
 But honestly: I had a hard time even finding a room where this really matters.
 
 **Animations**
-The animations are wonky in some situations. Some things may be fixable in code, others are just because I'm reusing
+The animations are wonky in some situations. Those are because I'm reusing
 animations from Silk Soar and Clawline. Unless someone can and wants to do proper graphics for this mod, this will not
 change.
 
@@ -54,11 +55,6 @@ change.
 Of course this is not balanced game play wise and will very likely allow for some interesting interactions, sequence
 breaks or just straight up make parts of the game easier. The config options let you add at least some balancing if you
 want to.
-
-## Feature ideas
-
-I consider doing the following things in the future:
-- Start a Silk Soar Dash when clinging to a wall
 
 ## Note
 

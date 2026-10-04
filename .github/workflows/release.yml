@@ -36,9 +36,11 @@ jobs:
 
       - name: Package
         run: |
-          mkdir -p dist/SilkSoarDash
-          cp bin/Release/netstandard2.1/SilkSoarDash.dll dist/SilkSoarDash/
-          cd dist && zip -r "SilkSoarDash-${{ steps.version.outputs.version }}.zip" SilkSoarDash
+          mkdir -p dist/package/plugins
+          cp bin/Release/netstandard2.1/SilkSoarDash.dll dist/package/plugins/
+          cp README.md icon.png dist/package/
+          jq -n --arg version "${{ steps.version.outputs.version }}" '{name: "SilkSoarDash", version_number: $version, website_url: "https://github.com/TheNordicOne/Silksong.SilkSoarDash", description: "Silk Soar variant that lets you soar horizontally, like Crystal Dash.", dependencies: ["silksong_modding-BepInExPack_Silksong-1.0.3"]}' > dist/package/manifest.json
+          cd dist/package && zip -r "../SilkSoarDash-${{ steps.version.outputs.version }}.zip" .
 
       - name: Publish
         env:

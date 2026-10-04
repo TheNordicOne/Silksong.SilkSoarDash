@@ -10,12 +10,14 @@ This mod gives you a second way of using Silk Soar, by throwing the needle horiz
 Arguably this could also just have been called Super Clawline.
 
 Installation instructions
-You will need to have the BepInEx mod loader installed. Check out
+The easiest way is to install it from Thunderstore with a mod manager like r2modman or Gale.
+
+For a manual install you will need to have the BepInEx mod loader installed. Check out
 the [installation instructions on the official website](https://docs.bepinex.dev/articles/user_guide/installation/index.html).
-Once you got it installed, download this mod and place its files under
+Once you got it installed, download this mod and unpack the zip into
 
 ```
-\steamapps\common\Hollow Knight Silksong\BepInEx\plugins\SilkSoarDash
+\steamapps\common\Hollow Knight Silksong\BepInEx
 ```
 
 ## Main features

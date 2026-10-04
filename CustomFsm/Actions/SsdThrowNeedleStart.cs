@@ -51,7 +51,6 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
 
-            // the throw clips play once, so a looping hold keeps her moving while the needle flies
             Hero.PlayAnim(OnWall ? SsdAnims.SoarThrowWait : SsdAnims.ThrowWait);
 
             Finish();

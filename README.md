@@ -17,7 +17,7 @@ the [installation instructions on the official website](https://docs.bepinex.dev
 Once you got it installed, download this mod and unpack the zip into
 
 ```
-\steamapps\common\Hollow Knight Silksong\BepInEx
+\steamapps\common\Hollow Knight Silksong
 ```
 
 ## Main features

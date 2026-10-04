@@ -8,67 +8,66 @@ using SilkSoarDash.Extensions;
 using SilkSoarDash.Logging;
 using SilkSoarDash.Patches;
 
-namespace SilkSoarDash
+namespace SilkSoarDash;
+
+[BepInPlugin("com.thenoridcone.silksoardash", "Silk Soar Dash", "1.1.0")]
+public class SilkSoarDash : BaseUnityPlugin
 {
-    [BepInPlugin("com.thenoridcone.silksoardash", "Silk Soar Dash", "1.0.0")]
-    public class SilkSoarDash : BaseUnityPlugin
+    private static readonly ManualLogSource Log = SilkLog.For<SilkSoarDash>();
+
+    private static HeroController Hero => HeroController.instance;
+
+    private void Awake()
     {
-        private static readonly ManualLogSource Log = SilkLog.For<SilkSoarDash>();
+        Log.Info("loaded");
 
-        private static HeroController Hero => HeroController.instance;
+        SsdConfig.Bind(Config);
 
-        private void Awake()
+        Harmony.CreateAndPatchAll(typeof(SsdHeroPatches));
+        Harmony.CreateAndPatchAll(typeof(SsdSilkReserve));
+    }
+
+    private void Update()
+    {
+        if (SsdHeroState.CrossingRoom && SsdInput.PressedCancel())
         {
-            Log.Info("loaded");
-
-            SsdConfig.Bind(Config);
-
-            Harmony.CreateAndPatchAll(typeof(SsdHeroPatches));
-            Harmony.CreateAndPatchAll(typeof(SsdSilkReserve));
+            SsdHeroState.CancelQueued = true;
+            return;
         }
 
-        private void Update()
+        if (!SsdInput.PressedSilkSoarDash() || !CanSilkSoarDash())
         {
-            if (SsdHeroState.CrossingRoom && SsdInput.PressedCancel())
-            {
-                SsdHeroState.CancelQueued = true;
-                return;
-            }
-
-            if (!SsdInput.PressedSilkSoarDash() || !CanSilkSoarDash())
-            {
-                return;
-            }
-
-            // a sprint passes CanSuperJump as a cancelable FSM move, so the game's own start cancels it and takes control back first
-            if (Hero.controlReqlinquished)
-            {
-                EventRegister.SendEvent(EventRegisterEvents.FsmCancel);
-                Hero.RegainControl();
-                Hero.StartAnimationControlToIdle();
-            }
-
-            SilkSoarDashFsm.Build();
-            SilkSoarDashFsm.Trigger();
+            return;
         }
 
-        private static bool CanSilkSoarDash()
+        // a sprint passes CanSuperJump as a cancelable FSM move, so the game's own start cancels it and takes control back first
+        if (Hero.controlReqlinquished)
         {
-            return HasUnlockingAbility(Hero.playerData) && Hero.CanStartSoar();
+            EventRegister.SendEvent(EventRegisterEvents.FsmCancel);
+            Hero.RegainControl();
+            Hero.StartAnimationControlToIdle();
         }
 
-        private static bool HasUnlockingAbility(PlayerData playerData)
+        SilkSoarDashFsm.Build();
+        SilkSoarDashFsm.Trigger();
+    }
+
+    private static bool CanSilkSoarDash()
+    {
+        return HasUnlockingAbility(Hero.playerData) && Hero.CanStartSoar();
+    }
+
+    private static bool HasUnlockingAbility(PlayerData playerData)
+    {
+        switch (SsdConfig.Availability)
         {
-            switch (SsdConfig.Availability)
-            {
-                case SsdAvailability.Clawline:
-                    return playerData.hasHarpoonDash;
-                case SsdAvailability.Always:
-                    return true;
-                case SsdAvailability.SilkSoar:
-                default:
-                    return playerData.hasSuperJump;
-            }
+            case SsdAvailability.Clawline:
+                return playerData.hasHarpoonDash;
+            case SsdAvailability.Always:
+                return true;
+            case SsdAvailability.SilkSoar:
+            default:
+                return playerData.hasSuperJump;
         }
     }
 }

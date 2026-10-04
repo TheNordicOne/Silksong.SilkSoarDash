@@ -76,11 +76,6 @@ namespace SilkSoarDash.Extensions
             hero.PlayAnim(SsdAnims.Loop);
         }
 
-        public static void LeanIntoDash(this HeroController hero, float direction, float progress)
-        {
-            hero.TurnAboutBody(-SsdVars.DashPoseAngle * direction * progress);
-        }
-
         public static void ExitDashPose(this HeroController hero)
         {
             hero.TurnAboutBody(0f);

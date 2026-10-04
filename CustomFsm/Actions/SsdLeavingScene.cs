@@ -26,6 +26,8 @@ namespace SilkSoarDash.CustomFsm.Actions
             var exitGate = GameManager.instance.LastSceneLoad.SceneLoadInfo.HeroLeaveDirection;
             var sideExit = exitGate == GatePosition.left || exitGate == GatePosition.right;
             SsdHeroState.ExitedDashing = SsdHeroState.Dashing && sideExit;
+            SsdHeroState.CrossingRoom = SsdHeroState.ExitedDashing;
+            SsdHeroState.CancelQueued = false;
             if (SsdHeroState.ExitedDashing)
             {
                 SsdHeroState.ExitHeight = HeroController.instance.HeightAboveDoorFloor(TouchedGate());

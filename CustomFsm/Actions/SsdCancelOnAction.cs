@@ -12,18 +12,12 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnUpdate()
         {
-            var actions = SsdInput.Actions;
-            if (actions == null)
+            if (!SsdInput.PressedCancel())
             {
                 return;
             }
 
-            if (!actions.Jump.WasPressed && !actions.Attack.WasPressed && !actions.SuperDash.WasPressed)
-            {
-                return;
-            }
-
-            SsdLog.Debug("cancelled button={Button}", PressedButton(actions));
+            SsdLog.Debug("cancelled button={Button}", PressedButton(SsdInput.Actions));
             Fsm.Event(SsdEvents.Cancelled);
         }
 

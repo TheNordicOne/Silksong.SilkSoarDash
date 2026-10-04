@@ -11,6 +11,11 @@ namespace SilkSoarDash.Controls
             return Actions != null && Actions.SuperDash.WasPressed && DashDirectionPressed();
         }
 
+        public static bool PressedCancel()
+        {
+            return Actions != null && (Actions.Jump.WasPressed || Actions.Attack.WasPressed || Actions.SuperDash.WasPressed);
+        }
+
         public static bool DashDirectionPressed()
         {
             if (Actions == null)

@@ -44,6 +44,7 @@ namespace SilkSoarDash.CustomFsm.Actions
             if (!(previous.Name == SsdStates.LeavingScene && SsdHeroState.ExitedDashing))
             {
                 Hero.ExitDashPose();
+                SsdHeroState.CrossingRoom = false;
             }
             Hero.SetCState(SsdCStates.FreezeCharge, false);
 

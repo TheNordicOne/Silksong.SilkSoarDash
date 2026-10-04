@@ -21,6 +21,13 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             SsdHeroState.Dashing = true;
 
+            SsdHeroState.CrossingRoom = false;
+            if (SsdHeroState.CancelQueued)
+            {
+                SsdHeroState.CancelQueued = false;
+                SsdQueueCancel.Queue(Fsm);
+            }
+
             Hero.RelinquishControlNotVelocity();
 
             Hero.AffectedByGravity(false);

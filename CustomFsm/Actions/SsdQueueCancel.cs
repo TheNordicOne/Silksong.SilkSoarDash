@@ -7,10 +7,15 @@ namespace SilkSoarDash.CustomFsm.Actions
     {
         public override void OnEnter()
         {
-            Fsm.GetFsmFloat(SsdVars.CancelableTime).Value = SsdVars.QueuedCancelableTime;
-            Fsm.GetFsmBool(SsdVars.QueuedCancel).Value = true;
+            Queue(Fsm);
 
             Finish();
+        }
+
+        public static void Queue(Fsm fsm)
+        {
+            fsm.GetFsmFloat(SsdVars.CancelableTime).Value = SsdVars.QueuedCancelableTime;
+            fsm.GetFsmBool(SsdVars.QueuedCancel).Value = true;
         }
     }
 }

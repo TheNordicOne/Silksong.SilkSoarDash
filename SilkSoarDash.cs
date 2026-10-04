@@ -29,6 +29,13 @@ namespace SilkSoarDash
 
         private void Update()
         {
+            // the FSM rests between rooms, so a cancel pressed during the room change is held for the dash in the next room
+            if (SsdHeroState.CrossingRoom && SsdInput.PressedCancel())
+            {
+                SsdHeroState.CancelQueued = true;
+                return;
+            }
+
             if (!SsdInput.PressedSilkSoarDash() || !CanSilkSoarDash())
             {
                 return;

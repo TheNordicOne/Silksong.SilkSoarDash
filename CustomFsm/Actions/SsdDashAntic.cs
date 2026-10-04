@@ -23,14 +23,18 @@ namespace SilkSoarDash.CustomFsm.Actions
             }
         }
 
-        // the harpoon clips have no jump antic, so the throw pose is held for as long as vanilla's antic clip runs
+        // the harpoon clips have no jump antic, so on the ground she holds the throw pose and leans into the dash pose for as long as vanilla's antic clip runs
         public override void OnUpdate()
         {
             _elapsed += Time.deltaTime;
-            if (_elapsed < Hero.AnimSeconds(SsdAnims.JumpAntic))
+            var duration = Hero.AnimSeconds(SsdAnims.JumpAntic);
+            if (_elapsed < duration)
             {
+                Lean(_elapsed / duration);
                 return;
             }
+
+            Lean(1f);
 
             // the harpoon dash lifts her off the ground first, so she flies instead of sliding along it
             if (Hero.cState.onGround)
@@ -39,6 +43,17 @@ namespace SilkSoarDash.CustomFsm.Actions
             }
 
             Finish();
+        }
+
+        private void Lean(float progress)
+        {
+            if (SsdHeroState.WallStart)
+            {
+                return;
+            }
+
+            // slow at first and fastest at launch, so the turn runs straight into the dash
+            Hero.LeanIntoDash(Fsm.GetFsmFloat(SsdVars.Direction).Value, progress * progress);
         }
     }
 }

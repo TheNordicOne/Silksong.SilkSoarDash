@@ -3,6 +3,7 @@ namespace SilkSoarDash.CustomFsm.Constants
     public static class SsdEvents
     {
         public const string Start = "START";
+        public const string WallStart = "WALL_START";
         public const string Finished = "FINISHED";
         public const string Cancelled = "CANCELLED";
         public const string ThrowNeedleStart = "THROW_NEEDLE_START";

@@ -20,6 +20,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             SsdHeroState.Dashing = false;
             SsdHeroState.OnWall = false;
+            SsdHeroState.WallStart = false;
+            SsdClones.AimForUprightHero();
 
             Hero.hero_state = ActorStates.idle;
 

@@ -7,12 +7,19 @@ namespace SilkSoarDash.CustomFsm.Actions
 {
     public class SsdThrowNeedleStart : FsmStateAction
     {
+        public bool OnWall;
+
         private static HeroController Hero => HeroController.instance;
+
+        private string ThrowAnim => OnWall ? SsdAnims.SoarThrow : SsdAnims.Throw;
 
         public override void OnEnter()
         {
             Activate(SsdClones.ExtraThrowEffect);
-            Activate(SsdClones.HarpoonThrowEffect);
+            if (!OnWall)
+            {
+                Activate(SsdClones.HarpoonThrowEffect);
+            }
 
             var fader = SsdClones.ChargingFader;
             if (fader != null)
@@ -32,16 +39,21 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             // message  SendMessageV2 to the hero
 
-            Hero.PlayAnim(SsdAnims.Throw);
+            Hero.PlayAnim(ThrowAnim);
 
             EventRegister.SendEvent(SsdRegisterEvents.SuperJumpThrowNeedle);
         }
 
         public override void OnUpdate()
         {
-            if (Hero.IsAnimPlaying(SsdAnims.Throw))
+            if (Hero.IsAnimPlaying(ThrowAnim))
             {
                 return;
+            }
+
+            if (OnWall)
+            {
+                Hero.PlayAnim(SsdAnims.SoarThrowWait);
             }
 
             Finish();

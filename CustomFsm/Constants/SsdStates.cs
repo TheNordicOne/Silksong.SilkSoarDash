@@ -9,6 +9,10 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string Charged = "Charged";
         public const string ChargeCancelGround = "ChargeCancelGround";
         public const string ThrowNeedleStart = "ThrowNeedleStart";
+        public const string WallRelinquishControl = "WallRelinquishControl";
+        public const string WallCharge = "WallCharge";
+        public const string WallCharged = "WallCharged";
+        public const string WallThrowNeedleStart = "WallThrowNeedleStart";
         public const string GetDistance = "GetDistance";
         public const string ResetEffects = "ResetEffects";
         public const string ThrowNeedle = "ThrowNeedle";

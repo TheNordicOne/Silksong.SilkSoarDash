@@ -41,7 +41,11 @@ namespace SilkSoarDash.CustomFsm.Actions
             SsdEffects.StopLoop();
 
             SsdHeroState.Dashing = false;
-            if (!(previous.Name == SsdStates.LeavingScene && SsdHeroState.ExitedDashing))
+            if (SsdHeroState.WallStart)
+            {
+                Hero.ReturnToWall(SsdHeroState.WallStartPosition, Fsm.GetFsmFloat(SsdVars.Direction).Value);
+            }
+            else if (!(previous.Name == SsdStates.LeavingScene && SsdHeroState.ExitedDashing))
             {
                 Hero.ExitDashPose();
                 SsdHeroState.CrossingRoom = false;

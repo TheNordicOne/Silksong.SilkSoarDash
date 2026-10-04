@@ -12,6 +12,8 @@ namespace SilkSoarDash.CustomFsm.Actions
     {
         private static readonly ManualLogSource SsdLog = SilkLog.For<SsdCharge>();
 
+        public bool OnWall;
+
         private static HeroController Hero => HeroController.instance;
 
         public override void OnEnter()
@@ -27,7 +29,7 @@ namespace SilkSoarDash.CustomFsm.Actions
                groundEffect.gameObject.SetActive(true);
            }
 
-           Hero.GetComponent<tk2dSpriteAnimator>().Play(SsdAnims.Antic);
+           Hero.PlayAnim(OnWall ? SsdAnims.SoarAntic : SsdAnims.Antic);
 
            SsdEffects.PlayOneShot(SsdAudio.IntoPosition, SsdAudio.WidePitchMin, SsdAudio.WidePitchMax);
            SsdEffects.StartChargeLoop();

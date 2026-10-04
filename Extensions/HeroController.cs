@@ -10,6 +10,7 @@ namespace SilkSoarDash.Extensions
     public static class SsdHeroController
     {
         private static readonly Func<HeroController, bool> IsAttackLocked = AccessTools.MethodDelegate<Func<HeroController, bool>>(AccessTools.Method(typeof(HeroController), "IsAttackLocked"));
+        private static readonly Action<HeroController> CancelWallsliding = AccessTools.MethodDelegate<Action<HeroController>>(AccessTools.Method(typeof(HeroController), "CancelWallsliding"));
 
         public static bool CanStartSoar(this HeroController hero)
         {
@@ -24,7 +25,7 @@ namespace SilkSoarDash.Extensions
             }
 
             var state = hero.cState;
-            if (!state.onGround || state.dashing || state.hazardDeath || state.hazardRespawning || state.backDashing)
+            if (!(state.onGround || state.wallSliding) || state.dashing || state.hazardDeath || state.hazardRespawning || state.backDashing)
             {
                 return false;
             }
@@ -78,6 +79,37 @@ namespace SilkSoarDash.Extensions
         public static void ExitDashPose(this HeroController hero)
         {
             hero.TurnAboutBody(0f);
+        }
+
+        // she faces the wall while sliding, so she turns to the dash direction first and the dash pose then lies flat against the wall like Silk Soar on the floor
+        public static void EnterWallPose(this HeroController hero, float direction)
+        {
+            CancelWallsliding(hero);
+            hero.Face(direction);
+
+            var wall = hero.LeadingEdge(-direction);
+            hero.TurnAboutBody(-SsdVars.DashPoseAngle * direction);
+            hero.transform.position += new Vector3(wall - hero.LeadingEdge(-direction), 0f, 0f);
+            Physics2D.SyncTransforms();
+        }
+
+        public static void ReturnToWall(this HeroController hero, Vector3 position, float direction)
+        {
+            hero.ExitDashPose();
+            hero.transform.position = position;
+            Physics2D.SyncTransforms();
+            hero.Face(-direction);
+        }
+
+        private static void Face(this HeroController hero, float direction)
+        {
+            if (direction > 0f)
+            {
+                hero.FaceRight();
+                return;
+            }
+
+            hero.FaceLeft();
         }
 
         // the transform pivot sits low on her, so a plain rotation would swing the hitbox into the floor

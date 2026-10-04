@@ -7,6 +7,9 @@ namespace SilkSoarDash.CustomFsm.Constants
         public const string AnticEffect = "Super Jump Antic Effect";
         public const string AnticEffectEnd = "Super Jump Antic Effect End";
         public const string Throw = "Harpoon Throw";
+        public const string SoarAntic = "Super Jump Antic";
+        public const string SoarThrow = "Super Jump Throw";
+        public const string SoarThrowWait = "Super Jump Throw Wait";
         public const string JumpAntic = "Super Jump Jump Antic";
         public const string Loop = "Super Jump Loop";
         public const string Catch = "Harpoon Catch";

@@ -14,7 +14,13 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             Fsm.GetFsmFloat(SsdVars.CancelableTime).Value = SsdVars.DefaultCancelableTime;
 
-            Hero.DoHardLandingEffectNoHit();
+            if (!SsdHeroState.WallStart)
+            {
+                Hero.DoHardLandingEffectNoHit();
+            }
+
+            SsdHeroState.WallStart = false;
+            SsdClones.AimForUprightHero();
 
             SsdEffects.PlayOneShot2D(SsdAudio.JumpBig, SsdAudio.WidePitchMin, SsdAudio.WidePitchMax);
             SsdEffects.Vibrate(SsdVibration.DashBurst);

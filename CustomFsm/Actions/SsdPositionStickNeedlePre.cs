@@ -34,6 +34,8 @@ namespace SilkSoarDash.CustomFsm.Actions
 
             _needleStick.position = new Vector3(hitPoint.x, _needle.position.y, _needleStick.position.z);
             _needleStick.SetParent(null, true);
+            // unparenting keeps the turn of a Hornet turned on a wall, which would stand the needle upright
+            _needleStick.rotation = Quaternion.Inverse(HeroController.instance.transform.rotation) * _needleStick.rotation;
             _needleStick.PlayAnim(SsdAnims.NeedleWallHit);
 
             var isGate = Fsm.GetFsmBool(SsdVars.IsGate).Value;

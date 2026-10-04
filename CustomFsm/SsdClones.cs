@@ -16,6 +16,7 @@ namespace SilkSoarDash.CustomFsm
         private const string ClonePrefix = "SSD ";
 
         private static readonly List<Transform> Created = new List<Transform>();
+        private static readonly List<Aim> Aims = new List<Aim>();
 
         private static HeroController _owner;
 
@@ -87,7 +88,27 @@ namespace SilkSoarDash.CustomFsm
             }
 
             Created.Clear();
+            Aims.Clear();
             _owner = null;
+        }
+
+        // the clones pointed forward for an upright Hornet turn with her on a wall, where their vanilla upward aim points forward
+        public static void AimForTurnedHero()
+        {
+            foreach (var aim in Aims.Where(aim => aim.Target != null))
+            {
+                aim.Target.localPosition = aim.VanillaPosition;
+                aim.Target.localRotation = aim.VanillaRotation;
+            }
+        }
+
+        public static void AimForUprightHero()
+        {
+            foreach (var aim in Aims.Where(aim => aim.Target != null))
+            {
+                aim.Target.localPosition = aim.ForwardPosition;
+                aim.Target.localRotation = aim.ForwardRotation;
+            }
         }
 
         private static Transform ClonePointed(HeroController hero, string path)
@@ -95,7 +116,7 @@ namespace SilkSoarDash.CustomFsm
             var clone = Clone(hero, path);
             if (clone != null)
             {
-                clone.PointForward();
+                Aimed(clone, clone.PointForward);
             }
 
             return clone;
@@ -117,7 +138,7 @@ namespace SilkSoarDash.CustomFsm
             var clone = Clone(hero, path);
             if (clone != null)
             {
-                clone.TurnForward();
+                Aimed(clone, clone.TurnForward);
             }
 
             return clone;
@@ -152,6 +173,34 @@ namespace SilkSoarDash.CustomFsm
             }
 
             body.constraints &= ~(RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY);
+        }
+
+        private static void Aimed(Transform clone, System.Action pointForward)
+        {
+            var vanillaPosition = clone.localPosition;
+            var vanillaRotation = clone.localRotation;
+
+            pointForward();
+
+            Aims.Add(new Aim(clone, vanillaPosition, vanillaRotation));
+        }
+
+        private sealed class Aim
+        {
+            public readonly Transform Target;
+            public readonly Vector3 VanillaPosition;
+            public readonly Quaternion VanillaRotation;
+            public readonly Vector3 ForwardPosition;
+            public readonly Quaternion ForwardRotation;
+
+            public Aim(Transform clone, Vector3 vanillaPosition, Quaternion vanillaRotation)
+            {
+                Target = clone;
+                VanillaPosition = vanillaPosition;
+                VanillaRotation = vanillaRotation;
+                ForwardPosition = clone.localPosition;
+                ForwardRotation = clone.localRotation;
+            }
         }
 
         private sealed class Keeper : MonoBehaviour

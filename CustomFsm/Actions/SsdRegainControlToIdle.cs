@@ -1,4 +1,6 @@
 using HutongGames.PlayMaker;
+using SilkSoarDash.CustomFsm.Constants;
+using SilkSoarDash.Extensions;
 
 namespace SilkSoarDash.CustomFsm.Actions
 {
@@ -8,9 +10,16 @@ namespace SilkSoarDash.CustomFsm.Actions
 
         public override void OnEnter()
         {
-            var onWall = SsdHeroState.OnWall;
+            var wallStart = SsdHeroState.WallStart;
+            if (wallStart)
+            {
+                Hero.ReturnToWall(SsdHeroState.WallStartPosition, Fsm.GetFsmFloat(SsdVars.Direction).Value);
+            }
+
+            var onWall = SsdHeroState.OnWall || wallStart;
 
             SsdHeroState.OnWall = false;
+            SsdHeroState.WallStart = false;
             SsdHeroState.Dashing = false;
 
             Hero.RegainControl();

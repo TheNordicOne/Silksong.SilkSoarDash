@@ -25,6 +25,7 @@ namespace SilkSoarDash.CustomFsm
                 new[]
                 {
                     FsmBuilder.Transition(SsdEvents.Finished, SsdStates.RelinquishControl),
+                    FsmBuilder.Transition(SsdEvents.WallStart, SsdStates.WallRelinquishControl),
                     FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.Inactive)
                 });
         }
@@ -77,6 +78,61 @@ namespace SilkSoarDash.CustomFsm
                 new FsmStateAction[]
                 {
                     new SsdThrowNeedleStart()
+                },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.GetDistance)
+                });
+        }
+
+        public static FsmState WallRelinquishControl(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.WallRelinquishControl,
+                new FsmStateAction[]
+                {
+                    new SsdRelinquishControl(),
+                    new SsdEnterWallPose()
+                },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.WallCharge)
+                });
+        }
+
+        public static FsmState WallCharge(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.WallCharge,
+                new FsmStateAction[]
+                {
+                    new SsdCharge { OnWall = true },
+                    FsmBuilder.WaitFor(fsm, SsdVars.ChargeTime, SsdEvents.Finished)
+                },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.Finished, SsdStates.WallCharged),
+                    FsmBuilder.Transition(SsdEvents.Cancelled, SsdStates.ChargeCancelGround)
+                });
+        }
+
+        public static FsmState WallCharged(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.WallCharged,
+                new FsmStateAction[]
+                {
+                    new SsdCharged()
+                },
+                new[]
+                {
+                    FsmBuilder.Transition(SsdEvents.ThrowNeedleStart, SsdStates.WallThrowNeedleStart)
+                });
+        }
+
+        public static FsmState WallThrowNeedleStart(Fsm fsm)
+        {
+            return FsmBuilder.State(fsm, SsdStates.WallThrowNeedleStart,
+                new FsmStateAction[]
+                {
+                    new SsdThrowNeedleStart { OnWall = true }
                 },
                 new[]
                 {

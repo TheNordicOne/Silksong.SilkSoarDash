@@ -27,7 +27,13 @@ namespace SilkSoarDash.CustomFsm.Actions
                 return;
             }
 
-            SsdLog.Debug("charging silk={Silk}", silk);
+            SsdLog.Debug("charging silk={Silk} wall={Wall}", silk, Hero.cState.wallSliding);
+
+            if (Hero.cState.wallSliding)
+            {
+                Fsm.Event(SsdEvents.WallStart);
+                return;
+            }
 
             Finish();
         }

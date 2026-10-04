@@ -39,6 +39,19 @@ namespace SilkSoarDash.CustomFsm
             StoreSideGateAhead(fsm, dir);
         }
 
+        // turned on a wall, her feet and so her pivot touch the wall, which the ray would hit first
+        private static Vector2 RayOrigin()
+        {
+            var hero = HeroController.instance;
+            Vector2 origin = hero.transform.position;
+            if (SsdHeroState.WallStart)
+            {
+                origin.x = hero.GetComponent<Collider2D>().bounds.center.x;
+            }
+
+            return origin;
+        }
+
         private static SuperJumpRaycast BuildRayCaster(Fsm fsm, Vector2 dir)
         {
             return new SuperJumpRaycast
@@ -54,7 +67,7 @@ namespace SilkSoarDash.CustomFsm
                 },
                 FromPosition = new FsmVector2
                 {
-                    Value = Vector2.zero
+                    Value = RayOrigin() - (Vector2)HeroController.instance.transform.position
                 },
                 FromGameObject = new FsmOwnerDefault
                 {
@@ -85,7 +98,7 @@ namespace SilkSoarDash.CustomFsm
             };
 
             var hits = new RaycastHit2D[1];
-            var origin = HeroController.instance.transform.position;
+            var origin = RayOrigin();
             var hitCount = Physics2D.Raycast(origin, dir, filter, hits, SsdVars.NeedleRayDistance);
 
             // a miss leaves the SuperJumpRaycast result alone
@@ -105,7 +118,7 @@ namespace SilkSoarDash.CustomFsm
         // SuperJumpRaycast only accepts a gate at the top of the room, so a sideways soar needs the side gates added
         private static void StoreSideGateAhead(Fsm fsm, Vector2 dir)
         {
-            var origin = HeroController.instance.transform.position;
+            var origin = RayOrigin();
             var wantedSide = dir.x > 0f ? GatePosition.right : GatePosition.left;
             TransitionPoint nearestGate = null;
             var nearestDistance = SsdVars.NeedleRayDistance;

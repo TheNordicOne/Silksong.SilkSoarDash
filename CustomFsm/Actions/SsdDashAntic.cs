@@ -16,6 +16,11 @@ namespace SilkSoarDash.CustomFsm.Actions
             SsdEffects.StopLoop();
             SsdEffects.PlayOneShot(SsdAudio.JumpAntic, SsdAudio.WidePitchMin, SsdAudio.WidePitchMax);
             _elapsed = 0f;
+
+            if (SsdHeroState.WallStart)
+            {
+                Hero.PlayAnim(SsdAnims.JumpAntic);
+            }
         }
 
         // the harpoon clips have no jump antic, so the throw pose is held for as long as vanilla's antic clip runs
